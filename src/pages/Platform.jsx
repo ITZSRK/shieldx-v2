@@ -561,8 +561,8 @@ function IntegrationSection() {
         </div>
         <h2 className="text-[36px] font-semibold mb-4">Three connection points.<br />Zero core banking changes.</h2>
         <p className="text-white/50 max-w-lg mx-auto leading-relaxed">
-          ShieldX sits between your existing systems and your existing channels.
-          Nothing in your current stack changes — ShieldX listens, decides, and routes.
+          Raw CBS, LOS, and CRM events go in. Governed, compliant, routed decisions come out.
+          No rip-and-replace — ShieldX plugs into what you already have.
         </p>
       </div>
 
@@ -963,9 +963,9 @@ export default function Platform() {
               <span className="text-[11px] text-white/55 tracking-[0.22em]">DECISION RUNTIME</span>
               <div className="h-px w-6 bg-white/20" />
             </div>
-            <h2 className="text-[36px] font-semibold">From signal to governed execution</h2>
+            <h2 className="text-[36px] font-semibold">From signal to governed execution.</h2>
             <p className="text-white/42 max-w-md mx-auto mt-3 leading-relaxed text-sm">
-              Every decision runs through the same auditable path — scored, validated, routed, executed, and logged. In under 30 milliseconds.
+              One path. Every time. Scored, compliance-checked, routed, executed, and logged — in under 30 milliseconds.
             </p>
           </div>
           <DecisionDebugger />

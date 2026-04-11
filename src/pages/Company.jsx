@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Layout from "../layouts/Layout";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /* ━━━ MOTION ━━━ */
 function Motion({ children, delay = 0 }) {
@@ -29,120 +29,148 @@ function WindowDots() {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   HERO VISUAL — Control Plane
-   Live decision log (breadth: volume + velocity across workflows)
-   Fixed 4-entry array, fixed height — zero layout shift.
+   HERO VISUAL — Decision Record
+   Cycles through 3 governed decisions with animated
+   compliance checks and a pass/blocked verdict.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const STAGES = ["Signal", "Decision", "Compliance", "Routing", "Execution", "Audit"];
-
-const STAGE_EVENTS = [
-  { action: "Signal received — CRM event",    type: "COLLECTIONS", ms: "0ms",  status: "RECEIVED"  },
-  { action: "Decision engine evaluating",      type: "LENDING",     ms: "12ms", status: "COMPUTING" },
-  { action: "Compliance rule enforced",        type: "SERVICING",   ms: "28ms", status: "COMPLIANT" },
-  { action: "Route computed — Voice AI",       type: "COLLECTIONS", ms: "31ms", status: "ROUTED"    },
-  { action: "Outreach triggered & executed",   type: "LENDING",     ms: "43ms", status: "EXECUTED"  },
-  { action: "Decision logged & audited",       type: "SERVICING",   ms: "44ms", status: "AUDITED"   },
+const DECISIONS = [
+  {
+    id:          "DEC-20260411-7821",
+    vertical:    "COLLECTIONS",
+    vertColor:   "#f59e0b",
+    customer:    "Priya S.",
+    event:       "payment_missed",
+    context:     "₹24,000 · DPD-7",
+    checks: [
+      { rule:"TRAI Window", result:"PASS", note:"08:00–19:00 IST" },
+      { rule:"TRAI DND",    result:"PASS", note:"Not registered"  },
+      { rule:"DPDPA 2025",  result:"PASS", note:"Consent verified"},
+      { rule:"RBI FPC",     result:"PASS", note:"Compliant"       },
+    ],
+    verdict:      "EXECUTE",
+    action:       "Voice AI · 2:00 PM IST",
+    verdictColor: "#34d399",
+  },
+  {
+    id:          "DEC-20260411-7822",
+    vertical:    "LENDING",
+    vertColor:   "#818cf8",
+    customer:    "Rajan M.",
+    event:       "application_submitted",
+    context:     "₹8L loan · LTV 58%",
+    checks: [
+      { rule:"Bureau Score", result:"PASS", note:"CIBIL 734"    },
+      { rule:"Policy Gate",  result:"PASS", note:"Within band"  },
+      { rule:"DPDPA 2025",   result:"PASS", note:"Consent on file"},
+      { rule:"Dedup Check",  result:"PASS", note:"No duplicate" },
+    ],
+    verdict:      "EXECUTE",
+    action:       "Approval notice · Email",
+    verdictColor: "#34d399",
+  },
+  {
+    id:          "DEC-20260411-7823",
+    vertical:    "COLLECTIONS",
+    vertColor:   "#f59e0b",
+    customer:    "Arun K.",
+    event:       "payment_missed",
+    context:     "₹11,500 · DPD-3",
+    checks: [
+      { rule:"TRAI Window", result:"FAIL", note:"07:30 AM — outside window" },
+      { rule:"TRAI DND",    result:"PASS", note:"Not registered"            },
+      { rule:"DPDPA 2025",  result:"PASS", note:"Consent verified"          },
+      { rule:"RBI FPC",     result:"PASS", note:"Compliant"                 },
+    ],
+    verdict:      "BLOCKED",
+    action:       "Rescheduled · 10:00 AM IST",
+    verdictColor: "#ef4444",
+  },
 ];
 
-const STATUS_CLR = {
-  RECEIVED:  "text-white/40",
-  COMPUTING: "text-yellow-400/65",
-  COMPLIANT: "text-emerald-400/70",
-  ROUTED:    "text-white/55",
-  EXECUTED:  "text-blue-400",
-  AUDITED:   "text-white/38",
-};
-
 function HeroVisual() {
-  const [stage, setStage] = useState(0);
-  const [log, setLog] = useState([
-    { ...STAGE_EVENTS[0], uid: 0 },
-    { ...STAGE_EVENTS[1], uid: 1 },
-    { ...STAGE_EVENTS[2], uid: 2 },
-    { ...STAGE_EVENTS[3], uid: 3 },
-  ]);
-  const uidRef = useRef(4);
+  const [decIdx,      setDecIdx]      = useState(0);
+  const [checkCount,  setCheckCount]  = useState(0);
+  const [showVerdict, setShowVerdict] = useState(false);
+
+  const d = DECISIONS[decIdx];
 
   useEffect(() => {
-    const i = setInterval(() => {
-      setStage(prev => {
-        const next = (prev + 1) % STAGES.length;
-        const entry = { ...STAGE_EVENTS[next], uid: uidRef.current++ };
-        setLog(l => [...l.slice(1), entry]);
-        return next;
-      });
-    }, 1400);
-    return () => clearInterval(i);
-  }, []);
+    setCheckCount(0);
+    setShowVerdict(false);
+    const timers = [
+      setTimeout(() => setCheckCount(1), 420),
+      setTimeout(() => setCheckCount(2), 780),
+      setTimeout(() => setCheckCount(3), 1130),
+      setTimeout(() => setCheckCount(4), 1480),
+      setTimeout(() => setShowVerdict(true), 1950),
+      setTimeout(() => setDecIdx(i => (i + 1) % DECISIONS.length), 5600),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [decIdx]);
 
   return (
-    <div className="border border-white/10 rounded-xl bg-black/60 overflow-hidden font-mono text-xs">
+    <div className="border border-white/10 rounded-xl bg-black/60 overflow-hidden text-xs">
 
-      {/* TITLE BAR */}
-      <div className="border-b border-white/[0.08] px-4 py-2.5 flex items-center gap-3">
-        <WindowDots />
-        <span className="flex-1 text-center text-white/55 text-[10px] tracking-[0.18em]">
-          ShieldX — Control Plane
-        </span>
-        <div className="flex items-center gap-1.5 text-[10px] text-blue-400">
+      {/* HEADER */}
+      <div className="border-b border-white/[0.08] px-4 py-2.5 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-[5px] h-[5px] rounded-full transition-colors duration-500"
+            style={{background: d.vertColor + "cc"}} />
+          <span className="text-[10px] tracking-[0.18em] transition-colors duration-500 font-mono"
+            style={{color: d.vertColor + "bb"}}>{d.vertical}</span>
+          <span className="text-white/15">·</span>
+          <span className="text-[10px] text-white/25 font-mono">{d.id}</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-[10px] text-blue-400/70 font-mono">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
           LIVE
         </div>
       </div>
 
-      {/* COL HEADERS */}
-      <div className="px-5 pt-3 pb-2 flex gap-3 text-[10px] text-white/30 tracking-widest border-b border-white/[0.05]">
-        <span className="w-[88px] shrink-0">TYPE</span>
-        <span className="flex-1">ACTION</span>
-        <span className="w-[38px] text-right shrink-0">MS</span>
-        <span className="w-[78px] text-right shrink-0">STATUS</span>
+      {/* CUSTOMER CONTEXT */}
+      <div className="px-4 pt-3.5 pb-3 border-b border-white/[0.05]">
+        <div className="text-[9px] text-white/22 tracking-[0.22em] mb-2.5 font-mono">DECISION RECORD</div>
+        <div className="flex items-baseline gap-2 mb-1">
+          <span className="text-white/70 text-[13px]">{d.customer}</span>
+          <span className="text-white/20">·</span>
+          <span className="text-white/40 text-[11px] font-mono">{d.event}</span>
+        </div>
+        <div className="text-white/28 text-[10px]">{d.context}</div>
       </div>
 
-      {/* LOG — fixed height, no layout shift */}
-      <div className="px-5 py-3.5 space-y-3 h-[148px] overflow-hidden">
-        {log.map((e, i) => (
-          <motion.div
-            key={e.uid}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: i === 3 ? 1 : 0.32 }}
-            transition={{ duration: 0.4 }}
-            className="flex items-center gap-3 text-[11px]"
-          >
-            <span className="text-white/30 w-[88px] text-[10px] tracking-wide shrink-0">{e.type}</span>
-            <span className="text-white/58 flex-1 truncate">{e.action}</span>
-            <span className="text-white/22 w-[38px] text-right shrink-0">{e.ms}</span>
-            <span className={`w-[78px] text-right text-[10px] tracking-wide shrink-0 ${STATUS_CLR[e.status]}`}>
-              {e.status}
-            </span>
-          </motion.div>
+      {/* COMPLIANCE CHECKS */}
+      <div className="px-4 pt-3.5 pb-3.5 space-y-2.5">
+        {d.checks.map((c, i) => (
+          <div key={`${decIdx}-${i}`} className="flex items-center justify-between transition-opacity duration-300"
+            style={{opacity: checkCount > i ? 1 : 0}}>
+            <div className="flex items-center gap-2">
+              <div className="w-[5px] h-[5px] rounded-full flex-shrink-0 transition-colors duration-300"
+                style={{background: c.result === "PASS" ? "#34d399" : "#ef4444"}} />
+              <span className="text-white/50 text-[11px]">{c.rule}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-white/20 text-[10px] font-mono">{c.note}</span>
+              <span className="text-[10px] font-mono font-semibold"
+                style={{color: c.result === "PASS" ? "#34d399" : "#ef4444"}}>
+                {c.result}
+              </span>
+            </div>
+          </div>
         ))}
       </div>
 
-      {/* PIPELINE — same stage as log */}
-      <div className="border-t border-white/[0.07] px-5 py-4">
-        <div className="flex items-start w-full">
-          {STAGES.map((s, i) => (
-            <div key={i} className="flex items-center flex-1 last:flex-none">
-              <div className="flex flex-col items-center gap-1.5">
-                <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${
-                  i === stage
-                    ? "bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,1)]"
-                    : i < stage ? "bg-blue-400/28" : "bg-white/[0.08]"
-                }`} />
-                <div className={`text-[9px] tracking-wider whitespace-nowrap transition-colors duration-500 ${
-                  i === stage ? "text-white" : i < stage ? "text-white/22" : "text-white/10"
-                }`}>{s.toUpperCase()}</div>
-              </div>
-              {i < STAGES.length - 1 && (
-                <div className="flex-1 h-[1px] bg-white/[0.05] mx-1.5 mb-4 relative overflow-hidden">
-                  <div className={`absolute h-full bg-blue-400/50 transition-all duration-500 ${
-                    i < stage ? "w-full" : "w-0"
-                  }`} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+      {/* VERDICT */}
+      <div className="border-t border-white/[0.07] px-4 py-3 flex items-center justify-between transition-opacity duration-400"
+        style={{opacity: showVerdict ? 1 : 0}}>
+        <span className="text-white/32 text-[11px]">{d.action}</span>
+        <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md"
+          style={{
+            color:       d.verdictColor,
+            background:  d.verdictColor + "18",
+            border:      `1px solid ${d.verdictColor}38`,
+          }}>
+          {d.verdict}
+        </span>
       </div>
 
     </div>
