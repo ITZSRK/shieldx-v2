@@ -1,0 +1,73 @@
+@import url('https://rsms.me/inter/inter.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================= BASE ================= */
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: white;
+}
+
+/* REAL BACKGROUND (NOT FLAT BLACK) */
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(168,85,247,0.08), transparent 35%),
+    radial-gradient(circle at 80% 30%, rgba(168,85,247,0.06), transparent 40%),
+    #050507;
+}
+
+/* FULL HEIGHT */
+html, body, #root {
+  height: 100%;
+}
+
+/* TEXT RENDERING */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* SELECTION */
+::selection {
+  background: rgba(168, 85, 247, 0.25);
+}
+
+/* ================= GRID (SOFTER) ================= */
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  opacity: 0.015;
+  background-image:
+    linear-gradient(to right, white 1px, transparent 1px),
+    linear-gradient(to bottom, white 1px, transparent 1px);
+  background-size: 72px 72px;
+  pointer-events: none;
+}
+
+/* ================= GLOW SYSTEM ================= */
+
+.glow-soft {
+  background: radial-gradient(circle, rgba(168,85,247,0.08), transparent 60%);
+}
+
+.glow-intense {
+  background: radial-gradient(circle, rgba(168,85,247,0.12), transparent 60%);
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

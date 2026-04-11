@@ -1,0 +1,772 @@
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import Layout from "../layouts/Layout";
+import { useEffect, useRef, useState } from "react";
+
+/* ━━━ MOTION ━━━ */
+function Motion({ children, delay = 0 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, ease: "easeOut", delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ━━━ WINDOW DOTS — macOS traffic lights ━━━ */
+function WindowDots() {
+  return (
+    <div className="flex gap-1.5">
+      <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+      <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+      <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+    </div>
+  );
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO VISUAL — Control Plane
+   Live decision log (breadth: volume + velocity across workflows)
+   Fixed 4-entry array, fixed height — zero layout shift.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const STAGES = ["Signal", "Decision", "Compliance", "Routing", "Execution", "Audit"];
+
+const STAGE_EVENTS = [
+  { action: "Signal received — CRM event",    type: "COLLECTIONS", ms: "0ms",  status: "RECEIVED"  },
+  { action: "Decision engine evaluating",      type: "LENDING",     ms: "12ms", status: "COMPUTING" },
+  { action: "Compliance rule enforced",        type: "SERVICING",   ms: "28ms", status: "COMPLIANT" },
+  { action: "Route computed — Voice AI",       type: "COLLECTIONS", ms: "31ms", status: "ROUTED"    },
+  { action: "Outreach triggered & executed",   type: "LENDING",     ms: "43ms", status: "EXECUTED"  },
+  { action: "Decision logged & audited",       type: "SERVICING",   ms: "44ms", status: "AUDITED"   },
+];
+
+const STATUS_CLR = {
+  RECEIVED:  "text-white/40",
+  COMPUTING: "text-yellow-400/65",
+  COMPLIANT: "text-emerald-400/70",
+  ROUTED:    "text-white/55",
+  EXECUTED:  "text-blue-400",
+  AUDITED:   "text-white/38",
+};
+
+function HeroVisual() {
+  const [stage, setStage] = useState(0);
+  const [log, setLog] = useState([
+    { ...STAGE_EVENTS[0], uid: 0 },
+    { ...STAGE_EVENTS[1], uid: 1 },
+    { ...STAGE_EVENTS[2], uid: 2 },
+    { ...STAGE_EVENTS[3], uid: 3 },
+  ]);
+  const uidRef = useRef(4);
+
+  useEffect(() => {
+    const i = setInterval(() => {
+      setStage(prev => {
+        const next = (prev + 1) % STAGES.length;
+        const entry = { ...STAGE_EVENTS[next], uid: uidRef.current++ };
+        setLog(l => [...l.slice(1), entry]);
+        return next;
+      });
+    }, 1400);
+    return () => clearInterval(i);
+  }, []);
+
+  return (
+    <div className="border border-white/10 rounded-xl bg-black/60 overflow-hidden font-mono text-xs">
+
+      {/* TITLE BAR */}
+      <div className="border-b border-white/[0.08] px-4 py-2.5 flex items-center gap-3">
+        <WindowDots />
+        <span className="flex-1 text-center text-white/55 text-[10px] tracking-[0.18em]">
+          ShieldX — Control Plane
+        </span>
+        <div className="flex items-center gap-1.5 text-[10px] text-blue-400">
+          <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+          LIVE
+        </div>
+      </div>
+
+      {/* COL HEADERS */}
+      <div className="px-5 pt-3 pb-2 flex gap-3 text-[10px] text-white/30 tracking-widest border-b border-white/[0.05]">
+        <span className="w-[88px] shrink-0">TYPE</span>
+        <span className="flex-1">ACTION</span>
+        <span className="w-[38px] text-right shrink-0">MS</span>
+        <span className="w-[78px] text-right shrink-0">STATUS</span>
+      </div>
+
+      {/* LOG — fixed height, no layout shift */}
+      <div className="px-5 py-3.5 space-y-3 h-[148px] overflow-hidden">
+        {log.map((e, i) => (
+          <motion.div
+            key={e.uid}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: i === 3 ? 1 : 0.32 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-3 text-[11px]"
+          >
+            <span className="text-white/30 w-[88px] text-[10px] tracking-wide shrink-0">{e.type}</span>
+            <span className="text-white/58 flex-1 truncate">{e.action}</span>
+            <span className="text-white/22 w-[38px] text-right shrink-0">{e.ms}</span>
+            <span className={`w-[78px] text-right text-[10px] tracking-wide shrink-0 ${STATUS_CLR[e.status]}`}>
+              {e.status}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* PIPELINE — same stage as log */}
+      <div className="border-t border-white/[0.07] px-5 py-4">
+        <div className="flex items-start w-full">
+          {STAGES.map((s, i) => (
+            <div key={i} className="flex items-center flex-1 last:flex-none">
+              <div className="flex flex-col items-center gap-1.5">
+                <div className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${
+                  i === stage
+                    ? "bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,1)]"
+                    : i < stage ? "bg-blue-400/28" : "bg-white/[0.08]"
+                }`} />
+                <div className={`text-[9px] tracking-wider whitespace-nowrap transition-colors duration-500 ${
+                  i === stage ? "text-white" : i < stage ? "text-white/22" : "text-white/10"
+                }`}>{s.toUpperCase()}</div>
+              </div>
+              {i < STAGES.length - 1 && (
+                <div className="flex-1 h-[1px] bg-white/[0.05] mx-1.5 mb-4 relative overflow-hidden">
+                  <div className={`absolute h-full bg-blue-400/50 transition-all duration-500 ${
+                    i < stage ? "w-full" : "w-0"
+                  }`} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COMPLIANCE ENFORCEMENT VISUAL
+   Decision trace — depth view of a single governed decision.
+   Visually distinct from hero: vertical trace with
+   colored BLOCKED / CLEARED gate cards, not a data table.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const TRACE = [
+  { ms: "0ms",  text: "Signal received",                    kind: "step",    note: "payment_missed · Priya S. · ₹24,000 · DPD-7"     },
+  { ms: "11ms", text: "Decision: Call customer at 7:30 AM", kind: "step",    note: null                                               },
+  { ms: "14ms", text: "TRAI Window Violation",              kind: "blocked", note: "Outreach at 7:30 AM — before TRAI window (8 AM IST)" },
+  { ms: "15ms", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
+  { ms: "19ms", text: "Compliance Cleared",                 kind: "passed",  note: "TRAI ✓  DND ✓  DPDP ✓  RBI FPC ✓"               },
+  { ms: "28ms", text: "Voice AI outreach triggered",        kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
+  { ms: "29ms", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Immutable"                   },
+];
+
+const TRACE_DELAYS = [400, 650, 700, 1700, 700, 1400, 700, 3500];
+
+function ComplianceCatch() {
+  const [visible, setVisible] = useState(0);
+  const total = TRACE.length;
+
+  useEffect(() => {
+    const delay = visible <= total ? TRACE_DELAYS[visible] ?? 3500 : 3500;
+    const t = setTimeout(() => setVisible(v => v >= total ? 0 : v + 1), delay);
+    return () => clearTimeout(t);
+  }, [visible]);
+
+  return (
+    <div className="border border-white/10 rounded-xl bg-black/55 overflow-hidden font-mono text-xs">
+
+      {/* TITLE BAR — emerald indicator differentiates from hero blue */}
+      <div className="border-b border-white/[0.08] px-4 py-2.5 flex items-center gap-3">
+        <WindowDots />
+        <span className="flex-1 text-center text-white/55 text-[10px] tracking-[0.18em]">
+          ShieldX — Compliance Enforcement
+        </span>
+        <div className="flex items-center gap-1.5 text-[10px] text-emerald-400">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          ENFORCING
+        </div>
+      </div>
+
+      {/* TRIGGER */}
+      <div className="px-5 py-2.5 border-b border-white/[0.05] flex items-center gap-2">
+        <span className="text-[10px] text-white/35 tracking-widest shrink-0">TRIGGER</span>
+        <span className="text-white/58 text-[11px] truncate">payment_missed · Priya S. · ₹24,000 · DPD-7</span>
+      </div>
+
+      {/* DECISION TRACE — vertical flow with gate cards */}
+      <div className="px-5 py-4 space-y-2.5 h-[256px] overflow-hidden">
+        {TRACE.slice(0, visible).map((s, i) => {
+          const isLatest = i === visible - 1;
+
+          /* ── BLOCKED gate ── */
+          if (s.kind === "blocked") {
+            return (
+              <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+                <div className="border border-red-400/40 bg-red-400/[0.07] rounded-lg px-4 py-2.5">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-red-400 text-[10px] font-semibold tracking-wide">✗ BLOCKED</span>
+                    <span className="text-white/22 text-[10px]">[{s.ms}]</span>
+                  </div>
+                  <div className="text-white/65 text-[11px]">{s.text}</div>
+                  {isLatest && <div className="text-red-400/55 text-[10px] mt-1">{s.note}</div>}
+                </div>
+              </motion.div>
+            );
+          }
+
+          /* ── PASSED gate ── */
+          if (s.kind === "passed") {
+            return (
+              <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+                <div className="border border-emerald-400/40 bg-emerald-400/[0.06] rounded-lg px-4 py-2.5">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-emerald-400 text-[10px] font-semibold tracking-wide">✓ CLEARED</span>
+                    <span className="text-white/22 text-[10px]">[{s.ms}]</span>
+                  </div>
+                  <div className="text-white/65 text-[11px]">{s.text}</div>
+                  {isLatest && <div className="text-emerald-400/55 text-[10px] mt-1">{s.note}</div>}
+                </div>
+              </motion.div>
+            );
+          }
+
+          /* ── Regular trace step ── */
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isLatest ? 1 : 0.38 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-start gap-3 text-[11px] pl-1"
+            >
+              <span className="text-white/22 w-[44px] shrink-0 pt-px">[{s.ms}]</span>
+              <div className="flex-1 min-w-0">
+                <span className="text-white/62">{s.text}</span>
+                {isLatest && s.note && (
+                  <div className="text-white/28 text-[10px] mt-0.5">{s.note}</div>
+                )}
+              </div>
+              <span className="text-white/20 text-[10px] pt-px shrink-0">✓</span>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* FOOTER */}
+      <div className={`border-t border-white/[0.07] px-5 py-2.5 flex justify-between text-[10px] transition-opacity duration-500 ${
+        visible >= total ? "opacity-100" : "opacity-0"
+      }`}>
+        <span className="text-white/30">Enforcement latency: 5ms · Zero violations</span>
+        <span className="text-emerald-400/65">Governed ✓</span>
+      </div>
+
+    </div>
+  );
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CATEGORY DECLARATION
+   Confident category creation — no comparisons, no NOT/IS.
+   Defines what the category IS through three pillars.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const PILLARS = [
+  {
+    label:  "Infrastructure, not software",
+    detail: "No customer UI. No system replacement. Sits beneath the application layer — a governed layer between signals and execution."
+  },
+  {
+    label:  "Decisions, not triggers",
+    detail: "Context, risk, compliance, and channel — evaluated before any action fires. Explainable outcomes, not rule-based triggers."
+  },
+  {
+    label:  "Compliance as a gate, not a report",
+    detail: "Violations blocked before execution. Not flagged after. Regulatory enforcement at the infrastructure level."
+  },
+];
+
+function CategoryDeclaration() {
+  const [active, setActive] = useState(null);
+
+  return (
+    <div>
+
+      {/* Main declaration panel */}
+      <div className="relative rounded-2xl overflow-hidden border border-blue-400/[0.15] mb-5">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.12),transparent_58%)]" />
+
+        <div className="relative px-10 pt-14 pb-12 grid md:grid-cols-[1fr_280px] gap-14 items-center">
+
+          {/* Left: declaration */}
+          <div>
+            <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A NEW CATEGORY</div>
+            <h2 className="text-[48px] font-semibold leading-[1.06] mb-6">
+              Customer Decision<br />Infrastructure
+            </h2>
+            <p className="text-white/48 leading-relaxed max-w-md text-[15px]">
+              A new layer in the financial technology stack — between systems of record and channels of execution.
+              Not a replacement of any existing system. The governed intelligence layer between them.
+            </p>
+
+            {/* NOT pills */}
+            <div className="mt-8 flex flex-wrap gap-2">
+              {["Not a CRM", "Not a CPaaS", "Not a business rule engine"].map((t, i) => (
+                <span key={i} className="text-[11px] px-3 py-1.5 rounded-full border border-white/[0.10] text-white/38">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: category comparison matrix */}
+          <div>
+            <div className="text-[9px] text-white/30 tracking-[0.2em] mb-3">HOW CDI DIFFERS</div>
+            <div className="rounded-xl border border-white/[0.08] bg-white/[0.015] overflow-hidden">
+              {/* Header row */}
+              <div className="grid px-4 pt-3 pb-2 border-b border-white/[0.06]"
+                style={{gridTemplateColumns:"1fr repeat(4, 30px)", gap:"0 4px"}}>
+                <div />
+                {["CRM","CPaaS","BRE","CDI"].map((h, i) => (
+                  <div key={h} className="text-center text-[8px] tracking-widest font-medium"
+                    style={{color: i === 3 ? "rgba(96,165,250,0.75)" : "rgba(255,255,255,0.25)"}}>
+                    {h}
+                  </div>
+                ))}
+              </div>
+              {/* Capability rows */}
+              {[
+                { cap:"Contact management",    v:[1,0,0,1] },
+                { cap:"Channel delivery",       v:[0,1,0,1] },
+                { cap:"Rule evaluation",        v:[0,0,1,1] },
+                { cap:"Pre-exec compliance",    v:[0,0,0,1] },
+                { cap:"Decision audit trail",   v:[0,0,0,1] },
+                { cap:"Regulatory enforcement", v:[0,0,0,1] },
+              ].map((row, ri) => (
+                <div key={ri}
+                  className="grid px-4 py-2.5 border-b border-white/[0.04] last:border-0 transition-colors duration-200 hover:bg-white/[0.025]"
+                  style={{gridTemplateColumns:"1fr repeat(4, 30px)", gap:"0 4px"}}>
+                  <div className="text-[10px] text-white/38 leading-tight self-center">{row.cap}</div>
+                  {row.v.map((val, ci) => (
+                    <div key={ci} className="flex items-center justify-center text-[11px] font-medium"
+                      style={{
+                        color: ci === 3
+                          ? (val ? "rgba(96,165,250,0.85)" : "rgba(255,255,255,0.18)")
+                          : (val ? "rgba(255,255,255,0.52)" : "rgba(255,255,255,0.13)"),
+                      }}>
+                      {val ? "✓" : "—"}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div className="mt-2 text-[9px] text-white/22 px-0.5">
+              CDI is the only layer that governs all six.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Three pillars */}
+      <div className="grid md:grid-cols-3 gap-4">
+        {PILLARS.map((p, i) => (
+          <div
+            key={i}
+            onMouseEnter={() => setActive(i)}
+            onMouseLeave={() => setActive(null)}
+            className="p-6 rounded-xl border cursor-default transition-all duration-300"
+            style={{
+              borderColor: active === i ? "rgba(96,165,250,0.28)" : "rgba(255,255,255,0.07)",
+              background:  active === i ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.02)",
+              boxShadow:   active === i ? "0 0 28px rgba(59,130,246,0.09)" : "none",
+            }}
+          >
+            <div className="w-6 h-[1px] mb-4 transition-colors duration-300"
+              style={{background: active === i ? "rgba(96,165,250,0.6)" : "rgba(255,255,255,0.15)"}} />
+            <div className="text-[13px] font-medium mb-3 transition-colors duration-300"
+              style={{color: active === i ? "white" : "rgba(255,255,255,0.72)"}}>
+              {p.label}
+            </div>
+            <div className="text-xs leading-relaxed transition-colors duration-300"
+              style={{color: active === i ? "rgba(255,255,255,0.52)" : "rgba(255,255,255,0.35)"}}>
+              {p.detail}
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  );
+}
+
+/* ━━━ BELIEFS — auto-cycle, hover freezes ━━━ */
+const BELIEFS = [
+  {
+    text: "Decisions should be computed, not triggered.",
+    sub:  "Rule-based triggers produce inconsistent, unauditable outcomes. Computed decisions produce explainable, governed ones — every time.",
+  },
+  {
+    text: "Compliance belongs inside execution, not beside it.",
+    sub:  "Post-execution compliance checks are reports of what went wrong. Pre-execution compliance gates are what prevent it.",
+  },
+  {
+    text: "Every customer interaction should be intentional.",
+    sub:  "Accidental outreach — wrong channel, wrong time, no consent — isn't just ineffective. In a regulated environment, it's a liability event.",
+  },
+  {
+    text: "Execution without governance is liability.",
+    sub:  "When systems fire without a decision layer between them, every ungoverned outcome is a regulatory exposure waiting to be discovered.",
+  },
+];
+
+function Beliefs() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const i = setInterval(() => setActive(a => (a + 1) % BELIEFS.length), 3000);
+    return () => clearInterval(i);
+  }, [paused]);
+
+  return (
+    <div className="divide-y divide-white/[0.06]">
+      {BELIEFS.map((b, i) => (
+        <div
+          key={i}
+          onMouseEnter={() => { setActive(i); setPaused(true); }}
+          onMouseLeave={() => setPaused(false)}
+          className={`py-9 flex items-start gap-10 cursor-default select-none transition-all duration-400 ${
+            i === active ? "opacity-100" : "opacity-38"
+          }`}
+        >
+          <div className={`text-[11px] font-mono pt-2.5 w-7 shrink-0 transition-colors duration-300 ${
+            i === active ? "text-blue-400" : "text-white/20"
+          }`}>
+            {String(i + 1).padStart(2, "0")}
+          </div>
+          <div className="flex-1 border-l-2 pl-7 transition-all duration-400"
+            style={{borderColor: i === active ? "rgba(96,165,250,0.50)" : "transparent"}}>
+            <div
+              className="text-[26px] leading-snug mb-0 transition-all duration-400"
+              style={{
+                color: i === active ? "white" : "rgba(255,255,255,0.62)",
+                textShadow: i === active ? "0 0 40px rgba(59,130,246,0.25)" : "none",
+              }}
+            >
+              {b.text}
+            </div>
+            <div className="overflow-hidden transition-all duration-500"
+              style={{
+                maxHeight: i === active ? "80px" : "0px",
+                opacity:   i === active ? 1 : 0,
+                marginTop: i === active ? "10px" : "0px",
+              }}>
+              <p className="text-sm text-white/40 leading-relaxed">{b.sub}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ━━━ FOUNDING CRED — interactive signal cards ━━━ */
+const CREDS = [
+  {
+    label: "DOMAIN FOCUS",
+    val:   "Collections · Lending · Servicing",
+    ctx:   "Built across all three verticals — not specialised in one. The same decision layer governs each, with vertical-specific compliance logic built in.",
+  },
+  {
+    label: "INDUSTRY",
+    val:   "NBFCs · Banks · Fintechs — Indian BFSI",
+    ctx:   "Designed for the regulatory and operational reality of Indian financial services. Not a global tool adapted for India after the fact.",
+  },
+  {
+    label: "PROBLEM ORIGIN",
+    val:   "Operator-observed — not consultant-assumed",
+    ctx:   "The gap was identified inside live operations, not from analyst reports or market research. ShieldX names a problem that existed long before it had a name.",
+  },
+  {
+    label: "BUILT FOR",
+    val:   "High-volume, regulated decision workflows",
+    ctx:   "Engineered for thousands of decisions per minute — each one compliant, explainable, and auditable without performance trade-offs.",
+  },
+];
+
+function FoundingCred() {
+  const [hovered, setHovered] = useState(null);
+  return (
+    <div className="space-y-2">
+      {CREDS.map((item, i) => (
+        <div
+          key={i}
+          onMouseEnter={() => setHovered(i)}
+          onMouseLeave={() => setHovered(null)}
+          className="rounded-xl px-5 py-3.5 border cursor-default transition-all duration-300"
+          style={{
+            borderColor: hovered === i ? "rgba(96,165,250,0.28)" : "rgba(255,255,255,0.07)",
+            background:  hovered === i ? "rgba(59,130,246,0.045)" : "rgba(255,255,255,0.02)",
+            boxShadow:   hovered === i ? "0 0 20px rgba(59,130,246,0.07)" : "none",
+          }}
+        >
+          <div className="text-[9px] tracking-widest mb-1 transition-colors duration-300"
+            style={{color: hovered === i ? "rgba(96,165,250,0.55)" : "rgba(255,255,255,0.28)"}}>
+            {item.label}
+          </div>
+          <div className="text-[13px] transition-colors duration-300"
+            style={{color: hovered === i ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.62)"}}>
+            {item.val}
+          </div>
+          <div className="overflow-hidden transition-all duration-400"
+            style={{
+              maxHeight: hovered === i ? "72px" : "0px",
+              opacity:   hovered === i ? 1 : 0,
+              marginTop: hovered === i ? "8px" : "0px",
+            }}>
+            <p className="text-[11px] text-white/42 leading-relaxed">{item.ctx}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ━━━ BFSI CARDS — auto-cycle, hover freezes, links to sub-pages ━━━ */
+const BFSI = [
+  {
+    area: "Collections",
+    to:   "/collections",
+    line: "Every missed payment is a decision point.",
+    sub:  "Who to contact. When. Which channel. What offer. ShieldX governs all of it.",
+  },
+  {
+    area: "Lending",
+    to:   "/lending",
+    line: "Every application is a risk computation.",
+    sub:  "Eligibility, risk, compliance — evaluated at the moment of decision, not after.",
+  },
+  {
+    area: "Servicing",
+    to:   "/servicing",
+    line: "Every request is a decision event.",
+    sub:  "Intent classified. Policy validated. Resolution executed. Every time.",
+  },
+];
+
+function BFSICards() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const i = setInterval(() => setActive(a => (a + 1) % BFSI.length), 2800);
+    return () => clearInterval(i);
+  }, [paused]);
+
+  return (
+    <div className="grid md:grid-cols-3 gap-4">
+      {BFSI.map((item, i) => (
+        <Link
+          key={i}
+          to={item.to}
+          onMouseEnter={() => { setActive(i); setPaused(true); }}
+          onMouseLeave={() => setPaused(false)}
+          className={`block p-8 rounded-xl border select-none transition-all duration-400 no-underline ${
+            i === active
+              ? "border-blue-400/28 bg-blue-500/[0.05] shadow-[0_0_35px_rgba(59,130,246,0.1)] opacity-100"
+              : "border-white/[0.07] bg-white/[0.015] opacity-45"
+          }`}
+        >
+          <div className={`text-[10px] tracking-[0.2em] mb-4 transition-colors duration-300 ${
+            i === active ? "text-blue-400/70" : "text-white/28"
+          }`}>{item.area.toUpperCase()}</div>
+
+          <div className="text-white text-[16px] leading-snug mb-3">{item.line}</div>
+
+          <div className={`text-sm leading-relaxed transition-colors duration-300 ${
+            i === active ? "text-white/45" : "text-white/22"
+          }`}>{item.sub}</div>
+
+          <div className={`mt-5 text-xs transition-colors duration-300 ${
+            i === active ? "text-blue-400/60" : "text-white/18"
+          }`}>See use cases →</div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+/* ━━━ PAGE ━━━ */
+export default function Company() {
+  return (
+    <Layout>
+
+      {/* ═══ HERO ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pt-[120px] pb-24 grid md:grid-cols-2 gap-16 items-center">
+
+        <div>
+          <Motion>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-9"
+              style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
+              COMPANY
+            </div>
+          </Motion>
+
+          <Motion delay={0.08}>
+            <h1 className="text-[50px] leading-[1.07] font-semibold mb-6">
+              Financial institutions have a decision problem.
+            </h1>
+          </Motion>
+
+          <Motion delay={0.16}>
+            <p className="text-white/50 text-[17px] leading-relaxed">
+              Signals flow from every system. What happens between signal and action
+              is uncontrolled, ungoverned, and unauditable.
+              ShieldX closes that gap.
+            </p>
+          </Motion>
+        </div>
+
+        <Motion delay={0.2}>
+          <HeroVisual />
+        </Motion>
+
+      </section>
+
+      {/* ═══ FOUNDING INSIGHT — image LEFT, text RIGHT (inverted from hero) ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pb-28 grid md:grid-cols-2 gap-16 items-start">
+
+        {/* Compliance enforcement — LEFT on desktop, below text on mobile */}
+        <div className="order-last md:order-first">
+          <Motion delay={0.15}>
+            <ComplianceCatch />
+          </Motion>
+        </div>
+
+        {/* Text — RIGHT on desktop, first on mobile */}
+        <div className="order-first md:order-last">
+          <Motion>
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
+              <span className="text-[11px] text-white/55 tracking-[0.2em]">THE FOUNDING INSIGHT</span>
+            </div>
+            <h2 className="text-[36px] font-semibold leading-tight mb-5">
+              Three systems.<br />Zero decision layer.
+            </h2>
+            <p className="text-white/50 leading-relaxed mb-4">
+              Every financial institution has systems of record, systems of engagement,
+              and systems of execution. Between them — nothing governing decisions.
+            </p>
+            <p className="text-white font-medium">
+              That's the gap ShieldX was built to close.
+            </p>
+          </Motion>
+        </div>
+
+      </section>
+
+      {/* ═══ CATEGORY DECLARATION ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pb-28">
+        <Motion>
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">CATEGORY</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+        </Motion>
+        <Motion delay={0.08}>
+          <CategoryDeclaration />
+        </Motion>
+      </section>
+
+      {/* ═══ BELIEFS ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pb-28">
+        <Motion>
+          <div className="flex items-center gap-3 mb-12">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">WHAT WE BELIEVE</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+        </Motion>
+        <Beliefs />
+      </section>
+
+      {/* ═══ INDUSTRY ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pb-28">
+        <Motion>
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
+            <span className="text-[11px] text-white/55 tracking-[0.2em]">INDUSTRY</span>
+          </div>
+          <h2 className="text-[34px] font-semibold mb-10">Built for BFSI.</h2>
+        </Motion>
+        <BFSICards />
+      </section>
+
+      {/* ═══ FOUNDER ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pb-28">
+
+        <Motion>
+          <div className="flex items-center gap-2.5 mb-10">
+            <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
+            <span className="text-[11px] text-white/55 tracking-[0.2em]">FOUNDING TEAM</span>
+          </div>
+        </Motion>
+
+        <Motion delay={0.08}>
+          <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start max-w-4xl">
+
+            {/* Quote + bio */}
+            <div>
+              <div className="text-[20px] text-white/65 leading-relaxed mb-8 border-l-2 border-blue-400/40 pl-7 italic">
+                "Financial institutions don't have a technology problem. They have a decision
+                governance problem. Every system generates signals — but nothing governs what
+                happens between that signal and the action it triggers. ShieldX is that layer."
+              </div>
+              <div className="pl-7">
+                <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
+                <div className="text-white/38 text-sm mt-0.5">Founder & CEO · ShieldX</div>
+                <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
+                  Observed the gap firsthand — across collections, lending, and servicing
+                  at scale in Indian BFSI. Built the tool that didn't exist.
+                </p>
+              </div>
+            </div>
+
+            {/* Credibility signals — interactive */}
+            <FoundingCred />
+
+          </div>
+        </Motion>
+
+      </section>
+
+      {/* ═══ CTA — inline, no oversized box ═══ */}
+      <section className="max-w-6xl mx-auto px-8 pb-32">
+        <Motion>
+          <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
+            <div>
+              <div className="text-xl font-semibold mb-1">See the decision layer in action.</div>
+              <div className="text-white/38 text-sm">
+                Collections · Lending · Servicing — governed by one control plane.
+              </div>
+            </div>
+            <Link
+              to="/demo"
+              className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0"
+            >
+              Request a walkthrough
+            </Link>
+          </div>
+        </Motion>
+      </section>
+
+    </Layout>
+  );
+}
