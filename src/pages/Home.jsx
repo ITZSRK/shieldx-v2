@@ -359,7 +359,7 @@ export default function Home() {
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 24px 80px rgba(59,130,246,0.22), 0 4px 20px rgba(0,0,0,0.6)",
                 background: "rgba(0,0,0,0.4)",
               }}>
-              <img src={dashboard} className="w-full opacity-95" />
+              <img src={dashboard} className="w-full opacity-95" loading="lazy" decoding="async" />
             </div>
           </div>
         </Motion>
