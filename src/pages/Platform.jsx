@@ -221,6 +221,7 @@ function DecisionDebugger() {
 /* ─── ENGINE ARCHITECTURE ────────────────────────────── */
 function EngineArchitecture() {
   const [active, setActive] = useState(4);
+  const [paused, setPaused] = useState(false);
   const stages = [
     { num:"01", name:"Signal Ingestion",    badge:"Input",       color:"blue",  desc:"Receives structured event triggers from CBS, LOS, CRM, and campaign systems via REST API and webhooks. Validates schema and deduplicates before passing downstream." },
     { num:"02", name:"Normalisation",       badge:"Transform",   color:"blue",  desc:"Parses raw payloads into a canonical decision context object — customer ID, product type, event classification, timestamps, and metadata unified into a single structure." },
@@ -232,9 +233,10 @@ function EngineArchitecture() {
     { num:"08", name:"Audit Writer",        badge:"Immutable",   color:"blue",  desc:"Writes an immutable audit record per interaction: event type, decision payload, compliance check results, routing outcome, execution status, and full reason codes. Exportable on demand." },
   ];
   useEffect(() => {
-    const i = setInterval(() => setActive(p => (p+1) % stages.length), 2400);
+    if (paused) return;
+    const i = setInterval(() => setActive(p => (p+1) % stages.length), 3500);
     return () => clearInterval(i);
-  }, []);
+  }, [paused]);
 
   const s = stages[active];
   const isGreen = s.highlight;
@@ -258,7 +260,10 @@ function EngineArchitecture() {
         {/* stage list */}
         <div className="grid grid-cols-2 gap-1.5">
           {stages.map((l,i) => (
-            <div key={i} onClick={() => setActive(i)}
+            <div key={i}
+              onClick={() => { setActive(i); setPaused(true); }}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
               className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200"
               style={{
                 background: i===active ? (l.highlight ? "rgba(74,222,128,.06)" : "rgba(96,165,250,.06)") : "rgba(255,255,255,.015)",
@@ -291,6 +296,8 @@ function EngineArchitecture() {
           <motion.div key={active}
             initial={{opacity:0,x:12}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-12}}
             transition={{duration:.22}}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
             className="rounded-xl p-6 border"
             style={{
               borderColor: isGreen ? "rgba(74,222,128,.25)" : "rgba(96,165,250,.2)",
@@ -327,6 +334,7 @@ function EngineArchitecture() {
 /* ─── COMPLIANCE ─────────────────────────────────────── */
 function ComplianceSection() {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
   const [hPill,  setHPill]  = useState(null);
 
   const checks = [
@@ -340,9 +348,10 @@ function ComplianceSection() {
   const pills = ["RBI Fair Practices Code","TRAI Guidelines","DPDPA 2025","Debt Recovery Frameworks","RBI KYC Master Direction"];
 
   useEffect(() => {
-    const i = setInterval(() => setActive(a => (a + 1) % checks.length), 1400);
+    if (paused) return;
+    const i = setInterval(() => setActive(a => (a + 1) % checks.length), 2800);
     return () => clearInterval(i);
-  }, []);
+  }, [paused]);
 
   return (
     <div>
@@ -386,7 +395,9 @@ function ComplianceSection() {
                 transform:   i === active ? "translateY(-4px)" : "none",
                 boxShadow:   i === active ? "0 8px 20px rgba(74,222,128,0.08)" : "none",
               }}
-              onClick={() => setActive(i)}
+              onClick={() => { setActive(i); setPaused(true); }}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
             >
               <div className="text-sm mb-1.5 transition-all duration-300"
                 style={{color: i <= active ? "#4ade80" : "rgba(255,255,255,0.15)"}}>
@@ -409,6 +420,8 @@ function ComplianceSection() {
           <motion.div key={active}
             initial={{opacity:0,y:5}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-5}}
             transition={{duration:.2}}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
             className="border rounded-xl px-6 py-4 flex items-center gap-5"
             style={{borderColor:"rgba(74,222,128,0.22)",background:"rgba(74,222,128,0.03)"}}
           >
@@ -463,7 +476,10 @@ function BeforeAfter() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">THE SHIFT</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4"><span className="text-white/52">Ungoverned decisions have a cost.</span><br />ShieldX eliminates it.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">
+          <span className="text-white/32">Ungoverned decisions have a cost.</span><br />
+          <span style={{textShadow:"0 0 32px rgba(52,211,153,0.55)"}}>ShieldX eliminates it.</span>
+        </h2>
         <p className="text-white/66 max-w-md mx-auto leading-relaxed text-sm">
           The same signals. The same channels. Completely different outcomes — when a decision layer sits between them.
         </p>
@@ -833,46 +849,62 @@ function ObservabilitySection() {
         </div>
       </div>
 
-      {/* Persona tiles — who uses observability and for what */}
-      <div className="grid md:grid-cols-3 gap-3 max-w-5xl mx-auto">
+      {/* Persona tiles */}
+      <div className="mt-4 mb-8 text-center max-w-5xl mx-auto">
+        <p className="text-[11px] text-white/38 tracking-[0.22em]">WHO USES THIS</p>
+      </div>
+      <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto">
         {[
           {
             role: "COMPLIANCE OFFICER",
-            action: "Regulatory review",
-            desc: "Every blocked decision with a reason code. Exception reports formatted for RBI and TRAI review — on demand, not scrambled.",
-            accent: "rgba(74,222,128,0.55)",
-            border: "rgba(74,222,128,0.14)",
-            bg: "rgba(74,222,128,0.025)",
+            action: "Regulatory review — on demand.",
+            desc: "Every blocked decision logged with a reason code. Exception reports formatted for RBI and TRAI review — ready when the regulator asks, not scrambled after the fact.",
+            accent: "#4ade80",
+            accentDim: "rgba(74,222,128,0.55)",
+            border: "rgba(74,222,128,0.18)",
+            borderHover: "rgba(74,222,128,0.38)",
+            bg: "rgba(74,222,128,0.03)",
+            bgHover: "rgba(74,222,128,0.06)",
+            glow: "rgba(74,222,128,0.10)",
           },
           {
             role: "OPERATIONS HEAD",
-            action: "Campaign performance",
+            action: "Campaign performance — in real time.",
             desc: "Channel-level compliance score, contact rate, and exception count per campaign. Spot what's drifting before it becomes a violation.",
-            accent: "rgba(96,165,250,0.55)",
-            border: "rgba(96,165,250,0.14)",
-            bg: "rgba(96,165,250,0.025)",
+            accent: "#93c5fd",
+            accentDim: "rgba(96,165,250,0.55)",
+            border: "rgba(96,165,250,0.18)",
+            borderHover: "rgba(96,165,250,0.38)",
+            bg: "rgba(96,165,250,0.03)",
+            bgHover: "rgba(96,165,250,0.06)",
+            glow: "rgba(96,165,250,0.10)",
           },
           {
             role: "CEO / BOARD",
-            action: "Governance health",
-            desc: "Platform-wide compliance score, SLA adherence, and interaction volume — the single number that tells you whether the decision layer is working.",
-            accent: "rgba(167,139,250,0.55)",
-            border: "rgba(167,139,250,0.14)",
-            bg: "rgba(167,139,250,0.025)",
+            action: "Governance health — one number.",
+            desc: "Platform-wide compliance score, SLA adherence, and interaction volume. The single view that tells leadership whether the decision layer is working.",
+            accent: "#c4b5fd",
+            accentDim: "rgba(167,139,250,0.55)",
+            border: "rgba(167,139,250,0.18)",
+            borderHover: "rgba(167,139,250,0.38)",
+            bg: "rgba(167,139,250,0.03)",
+            bgHover: "rgba(167,139,250,0.06)",
+            glow: "rgba(167,139,250,0.10)",
           },
         ].map((p, i) => (
           <div key={i}
             onMouseEnter={() => setHovered(i)}
             onMouseLeave={() => setHovered(null)}
-            className="rounded-xl p-5 border cursor-default transition-all duration-300"
+            className="rounded-2xl p-7 border cursor-default transition-all duration-300"
             style={{
-              borderColor: hovered===i ? p.border.replace("0.14","0.35") : p.border,
-              background:  hovered===i ? p.bg.replace("0.025","0.055") : p.bg,
+              borderColor: hovered===i ? p.borderHover : p.border,
+              background:  hovered===i ? p.bgHover : p.bg,
+              boxShadow:   hovered===i ? `0 0 40px ${p.glow}` : "none",
             }}
           >
-            <div className="text-[9px] tracking-[0.2em] mb-1 font-medium" style={{color:p.accent}}>{p.role}</div>
-            <div className="text-[13px] font-medium text-white/82 mb-2">{p.action}</div>
-            <div className="text-[12px] text-white/62 leading-relaxed">{p.desc}</div>
+            <div className="text-[10px] tracking-[0.22em] mb-4 font-medium" style={{color:p.accentDim}}>{p.role}</div>
+            <div className="text-[17px] font-semibold mb-3 leading-snug" style={{color:p.accent}}>{p.action}</div>
+            <div className="text-sm text-white/65 leading-relaxed">{p.desc}</div>
           </div>
         ))}
       </div>
@@ -925,14 +957,12 @@ export default function Platform() {
             PLATFORM
           </div>
           <h1 className="text-[32px] md:text-[52px] leading-[1.05] font-semibold mb-5">
-            The control plane your<br />
-            <span className="text-white/55">core banking stack</span><br />
-            was never built to include.
+            Signal in.<br />Governed decision out.
           </h1>
           <p className="text-white/68 leading-relaxed mb-8 max-w-md text-[15px]">
-            Signal in. Compliant, audited decision out.
-            ShieldX is that layer — evaluate, validate, route, execute, audit.
-            Every time. Under 30ms.
+            ShieldX is the decision layer between your systems of record
+            and every customer action — evaluate, validate, route, execute,
+            and audit. Before anything fires.
           </p>
           <div className="inline-flex items-center gap-0.5 p-1 rounded-lg border border-white/[0.08] bg-white/[0.05]">
             {["SIGNAL","DECISION","COMPLIANCE","EXECUTION","AUDIT"].map((s, i, arr) => (
@@ -968,7 +998,7 @@ export default function Platform() {
             </div>
             <h2 className="text-[36px] font-semibold">From signal to governed execution.</h2>
             <p className="text-white/62 max-w-md mx-auto mt-3 leading-relaxed text-sm">
-              One path. Every time. Scored, compliance-checked, routed, executed, and logged — in under 30 milliseconds.
+              One path. Every time. Scored, compliance-checked, routed, executed, and logged — in sequence, before execution.
             </p>
           </div>
           <DecisionDebugger />
