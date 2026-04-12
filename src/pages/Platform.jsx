@@ -89,6 +89,7 @@ function ControlPlaneSchematic() {
           style={{background:"rgba(59,130,246,0.04)", boxShadow:"0 0 24px rgba(59,130,246,0.12)"}}>
           <div className="border-b border-blue-400/[0.12] px-3 py-2 text-center">
             <span className="text-[10px] text-blue-300/65 tracking-[0.18em]">SHIELDX</span>
+            <div className="text-[8px] text-blue-300/35 tracking-widest mt-0.5">Decision · Compliance · Orchestration</div>
           </div>
           <div className="px-2.5 py-3 space-y-1">
             {PIPELINE_STAGES.map((p, i) => (
@@ -171,7 +172,7 @@ function DecisionDebugger() {
             className="flex items-start gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-colors duration-200"
             style={{ background: i===active ? "rgba(255,255,255,0.03)" : "transparent" }}
           >
-            <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0 transition-all duration-300" style={{
+            <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 transition-all duration-300 ${i===active ? "animate-pulse" : ""}`} style={{
               background: i===active ? (s.highlight ? "#4ade80" : "#60a5fa") : "rgba(255,255,255,0.14)",
               boxShadow: i===active ? `0 0 10px ${s.highlight ? "rgba(74,222,128,.8)" : "rgba(96,165,250,.8)"}` : "none",
             }} />
@@ -193,7 +194,9 @@ function DecisionDebugger() {
 
       <div className="border border-white/15 rounded-xl p-5 bg-black/50 font-mono text-xs">
         <div className="flex items-center justify-between mb-4">
-          <span className="text-white/65 text-xs font-sans font-medium not-italic">Live state</span>
+          <span className="text-white/65 text-xs font-sans font-medium not-italic">
+            Live decision state<span className="inline-block ml-1 animate-pulse" style={{color:"#4ade80"}}>▮</span>
+          </span>
           <span className="text-[10px] tracking-widest" style={{color:"#4ade80"}}>RUNNING</span>
         </div>
         <div className="space-y-[5px] text-white/45">
@@ -362,9 +365,12 @@ function ComplianceSection() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Compliance is not a layer.<br />It is the gatekeeper.</h2>
-        <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
-          No interaction executes unless it passes every regulatory check — in real time,
-          at infrastructure level, before anything reaches the customer.
+        <p className="text-[17px] md:text-[20px] font-medium text-white/90 max-w-xl mx-auto mb-3 leading-snug">
+          Every decision is blocked unless compliant.
+        </p>
+        <p className="text-white/55 max-w-lg mx-auto leading-relaxed text-sm">
+          Every regulatory check runs at infrastructure level, in real time,
+          before anything reaches the customer.
         </p>
       </div>
 
@@ -437,6 +443,11 @@ function ComplianceSection() {
         </AnimatePresence>
       </div>
 
+      {/* Proof line */}
+      <p className="text-center text-sm text-white/38 mb-8 mt-2">
+        Every blocked action is logged with a reason code — exportable for regulatory review on demand.
+      </p>
+
       {/* Regulation pills */}
       <div className="flex flex-wrap justify-center gap-2">
         {pills.map((p,i) => (
@@ -460,12 +471,12 @@ function ComplianceSection() {
 
 /* ─── BEFORE / AFTER ─────────────────────────────────── */
 function BeforeAfter() {
+  const [hovered, setHovered] = useState(null);
   const pairs = [
-    { without:"Independent vendor triggers — no shared decision logic",                  with_:"Single decision engine controls every channel trigger" },
-    { without:"Multiple vendors on same account — no real-time compliance check",        with_:"Every vendor trigger validated through one compliance layer before execution" },
-    { without:"Channel conflicts — same customer contacted simultaneously",               with_:"Unified routing — channel selected by logic, not availability" },
-    { without:"Violations discovered post-facto — never blocked",                        with_:"Violations blocked at infrastructure — before they fire" },
-    { without:"No audit trail — cannot prove compliance in any review",                  with_:"Immutable audit log per interaction — regulator-ready on demand" },
+    { without:"Independent vendor triggers",               with_:"Single decision engine" },
+    { without:"No compliance check before execution",      with_:"Compliance verified before every action" },
+    { without:"Channel conflict — same customer hit twice", with_:"Unified routing — one decision, one channel" },
+    { without:"No audit trail",                            with_:"Immutable audit on every interaction" },
   ];
 
   return (
@@ -488,8 +499,14 @@ function BeforeAfter() {
       <div className="max-w-5xl mx-auto grid grid-cols-[1fr_52px_1fr]">
 
         {/* Left — UNGOVERNED */}
-        <div className="rounded-2xl border border-red-500/[0.22] bg-red-500/[0.035] p-6"
-          style={{boxShadow:"0 0 60px rgba(239,68,68,0.11)"}}>
+        <div className="rounded-2xl border p-6 transition-all duration-400 cursor-default"
+          onMouseEnter={() => setHovered("left")}
+          onMouseLeave={() => setHovered(null)}
+          style={{
+            borderColor: hovered==="left" ? "rgba(239,68,68,0.40)" : "rgba(239,68,68,0.22)",
+            background:  hovered==="left" ? "rgba(239,68,68,0.07)"  : "rgba(239,68,68,0.035)",
+            boxShadow:   hovered==="left" ? "0 0 80px rgba(239,68,68,0.28)" : "0 0 60px rgba(239,68,68,0.11)",
+          }}>
           <div className="flex items-center gap-2.5 mb-6">
             <div className="w-6 h-6 rounded-full bg-red-500/15 border border-red-400/25 flex items-center justify-center flex-shrink-0">
               <span className="text-red-400 text-[10px] leading-none">✕</span>
@@ -520,8 +537,14 @@ function BeforeAfter() {
         </div>
 
         {/* Right — WITH SHIELDX */}
-        <div className="rounded-2xl border border-emerald-500/[0.30] bg-emerald-500/[0.05] p-6"
-          style={{boxShadow:"0 0 70px rgba(52,211,153,0.18)"}}>
+        <div className="rounded-2xl border p-6 transition-all duration-400 cursor-default"
+          onMouseEnter={() => setHovered("right")}
+          onMouseLeave={() => setHovered(null)}
+          style={{
+            borderColor: hovered==="right" ? "rgba(52,211,153,0.50)"  : "rgba(52,211,153,0.30)",
+            background:  hovered==="right" ? "rgba(52,211,153,0.09)"  : "rgba(52,211,153,0.05)",
+            boxShadow:   hovered==="right" ? "0 0 90px rgba(52,211,153,0.35)" : "0 0 70px rgba(52,211,153,0.18)",
+          }}>
           <div className="flex items-center gap-2.5 mb-6">
             <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/35 flex items-center justify-center flex-shrink-0">
               <span className="text-emerald-400 text-[10px] leading-none">✓</span>
@@ -576,10 +599,10 @@ function IntegrationSection() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">HOW IT CONNECTS</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Three connection points.<br />Zero core banking changes.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Plug in.<br />Don't rip out.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
-          Raw CBS, LOS, and CRM events go in. Governed, compliant, routed decisions come out.
-          No rip-and-replace — ShieldX plugs into what you already have.
+          CBS, LOS, and CRM events go in. Governed, compliant decisions come out.
+          No core banking changes. ShieldX sits between what you already have and what you fire.
         </p>
       </div>
 
@@ -737,8 +760,9 @@ function ObservabilitySection() {
         </div>
         <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Every decision visible.<br />Every action explainable.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
-          Banks need to explain every outreach to a regulator on demand.
-          ShieldX surfaces compliance health, campaign performance, and decision audit trails in one place.
+          Not campaign metrics — full decision traceability. Every interaction logged at the decision
+          level, not the channel level. Compliance health, audit trails, and exceptions in one place —
+          regulator-ready on demand.
         </p>
       </div>
 
@@ -950,7 +974,7 @@ function CTASection() {
 export default function Platform() {
   return (
     <Layout>
-      <section className="max-w-6xl mx-auto px-8 pt-[100px] pb-24 grid md:grid-cols-2 gap-16 items-center">
+      <section className="max-w-6xl mx-auto px-8 pt-[100px] pb-24 grid md:grid-cols-[3fr_2fr] gap-12 items-center">
         <Motion>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
@@ -959,22 +983,21 @@ export default function Platform() {
           <h1 className="text-[32px] md:text-[52px] leading-[1.05] font-semibold mb-5">
             Signal in.<br />Governed decision out.
           </h1>
-          <p className="text-white/68 leading-relaxed mb-8 max-w-md text-[15px]">
-            ShieldX is the decision layer between your systems of record
-            and every customer action — evaluate, validate, route, execute,
-            and audit. Before anything fires.
+          <p className="text-white/68 leading-relaxed mb-8 max-w-xl text-[15px]">
+            Sits between your core systems and customer channels — controlling
+            how every decision is computed, validated, and executed before anything fires.
           </p>
-          <div className="inline-flex items-center gap-0.5 p-1 rounded-lg border border-white/[0.08] bg-white/[0.05]">
+          <div className="inline-flex items-center gap-1 p-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05]">
             {["SIGNAL","DECISION","COMPLIANCE","EXECUTION","AUDIT"].map((s, i, arr) => (
-              <span key={s} className="flex items-center gap-0.5">
-                <span className="text-[10px] px-2.5 py-1 rounded-md font-medium"
+              <span key={s} className="flex items-center gap-1">
+                <span className="text-[11px] px-3 py-1.5 rounded-md font-medium tracking-wide"
                   style={{
-                    color:       s==="COMPLIANCE" ? "rgba(74,222,128,0.9)"  : "rgba(255,255,255,0.52)",
-                    background:  s==="COMPLIANCE" ? "rgba(74,222,128,0.08)" : "transparent",
+                    color:       s==="COMPLIANCE" ? "rgba(74,222,128,1.0)"  : "rgba(255,255,255,0.65)",
+                    background:  s==="COMPLIANCE" ? "rgba(74,222,128,0.10)" : "transparent",
                   }}>
                   {s}
                 </span>
-                {i < arr.length - 1 && <span className="text-white/15 text-[10px] px-0.5">›</span>}
+                {i < arr.length - 1 && <span className="text-white/20 text-[11px]">›</span>}
               </span>
             ))}
           </div>
