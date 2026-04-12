@@ -486,6 +486,40 @@ export default function Solutions() {
         </div>
       </section>
 
+      {/* CTA */}
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-4xl mx-auto px-8 py-20 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="text-[11px] text-white/55 tracking-[0.22em] mb-5">NEXT STEP</div>
+          <h2 className="text-[34px] font-semibold mb-4">
+            Walk through all three — in one session.
+          </h2>
+          <p className="text-white/62 mb-10 max-w-md mx-auto leading-relaxed">
+            Collections, lending, and servicing — each a distinct workflow,
+            all covered in a single 20-minute walkthrough.
+          </p>
+          <Link
+            to="/demo"
+            className="inline-block bg-white text-black px-9 py-3 rounded-lg text-sm font-semibold hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
+          >
+            Request a walkthrough
+          </Link>
+          <div className="mt-6 text-[11px] text-white/28 flex items-center justify-center gap-3">
+            <span>No commitment</span>
+            <span className="text-white/15">·</span>
+            <span>India-deployed</span>
+            <span className="text-white/15">·</span>
+            <span>DPDPA 2025 ready</span>
+          </div>
+        </motion.div>
+      </section>
+      </div>
+
     </Layout>
   );
 }

@@ -889,10 +889,10 @@ function CTASection() {
         boxShadow:"0 0 80px rgba(96,165,250,.07)",
       }}
     >
-      <h2 className="text-[32px] font-semibold mb-4">Bring control to every customer interaction.</h2>
+      <h2 className="text-[32px] font-semibold mb-4">See it run a live pipeline.</h2>
       <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
-        See ShieldX run a live decision pipeline — from signal ingestion
-        to compliant execution — in 20 minutes.
+        Signal to compliant execution — every stage, live, in 20 minutes.
+        Your use case: Collections, Lending, or Servicing.
       </p>
       <Link to="/demo"
         className="inline-block px-8 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
@@ -957,7 +957,7 @@ export default function Platform() {
       </section>
       </div>
 
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion>
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-5">
@@ -980,7 +980,7 @@ export default function Platform() {
       </section>
       </div>
 
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion><ComplianceSection /></Motion>
       </section>
 
@@ -990,7 +990,7 @@ export default function Platform() {
       </section>
       </div>
 
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion><ObservabilitySection /></Motion>
       </section>
 

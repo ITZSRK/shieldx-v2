@@ -716,7 +716,7 @@ export default function Company() {
       </div>
 
       {/* ═══ BELIEFS ═══ */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion>
           <div className="flex items-center gap-3 mb-12">
             <div className="h-px w-6 bg-white/20" />
@@ -742,7 +742,7 @@ export default function Company() {
       </div>
 
       {/* ═══ FOUNDER ═══ */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
 
         <Motion>
           <div className="flex items-center gap-2.5 mb-10">
@@ -784,9 +784,9 @@ export default function Company() {
         <Motion>
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
-              <div className="text-xl font-semibold mb-1">See the decision layer in action.</div>
+              <div className="text-xl font-semibold mb-1">See what ShieldX closes.</div>
               <div className="text-white/58 text-sm">
-                Collections · Lending · Servicing — governed by one control plane.
+                Collections · Lending · Servicing — one decision layer, 20 minutes.
               </div>
             </div>
             <Link
