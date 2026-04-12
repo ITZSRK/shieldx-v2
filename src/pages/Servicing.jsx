@@ -272,7 +272,7 @@ export default function Servicing() {
             <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">DECISION WORKFLOW</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">How ShieldX governs every servicing interaction.</h2>
+          <h2 className="text-[34px] font-semibold mb-10">How every servicing interaction runs through ShieldX.</h2>
         </Motion>
         <Motion delay={0.08}>
           <WorkflowSteps />
@@ -288,7 +288,7 @@ export default function Servicing() {
             <span className="text-[11px] text-white/55 tracking-[0.2em]">COMPLIANCE ENFORCEMENT</span>
           </div>
           <h2 className="text-[34px] font-semibold mb-3">Built for the regulatory reality of servicing.</h2>
-          <p className="text-white/42 mb-10 max-w-xl">Every resolution path is governed by applicable regulations, statutory timelines, and institutional policy — enforced automatically, not manually managed.</p>
+          <p className="text-white/42 mb-10 max-w-xl">Every resolution path is enforced against applicable regulations, statutory timelines, and institutional policy — automatically, not manually managed.</p>
         </Motion>
         <div className="grid md:grid-cols-2 gap-3">
           {COMP.map((c, i) => (
@@ -318,7 +318,7 @@ export default function Servicing() {
               <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">THE SHIFT</span>
             </div>
-            <h2 className="text-[34px] font-semibold">What governed servicing looks like.</h2>
+            <h2 className="text-[34px] font-semibold">Compliant servicing. In practice.</h2>
           </div>
         </Motion>
         <Motion delay={0.06}>
@@ -419,7 +419,7 @@ export default function Servicing() {
         <Motion>
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
-              <div className="text-xl font-semibold mb-1">See servicing governed in action.</div>
+              <div className="text-xl font-semibold mb-1">See a live servicing interaction.</div>
               <div className="text-white/38 text-sm">Walk through a live intent classification and resolution pipeline — end to end.</div>
             </div>
             <Link to="/demo" className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0">

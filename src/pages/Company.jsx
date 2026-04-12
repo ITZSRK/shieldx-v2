@@ -333,11 +333,11 @@ function CategoryDeclaration() {
           <div>
             <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A NEW CATEGORY</div>
             <h2 className="text-[48px] font-semibold leading-[1.06] mb-6">
-              Customer Decision<br />Infrastructure
+              Customer Decisioning<br />Infrastructure
             </h2>
             <p className="text-white/48 leading-relaxed max-w-md text-[15px]">
               A new layer in the financial technology stack — between systems of record and channels of execution.
-              Not a replacement of any existing system. The governed intelligence layer between them.
+              Not a replacement of any existing system. The decisioning layer between them.
             </p>
 
             {/* NOT pills */}
@@ -392,7 +392,7 @@ function CategoryDeclaration() {
               ))}
             </div>
             <div className="mt-2 text-[9px] text-white/22 px-0.5">
-              CDI is the only layer that governs all six.
+              CDI is the only layer that covers all six.
             </div>
           </div>
 

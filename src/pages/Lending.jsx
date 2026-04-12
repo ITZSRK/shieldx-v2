@@ -246,7 +246,7 @@ export default function Lending() {
           <Motion delay={0.14}>
             <p className="text-white/50 text-[17px] leading-relaxed mb-8">
               ShieldX runs every application through eligibility, bureau, risk, and compliance
-              checks — in sequence, at speed — and delivers a governed decision with a full audit trail.
+              checks — in sequence, at speed — and delivers a compliant, audited outcome every time.
             </p>
           </Motion>
 
@@ -280,7 +280,7 @@ export default function Lending() {
             <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">DECISION WORKFLOW</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">How ShieldX governs every lending decision.</h2>
+          <h2 className="text-[34px] font-semibold mb-10">How every lending decision runs through ShieldX.</h2>
         </Motion>
         <Motion delay={0.08}>
           <WorkflowSteps />
@@ -326,7 +326,7 @@ export default function Lending() {
               <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">THE SHIFT</span>
             </div>
-            <h2 className="text-[34px] font-semibold">What governed lending looks like.</h2>
+            <h2 className="text-[34px] font-semibold">Compliant lending. In practice.</h2>
           </div>
         </Motion>
         <Motion delay={0.06}>
@@ -427,7 +427,7 @@ export default function Lending() {
         <Motion>
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
-              <div className="text-xl font-semibold mb-1">See lending governed in action.</div>
+              <div className="text-xl font-semibold mb-1">See a live lending decision.</div>
               <div className="text-white/38 text-sm">Walk through a live application decision pipeline — from submission to outcome.</div>
             </div>
             <Link to="/demo" className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0">

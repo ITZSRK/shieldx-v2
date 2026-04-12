@@ -262,7 +262,7 @@ export default function Collections() {
             <div className="w-0.5 h-4 rounded-full bg-amber-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">DECISION WORKFLOW</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">How ShieldX governs every collections decision.</h2>
+          <h2 className="text-[34px] font-semibold mb-10">How every collections decision runs through ShieldX.</h2>
         </Motion>
         <Motion delay={0.08}>
           <WorkflowSteps />
@@ -308,7 +308,7 @@ export default function Collections() {
               <div className="w-0.5 h-4 rounded-full bg-amber-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">THE SHIFT</span>
             </div>
-            <h2 className="text-[34px] font-semibold">What governed collections looks like.</h2>
+            <h2 className="text-[34px] font-semibold">Compliant collections. In practice.</h2>
           </div>
         </Motion>
         <Motion delay={0.06}>
@@ -383,7 +383,7 @@ export default function Collections() {
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { to: "/lending",   label: "Lending",   desc: "Govern eligibility, risk, and decision delivery across every loan application.",            hex: "#818cf8", rgb: "129,140,248" },
+              { to: "/lending",   label: "Lending",   desc: "Run every loan application through eligibility, bureau, risk, and compliance — before a single outcome is delivered.",      hex: "#818cf8", rgb: "129,140,248" },
               { to: "/servicing", label: "Servicing",  desc: "Classify intent, validate policy, and route every customer request to the right resolution.", hex: "#34d399", rgb: "52,211,153"  },
             ].map((l, i) => (
               <Link key={i} to={l.to}
@@ -409,7 +409,7 @@ export default function Collections() {
         <Motion>
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
-              <div className="text-xl font-semibold mb-1">See collections governed in action.</div>
+              <div className="text-xl font-semibold mb-1">See a live collections decision.</div>
               <div className="text-white/38 text-sm">Walk through a live collections decision pipeline — end to end.</div>
             </div>
             <Link to="/demo" className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0">

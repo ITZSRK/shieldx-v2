@@ -267,7 +267,7 @@ function GovernedDecisionView() {
       </div>
 
       <div className="border-t border-white/[0.07] px-5 py-2.5 flex justify-between text-[10px]">
-        <span className="text-white/22">Every step governed · Every step logged · Regulator-ready</span>
+        <span className="text-white/22">Every step logged · Every check recorded · Regulator-ready</span>
         <span style={{color:"rgba(74,222,128,0.6)"}}>Compliant ✓</span>
       </div>
     </div>
@@ -320,20 +320,22 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="px-8 pt-32 pb-20 text-center max-w-5xl mx-auto">
         <Motion>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
-            border border-blue-400/20 bg-blue-500/10 text-blue-300/80
-            text-[10px] tracking-[0.22em] mb-10">
-            CUSTOMER DECISION INFRASTRUCTURE
-          </div>
-
           <h1 className="text-[62px] leading-[1.04] font-semibold tracking-tight mb-6">
-            Between signal and execution,<br />
-            <span className="text-white/38">nothing governs the decision.</span>
+            Customer Decisioning<br />Infrastructure.
           </h1>
 
-          <p className="text-[19px] text-white/65 mb-10 font-medium">
-            ShieldX governs it.
+          <p className="text-[18px] text-white/52 mb-5 max-w-lg mx-auto leading-relaxed">
+            The layer between your systems of record and every outreach channel —
+            that evaluates, validates, routes, and audits every customer decision. Before execution.
           </p>
+
+          <div className="flex items-center justify-center gap-3 text-[12px] text-white/28 mb-10">
+            <span>Not a CRM</span>
+            <span className="text-white/15">·</span>
+            <span>Not a CPaaS</span>
+            <span className="text-white/15">·</span>
+            <span>Not a rule engine</span>
+          </div>
 
           <div className="flex justify-center gap-3 mb-14 flex-wrap">
             {[
@@ -378,7 +380,7 @@ export default function Home() {
           </div>
           <h2 className="text-[42px] font-semibold leading-tight">
             Banks have every system.<br />
-            <span className="text-white/40">Except the one that governs decisions.</span>
+            <span className="text-white/40">Except the one that sits between them.</span>
           </h2>
         </div>
 
@@ -406,22 +408,16 @@ export default function Home() {
         <div className="mb-16 text-center">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">WHAT SHIELDX IS</span>
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">HOW IT WORKS</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
           <h2 className="text-[40px] font-semibold mb-4">
-            Customer Decision Infrastructure.
+            Five stages. One auditable pipeline.
           </h2>
-          <p className="text-white/50 text-[17px] mb-5 max-w-lg mx-auto leading-relaxed">
-            The governed layer between your systems of record and every channel of execution.
+          <p className="text-white/45 text-[16px] mb-5 max-w-lg mx-auto leading-relaxed">
+            Every customer decision passes through all five stages — none skippable,
+            none silent, every one logged.
           </p>
-          <div className="flex items-center justify-center gap-3 flex-wrap text-[12px] text-white/28">
-            <span>Not a CRM</span>
-            <span className="text-white/15">·</span>
-            <span>Not a CPaaS</span>
-            <span className="text-white/15">·</span>
-            <span>Not a business rule engine</span>
-          </div>
         </div>
 
         <ArchitectureStack />
@@ -440,7 +436,7 @@ export default function Home() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-3">
-          Watch it govern a decision.
+          See a live decision run.
         </h2>
         <p className="text-white/40 mb-10">
           TRAI window. RBI FPC. DPDP consent. Every check enforced in sequence — before the channel fires.

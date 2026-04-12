@@ -448,7 +448,7 @@ function ComplianceSection() {
 /* ─── BEFORE / AFTER ─────────────────────────────────── */
 function BeforeAfter() {
   const pairs = [
-    { without:"Independent vendor triggers — no shared decision logic",                  with_:"Single decision engine governs every channel trigger" },
+    { without:"Independent vendor triggers — no shared decision logic",                  with_:"Single decision engine controls every channel trigger" },
     { without:"Multiple vendors on same account — no real-time compliance check",        with_:"Every vendor trigger validated through one compliance layer before execution" },
     { without:"Channel conflicts — same customer contacted simultaneously",               with_:"Unified routing — channel selected by logic, not availability" },
     { without:"Violations discovered post-facto — never blocked",                        with_:"Violations blocked at infrastructure — before they fire" },
@@ -891,7 +891,7 @@ function CTASection() {
     >
       <h2 className="text-[32px] font-semibold mb-4">Bring control to every customer interaction.</h2>
       <p className="text-white/50 mb-10 max-w-md mx-auto leading-relaxed">
-        See ShieldX govern a live decision pipeline — from signal ingestion
+        See ShieldX run a live decision pipeline — from signal ingestion
         to compliant execution — in 20 minutes.
       </p>
       <Link to="/demo"
@@ -907,7 +907,7 @@ function CTASection() {
         <span className="text-white/15">·</span>
         <Link to="/servicing"   className="hover:text-white/60 transition-colors">Servicing</Link>
         <span className="text-white/15">·</span>
-        <span className="text-white/20">All governed by one decision layer</span>
+        <span className="text-white/20">All controlled by one decision layer</span>
       </div>
     </div>
   );
@@ -929,7 +929,7 @@ export default function Platform() {
             was never built to include.
           </h1>
           <p className="text-white/50 leading-relaxed mb-8 max-w-md text-[15px]">
-            Between signal and execution, nothing governs the decision.
+            Signal in. Compliant, audited decision out.
             ShieldX is that layer — evaluate, validate, route, execute, audit.
             Every time. Under 30ms.
           </p>
