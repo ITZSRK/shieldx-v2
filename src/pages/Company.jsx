@@ -133,7 +133,7 @@ function HeroVisual() {
         <div className="flex items-baseline gap-2 mb-1">
           <span className="text-white/70 text-[13px]">{d.customer}</span>
           <span className="text-white/20">·</span>
-          <span className="text-white/40 text-[11px] font-mono">{d.event}</span>
+          <span className="text-white/62 text-[11px] font-mono">{d.event}</span>
         </div>
         <div className="text-white/28 text-[10px]">{d.context}</div>
       </div>
@@ -146,7 +146,7 @@ function HeroVisual() {
             <div className="flex items-center gap-2">
               <div className="w-[5px] h-[5px] rounded-full flex-shrink-0 transition-colors duration-300"
                 style={{background: c.result === "PASS" ? "#34d399" : "#ef4444"}} />
-              <span className="text-white/50 text-[11px]">{c.rule}</span>
+              <span className="text-white/68 text-[11px]">{c.rule}</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-white/20 text-[10px] font-mono">{c.note}</span>
@@ -160,7 +160,7 @@ function HeroVisual() {
       </div>
 
       {/* VERDICT */}
-      <div className="border-t border-white/[0.07] px-4 py-3 flex items-center justify-between transition-opacity duration-400"
+      <div className="border-t border-white/[0.12] px-4 py-3 flex items-center justify-between transition-opacity duration-400"
         style={{opacity: showVerdict ? 1 : 0}}>
         <span className="text-white/32 text-[11px]">{d.action}</span>
         <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md"
@@ -286,7 +286,7 @@ function ComplianceCatch() {
       </div>
 
       {/* FOOTER */}
-      <div className={`border-t border-white/[0.07] px-5 py-2.5 flex justify-between text-[10px] transition-opacity duration-500 ${
+      <div className={`border-t border-white/[0.12] px-5 py-2.5 flex justify-between text-[10px] transition-opacity duration-500 ${
         visible >= total ? "opacity-100" : "opacity-0"
       }`}>
         <span className="text-white/30">Enforcement latency: 5ms · Zero violations</span>
@@ -335,7 +335,7 @@ function CategoryDeclaration() {
             <h2 className="text-[48px] font-semibold leading-[1.06] mb-6">
               Customer Decisioning<br />Infrastructure
             </h2>
-            <p className="text-white/48 leading-relaxed max-w-md text-[15px]">
+            <p className="text-white/66 leading-relaxed max-w-md text-[15px]">
               A new layer in the financial technology stack — between systems of record and channels of execution.
               Not a replacement of any existing system. The decisioning layer between them.
             </p>
@@ -343,7 +343,7 @@ function CategoryDeclaration() {
             {/* NOT pills */}
             <div className="mt-8 flex flex-wrap gap-2">
               {["Not a CRM", "Not a CPaaS", "Not a business rule engine"].map((t, i) => (
-                <span key={i} className="text-[11px] px-3 py-1.5 rounded-full border border-white/[0.10] text-white/38">
+                <span key={i} className="text-[11px] px-3 py-1.5 rounded-full border border-white/[0.10] text-white/58">
                   {t}
                 </span>
               ))}
@@ -375,9 +375,9 @@ function CategoryDeclaration() {
                 { cap:"Regulatory enforcement", v:[0,0,0,1] },
               ].map((row, ri) => (
                 <div key={ri}
-                  className="grid px-4 py-2.5 border-b border-white/[0.04] last:border-0 transition-colors duration-200 hover:bg-white/[0.025]"
+                  className="grid px-4 py-2.5 border-b border-white/[0.04] last:border-0 transition-colors duration-200 hover:bg-white/[0.05]"
                   style={{gridTemplateColumns:"1fr repeat(4, 30px)", gap:"0 4px"}}>
-                  <div className="text-[10px] text-white/38 leading-tight self-center">{row.cap}</div>
+                  <div className="text-[10px] text-white/58 leading-tight self-center">{row.cap}</div>
                   {row.v.map((val, ci) => (
                     <div key={ci} className="flex items-center justify-center text-[11px] font-medium"
                       style={{
@@ -494,7 +494,7 @@ function Beliefs() {
                 opacity:   i === active ? 1 : 0,
                 marginTop: i === active ? "10px" : "0px",
               }}>
-              <p className="text-sm text-white/40 leading-relaxed">{b.sub}</p>
+              <p className="text-sm text-white/62 leading-relaxed">{b.sub}</p>
             </div>
           </div>
         </div>
@@ -608,7 +608,7 @@ function BFSICards() {
           className={`block p-8 rounded-xl border select-none transition-all duration-400 no-underline ${
             i === active
               ? "border-blue-400/28 bg-blue-500/[0.05] shadow-[0_0_35px_rgba(59,130,246,0.1)] opacity-100"
-              : "border-white/[0.07] bg-white/[0.015] opacity-45"
+              : "border-white/[0.12] bg-white/[0.015] opacity-45"
           }`}
         >
           <div className={`text-[10px] tracking-[0.2em] mb-4 transition-colors duration-300 ${
@@ -653,7 +653,7 @@ export default function Company() {
           </Motion>
 
           <Motion delay={0.16}>
-            <p className="text-white/50 text-[17px] leading-relaxed">
+            <p className="text-white/68 text-[17px] leading-relaxed">
               Signals flow from every system. What happens between signal and action
               is uncontrolled, ungoverned, and unauditable.
               ShieldX closes that gap.
@@ -687,7 +687,7 @@ export default function Company() {
             <h2 className="text-[36px] font-semibold leading-tight mb-5">
               Three systems.<br />Zero decision layer.
             </h2>
-            <p className="text-white/50 leading-relaxed mb-4">
+            <p className="text-white/68 leading-relaxed mb-4">
               Every financial institution has systems of record, systems of engagement,
               and systems of execution. Between them — nothing governing decisions.
             </p>
@@ -759,7 +759,7 @@ export default function Company() {
               </div>
               <div className="pl-7">
                 <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
-                <div className="text-white/38 text-sm mt-0.5">Founder & CEO · ShieldX</div>
+                <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
                 <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
                   Observed the gap firsthand — across collections, lending, and servicing
                   at scale in Indian BFSI. Built the tool that didn't exist.
@@ -781,7 +781,7 @@ export default function Company() {
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
               <div className="text-xl font-semibold mb-1">See the decision layer in action.</div>
-              <div className="text-white/38 text-sm">
+              <div className="text-white/58 text-sm">
                 Collections · Lending · Servicing — governed by one control plane.
               </div>
             </div>

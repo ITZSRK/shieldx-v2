@@ -104,7 +104,7 @@ function LiveDecisionStream() {
           <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
           <div className="w-3 h-3 rounded-full bg-[#28C840]" />
         </div>
-        <span className="flex-1 text-center text-white/40 text-[10px] tracking-[0.15em]">shieldx — decision runtime</span>
+        <span className="flex-1 text-center text-white/62 text-[10px] tracking-[0.15em]">shieldx — decision runtime</span>
         <div className="flex items-center gap-1.5 text-[10px] text-blue-400">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
           LIVE
@@ -212,8 +212,8 @@ function GovernanceCoverage() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">GOVERNANCE COVERAGE</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-        <h2 className="text-[32px] font-semibold mb-3">What ShieldX governs — end to end.</h2>
-        <p className="text-white/45 max-w-xl mx-auto text-sm leading-relaxed">
+        <h2 className="text-[32px] font-semibold mb-3">What ShieldX covers — end to end.</h2>
+        <p className="text-white/65 max-w-xl mx-auto text-sm leading-relaxed">
           Every use case flows through the same five-stage pipeline. The rules change per workflow. The control architecture does not.
         </p>
       </div>
@@ -326,7 +326,7 @@ function ExecutionLog() {
             <div className="h-px w-6 bg-white/20" />
           </div>
         <h2 className="text-[32px] font-semibold mb-3">Three use cases. One governed pipeline.</h2>
-        <p className="text-white/45 max-w-xl mx-auto text-sm leading-relaxed">
+        <p className="text-white/65 max-w-xl mx-auto text-sm leading-relaxed">
           Collections, lending, and servicing decisions execute simultaneously — each checked, each logged, each explainable.
         </p>
       </div>
@@ -338,7 +338,7 @@ function ExecutionLog() {
             <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
             <div className="w-3 h-3 rounded-full bg-[#28C840]" />
           </div>
-          <span className="flex-1 text-center text-white/40 text-[10px] tracking-[0.15em]">shieldx — governance execution stream</span>
+          <span className="flex-1 text-center text-white/62 text-[10px] tracking-[0.15em]">shieldx — governance execution stream</span>
           <div className="flex items-center gap-1.5 text-[10px] text-blue-400">
             <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
             LIVE
@@ -364,7 +364,7 @@ function ExecutionLog() {
               >
                 <span className="text-white/28">{row.t}</span>
                 <span style={{color: UC_COLORS[row.uc]}}>{row.uc}</span>
-                <span className="text-white/45">{row.c}</span>
+                <span className="text-white/65">{row.c}</span>
                 <span className="text-white/55">{row.ev}</span>
                 <span style={{color: row.ok ? "#4ade80" : "#f87171", fontWeight:500}}>
                   {row.comp}
@@ -402,10 +402,10 @@ export default function Solutions() {
           </div>
           <h1 className="text-[48px] font-semibold leading-[1.06] mb-5">
             Three use cases.<br />
-            <span className="text-white/50">One governed</span><br />
+            <span className="text-white/68">One governed</span><br />
             decision layer.
           </h1>
-          <p className="text-white/50 leading-relaxed mb-8 max-w-md text-[15px]">
+          <p className="text-white/68 leading-relaxed mb-8 max-w-md text-[15px]">
             Collections, lending, and servicing — each a distinct workflow,
             each running through the same five-stage decision pipeline.
             Every signal evaluated. Every action compliant before it executes.
@@ -435,7 +435,7 @@ export default function Solutions() {
 
       {/* USE CASE HUBS */}
       <section className="max-w-6xl mx-auto px-8 pb-32">
-        <div className="text-[10px] text-white/45 tracking-[0.2em] mb-6">EXPLORE BY USE CASE</div>
+        <div className="text-[10px] text-white/65 tracking-[0.2em] mb-6">EXPLORE BY USE CASE</div>
         <h3 className="text-[28px] font-semibold mb-10">Go deeper into each workflow.</h3>
 
         <div className="grid md:grid-cols-3 gap-5 items-stretch">

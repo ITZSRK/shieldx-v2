@@ -36,7 +36,7 @@ function ControlPlaneSchematic() {
   }, []);
 
   return (
-    <div className="border border-white/10 rounded-xl bg-black/65 overflow-hidden">
+    <div className="border border-white/15 rounded-xl bg-black/65 overflow-hidden">
       <div className="border-b border-white/[0.08] px-4 py-2.5 flex items-center gap-3">
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
@@ -138,7 +138,7 @@ function ControlPlaneSchematic() {
 
       </div>
 
-      <div className="border-t border-white/[0.07] px-5 py-2.5 flex justify-between text-[10px]">
+      <div className="border-t border-white/[0.12] px-5 py-2.5 flex justify-between text-[10px]">
         <span className="text-white/22">API-first · No rip-and-replace · On-prem or cloud</span>
         <span style={{color:"rgba(74,222,128,0.55)"}}>Compliant ✓</span>
       </div>
@@ -191,7 +191,7 @@ function DecisionDebugger() {
         ))}
       </div>
 
-      <div className="border border-white/10 rounded-xl p-5 bg-black/50 font-mono text-xs">
+      <div className="border border-white/15 rounded-xl p-5 bg-black/50 font-mono text-xs">
         <div className="flex items-center justify-between mb-4">
           <span className="text-white/65 text-xs font-sans font-medium not-italic">Live state</span>
           <span className="text-[10px] tracking-widest" style={{color:"#4ade80"}}>RUNNING</span>
@@ -204,13 +204,13 @@ function DecisionDebugger() {
           <div>dnd_status: <span style={{color:"#4ade80"}}>CLEAR</span></div>
           <div>trai_window: <span style={{color:"#4ade80"}}>COMPLIANT</span></div>
           <div>compliance: <span style={{color:"#4ade80"}}>PASS</span></div>
-          <div className="pt-2 mt-1 border-t border-white/10">
+          <div className="pt-2 mt-1 border-t border-white/15">
             <div style={{color:"#93c5fd"}}>[{steps[active].ms}] {steps[active].label}</div>
             <div>execution: <span style={{color:"#93c5fd"}}>voice_ai_triggered</span></div>
             <div>audit_id: <span className="text-white/45">AUD-20240411-48321</span></div>
           </div>
         </div>
-        <div className="mt-4 pt-3 border-t border-white/10 text-white/22 text-[10px]">
+        <div className="mt-4 pt-3 border-t border-white/15 text-white/22 text-[10px]">
           Every field logged immutably · Exportable for regulatory audit on demand
         </div>
       </div>
@@ -248,7 +248,7 @@ function EngineArchitecture() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-4">Eight stages.<br />One auditable pipeline.</h2>
-        <p className="text-white/50 max-w-lg mx-auto leading-relaxed">
+        <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           Every interaction traverses the same path — from raw signal to compliant execution.
           No stage is skipped. Every stage is logged.
         </p>
@@ -312,7 +312,7 @@ function EngineArchitecture() {
             </div>
             <div className="text-sm text-white/52 leading-relaxed">{s.desc}</div>
             {isGreen && (
-              <div className="mt-4 pt-4 border-t border-white/[0.07] text-[11px] text-emerald-400/60 flex items-center gap-1.5">
+              <div className="mt-4 pt-4 border-t border-white/[0.12] text-[11px] text-emerald-400/60 flex items-center gap-1.5">
                 <span style={{color:"#4ade80"}}>✓</span>
                 Hard gate — execution blocked if any check fails
               </div>
@@ -353,7 +353,7 @@ function ComplianceSection() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-4">Compliance is not a layer.<br />It is the gatekeeper.</h2>
-        <p className="text-white/50 max-w-lg mx-auto leading-relaxed">
+        <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           No interaction executes unless it passes every regulatory check — in real time,
           at infrastructure level, before anything reaches the customer.
         </p>
@@ -417,7 +417,7 @@ function ComplianceSection() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-sm font-medium text-white mb-1">{checks[active].label}</div>
-              <div className="text-sm text-white/48 leading-relaxed">{checks[active].detail}</div>
+              <div className="text-sm text-white/66 leading-relaxed">{checks[active].detail}</div>
             </div>
             <div className="text-[10px] text-emerald-400/60 tracking-widest shrink-0 font-medium">PASS</div>
           </motion.div>
@@ -464,7 +464,7 @@ function BeforeAfter() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-4">Ungoverned decisions have a cost.<br /><span className="text-white/45">ShieldX eliminates it.</span></h2>
-        <p className="text-white/48 max-w-md mx-auto leading-relaxed text-sm">
+        <p className="text-white/66 max-w-md mx-auto leading-relaxed text-sm">
           The same signals. The same channels. Completely different outcomes — when a decision layer sits between them.
         </p>
       </div>
@@ -560,7 +560,7 @@ function IntegrationSection() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-4">Three connection points.<br />Zero core banking changes.</h2>
-        <p className="text-white/50 max-w-lg mx-auto leading-relaxed">
+        <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           Raw CBS, LOS, and CRM events go in. Governed, compliant, routed decisions come out.
           No rip-and-replace — ShieldX plugs into what you already have.
         </p>
@@ -673,7 +673,7 @@ function IntegrationSection() {
           { n:"02", label:"EXECUTION",  title:"All your existing channels",  detail:"Pre-built adapters for Voice AI, SMS, WhatsApp Business, Email, and Human in Loop.",                            proof:"Existing vendor relationships preserved"          },
           { n:"03", label:"DEPLOYMENT", title:"Cloud, on-prem, or hybrid",   detail:"Adapts to your infrastructure policy — including air-gapped Tier-1 and DPDP data residency requirements.",     proof:"Typical integration: 3–6 weeks to first decision" },
         ].map((col, i) => (
-          <div key={i} className="border border-white/[0.07] rounded-xl px-5 py-4 bg-white/[0.02]">
+          <div key={i} className="border border-white/[0.12] rounded-xl px-5 py-4 bg-white/[0.04]">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[9px] font-mono text-white/22">{col.n}</span>
               <span className="text-[9px] text-white/35 tracking-widest">{col.label}</span>
@@ -719,15 +719,15 @@ function ObservabilitySection() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-4">Every decision visible.<br />Every action explainable.</h2>
-        <p className="text-white/50 max-w-lg mx-auto leading-relaxed">
+        <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           Banks need to explain every outreach to a regulator on demand.
           ShieldX surfaces compliance health, campaign performance, and decision audit trails in one place.
         </p>
       </div>
 
       {/* Live dashboard mockup */}
-      <div className="border border-white/10 rounded-2xl overflow-hidden bg-black/40 mb-8 max-w-5xl mx-auto">
-        <div className="border-b border-white/[0.07] px-4 py-2.5 flex items-center gap-3">
+      <div className="border border-white/15 rounded-2xl overflow-hidden bg-black/40 mb-8 max-w-5xl mx-auto">
+        <div className="border-b border-white/[0.12] px-4 py-2.5 flex items-center gap-3">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
             <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
@@ -749,7 +749,7 @@ function ObservabilitySection() {
               { label:"Platform Uptime",   val:"99.95%", sub:"SLA commitment",    color:"#4ade80" },
               { label:"Interactions",      val:"1.4M+",  sub:"Logged this month", color:"#a78bfa" },
             ].map((k, i) => (
-              <div key={i} className="border border-white/[0.07] rounded-xl p-3 bg-white/[0.02]">
+              <div key={i} className="border border-white/[0.12] rounded-xl p-3 bg-white/[0.04]">
                 <div className="text-[20px] font-semibold mb-0.5 leading-none" style={{color:k.color}}>{k.val}</div>
                 <div className="text-[10px] text-white/58 leading-tight mt-1">{k.label}</div>
                 <div className="text-[9px] text-white/25 mt-0.5">{k.sub}</div>
@@ -758,7 +758,7 @@ function ObservabilitySection() {
           </div>
 
           {/* Channel compliance scores */}
-          <div className="border border-white/[0.07] rounded-xl p-4 bg-white/[0.02]">
+          <div className="border border-white/[0.12] rounded-xl p-4 bg-white/[0.04]">
             <div className="text-[10px] text-white/38 tracking-widest mb-3">CHANNEL COMPLIANCE</div>
             <div className="divide-y divide-white/[0.05]">
               {[
@@ -798,7 +798,7 @@ function ObservabilitySection() {
           </div>
 
           {/* Live decision feed */}
-          <div className="border border-white/[0.07] rounded-xl p-4 bg-white/[0.02] font-mono text-xs">
+          <div className="border border-white/[0.12] rounded-xl p-4 bg-white/[0.04] font-mono text-xs">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] text-white/38 tracking-widest not-italic font-sans">LIVE FEED</span>
               <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
@@ -871,7 +871,7 @@ function ObservabilitySection() {
           >
             <div className="text-[9px] tracking-[0.2em] mb-1 font-medium" style={{color:p.accent}}>{p.role}</div>
             <div className="text-[13px] font-medium text-white/82 mb-2">{p.action}</div>
-            <div className="text-[12px] text-white/42 leading-relaxed">{p.desc}</div>
+            <div className="text-[12px] text-white/62 leading-relaxed">{p.desc}</div>
           </div>
         ))}
       </div>
@@ -890,7 +890,7 @@ function CTASection() {
       }}
     >
       <h2 className="text-[32px] font-semibold mb-4">Bring control to every customer interaction.</h2>
-      <p className="text-white/50 mb-10 max-w-md mx-auto leading-relaxed">
+      <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
         See ShieldX run a live decision pipeline — from signal ingestion
         to compliant execution — in 20 minutes.
       </p>
@@ -928,12 +928,12 @@ export default function Platform() {
             <span className="text-white/55">core banking stack</span><br />
             was never built to include.
           </h1>
-          <p className="text-white/50 leading-relaxed mb-8 max-w-md text-[15px]">
+          <p className="text-white/68 leading-relaxed mb-8 max-w-md text-[15px]">
             Signal in. Compliant, audited decision out.
             ShieldX is that layer — evaluate, validate, route, execute, audit.
             Every time. Under 30ms.
           </p>
-          <div className="inline-flex items-center gap-0.5 p-1 rounded-lg border border-white/[0.08] bg-white/[0.025]">
+          <div className="inline-flex items-center gap-0.5 p-1 rounded-lg border border-white/[0.08] bg-white/[0.05]">
             {["SIGNAL","DECISION","COMPLIANCE","EXECUTION","AUDIT"].map((s, i, arr) => (
               <span key={s} className="flex items-center gap-0.5">
                 <span className="text-[10px] px-2.5 py-1 rounded-md font-medium"
@@ -964,7 +964,7 @@ export default function Platform() {
               <div className="h-px w-6 bg-white/20" />
             </div>
             <h2 className="text-[36px] font-semibold">From signal to governed execution.</h2>
-            <p className="text-white/42 max-w-md mx-auto mt-3 leading-relaxed text-sm">
+            <p className="text-white/62 max-w-md mx-auto mt-3 leading-relaxed text-sm">
               One path. Every time. Scored, compliance-checked, routed, executed, and logged — in under 30 milliseconds.
             </p>
           </div>

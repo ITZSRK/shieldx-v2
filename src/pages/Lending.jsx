@@ -112,7 +112,7 @@ function ApplicationPipeline() {
           {STAGES.map((s, i) => (
             <div key={s.id} className="flex flex-col items-center" style={{ width: `${100 / STAGES.length}%` }}>
               <span className={`text-[9px] tracking-wider transition-colors ${
-                i === stageIdx ? "text-indigo-400" : i < stageIdx ? "text-white/40" : "text-white/18"
+                i === stageIdx ? "text-indigo-400" : i < stageIdx ? "text-white/62" : "text-white/18"
               }`}>{s.label.toUpperCase()}</span>
             </div>
           ))}
@@ -120,7 +120,7 @@ function ApplicationPipeline() {
       </div>
 
       {/* Active stage detail */}
-      <div className="mx-5 mb-4 border border-white/[0.07] rounded-lg px-4 py-3 bg-white/[0.02] min-h-[54px]">
+      <div className="mx-5 mb-4 border border-white/[0.12] rounded-lg px-4 py-3 bg-white/[0.04] min-h-[54px]">
         <motion.div key={stageIdx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] text-white/35 tracking-widest">{STAGES[stageIdx].label.toUpperCase()}</span>
@@ -135,7 +135,7 @@ function ApplicationPipeline() {
         </motion.div>
       </div>
 
-      <div className="border-t border-white/[0.07] px-5 py-2.5 flex justify-between text-[10px]">
+      <div className="border-t border-white/[0.12] px-5 py-2.5 flex justify-between text-[10px]">
         <span className="text-white/30">ShieldX Decision Engine · {STAGES.length} checks · deterministic</span>
         <span className="text-emerald-400/60">Audit trail active ✓</span>
       </div>
@@ -173,16 +173,16 @@ function WorkflowSteps() {
             onClick={() => { setActive(i); setPaused(true); }}
             onMouseLeave={() => setPaused(false)}
             className={`flex items-center gap-4 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${
-              i === active ? "bg-white/[0.04] border border-white/10" : "border border-transparent hover:bg-white/[0.02]"
+              i === active ? "bg-white/[0.04] border border-white/10" : "border border-transparent hover:bg-white/[0.04]"
             }`}
           >
             <span className={`text-[10px] font-mono shrink-0 transition-colors ${i === active ? "text-indigo-400" : "text-white/22"}`}>{s.n}</span>
-            <span className={`text-sm transition-colors ${i === active ? "text-white" : "text-white/40"}`}>{s.title}</span>
+            <span className={`text-sm transition-colors ${i === active ? "text-white" : "text-white/62"}`}>{s.title}</span>
           </div>
         ))}
       </div>
       <motion.div key={active} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}
-        className="border border-white/10 rounded-xl p-7 bg-white/[0.02] sticky top-24">
+        className="border border-white/10 rounded-xl p-7 bg-white/[0.04] sticky top-24">
         <div className="text-[10px] font-mono text-indigo-400/70 mb-2 tracking-widest">STEP {STEPS[active].n}</div>
         <div className="text-white font-medium mb-3 text-lg">{STEPS[active].title}</div>
         <div className="text-white/48 text-sm leading-relaxed">{STEPS[active].detail}</div>
@@ -244,7 +244,7 @@ export default function Lending() {
           </Motion>
 
           <Motion delay={0.14}>
-            <p className="text-white/50 text-[17px] leading-relaxed mb-8">
+            <p className="text-white/68 text-[17px] leading-relaxed mb-8">
               ShieldX runs every application through eligibility, bureau, risk, and compliance
               checks — in sequence, at speed — and delivers a compliant, audited outcome every time.
             </p>
@@ -257,9 +257,9 @@ export default function Lending() {
                 { stat: "3",    label: "Bureaus checked (CIBIL, Equifax, CRIF)" },
                 { stat: "100%", label: "Rejection notice coverage" },
               ].map((m, i) => (
-                <div key={i} className="border border-white/[0.07] rounded-xl p-4 bg-white/[0.02]">
+                <div key={i} className="border border-white/[0.12] rounded-xl p-4 bg-white/[0.04]">
                   <div className="text-xl font-semibold text-indigo-300 mb-1">{m.stat}</div>
-                  <div className="text-white/50 text-xs">{m.label}</div>
+                  <div className="text-white/68 text-xs">{m.label}</div>
                 </div>
               ))}
             </div>
@@ -273,7 +273,7 @@ export default function Lending() {
       </section>
 
       {/* WORKFLOW */}
-      <div className="bg-white/[0.025] border-y border-white/[0.05]">
+      <div className="bg-white/[0.05] border-y border-white/[0.05]">
       <section className="max-w-6xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-2.5 mb-5">
@@ -296,12 +296,12 @@ export default function Lending() {
             <span className="text-[11px] text-white/55 tracking-[0.2em]">COMPLIANCE ENFORCEMENT</span>
           </div>
           <h2 className="text-[34px] font-semibold mb-3">Built for the regulatory reality of lending.</h2>
-          <p className="text-white/42 mb-10 max-w-xl">Every application decision is validated against fair lending law, data protection requirements, and product regulations — before a single outcome is delivered.</p>
+          <p className="text-white/62 mb-10 max-w-xl">Every application decision is validated against fair lending law, data protection requirements, and product regulations — before a single outcome is delivered.</p>
         </Motion>
         <div className="grid md:grid-cols-2 gap-3">
           {COMP.map((c, i) => (
             <Motion key={i} delay={i * 0.06}>
-              <div className="flex items-start gap-4 p-5 rounded-xl border border-white/[0.06] bg-white/[0.02]
+              <div className="flex items-start gap-4 p-5 rounded-xl border border-white/[0.06] bg-white/[0.04]
                 hover:border-indigo-400/28 hover:bg-white/[0.04] transition-all duration-200 cursor-default group">
                 <div className="w-7 h-7 rounded-lg border border-indigo-400/20 bg-indigo-500/[0.06] flex items-center justify-center flex-shrink-0
                   group-hover:border-indigo-400/40 group-hover:bg-indigo-500/[0.10] transition-all duration-200">
@@ -309,7 +309,7 @@ export default function Lending() {
                 </div>
                 <div>
                   <div className="text-sm font-medium text-white/88 mb-1.5">{c.label}</div>
-                  <div className="text-[12px] text-white/40 leading-relaxed">{c.desc}</div>
+                  <div className="text-[12px] text-white/62 leading-relaxed">{c.desc}</div>
                 </div>
               </div>
             </Motion>
@@ -318,7 +318,7 @@ export default function Lending() {
       </section>
 
       {/* BEFORE / AFTER */}
-      <div className="bg-white/[0.025] border-y border-white/[0.05]">
+      <div className="bg-white/[0.05] border-y border-white/[0.05]">
       <section className="max-w-6xl mx-auto px-8 py-24">
         <Motion>
           <div className="mb-10">
@@ -428,7 +428,7 @@ export default function Lending() {
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
               <div className="text-xl font-semibold mb-1">See a live lending decision.</div>
-              <div className="text-white/38 text-sm">Walk through a live application decision pipeline — from submission to outcome.</div>
+              <div className="text-white/58 text-sm">Walk through a live application decision pipeline — from submission to outcome.</div>
             </div>
             <Link to="/demo" className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0">
               Request a walkthrough

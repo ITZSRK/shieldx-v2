@@ -86,7 +86,7 @@ function ArchitectureStack() {
       <div className="
         rounded-2xl p-6
         bg-black/60
-        border border-white/10
+        border border-white/15
         shadow-[0_0_50px_rgba(59,130,246,0.2)]
       ">
         <div className="space-y-4">
@@ -206,7 +206,7 @@ function GovernedDecisionView() {
   }, [sc]);
 
   return (
-    <div className="border border-white/10 rounded-xl bg-black/50 overflow-hidden font-mono text-xs">
+    <div className="border border-white/15 rounded-xl bg-black/50 overflow-hidden font-mono text-xs">
 
       {/* tab row */}
       <div className="flex border-b border-white/[0.07]">
@@ -228,7 +228,7 @@ function GovernedDecisionView() {
       </div>
 
       {/* trigger line */}
-      <div className="px-5 py-2.5 border-b border-white/[0.05] flex items-center gap-3">
+      <div className="px-5 py-2.5 border-b border-white/[0.09] flex items-center gap-3">
         <span className="text-[9px] text-white/25 tracking-widest">TRIGGER</span>
         <span className="text-white/55 text-[11px]">{sc.event}</span>
         <span className="text-white/28 text-[10px]">·</span>
@@ -324,9 +324,10 @@ export default function Home() {
             Customer Decisioning<br />Infrastructure.
           </h1>
 
-          <p className="text-[18px] text-white/52 mb-5 max-w-lg mx-auto leading-relaxed">
-            The layer between your systems of record and every outreach channel —
-            that evaluates, validates, routes, and audits every customer decision. Before execution.
+          <p className="text-[18px] text-white/68 mb-5 max-w-lg mx-auto leading-relaxed">
+            Every customer decision your institution makes — credit, collections,
+            servicing, or internal — evaluated, validated against regulation,
+            and audited. Before any action is triggered.
           </p>
 
           <div className="flex items-center justify-center gap-3 text-[12px] text-white/28 mb-10">
@@ -368,7 +369,7 @@ export default function Home() {
       </section>
 
       {/* ── THE GAP ── */}
-      <div className="bg-white/[0.025] border-y border-white/[0.05]">
+      <div className="bg-white/[0.05] border-y border-white/[0.09]">
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
 
@@ -380,7 +381,7 @@ export default function Home() {
           </div>
           <h2 className="text-[42px] font-semibold leading-tight">
             Banks have every system.<br />
-            <span className="text-white/40">Except the one that sits between them.</span>
+            <span className="text-white/62">Except the one that sits between them.</span>
           </h2>
         </div>
 
@@ -392,7 +393,7 @@ export default function Home() {
                 <span className="text-[10px] font-mono" style={{ color: c.num }}>{c.n}</span>
               </div>
               <div className="text-white/82 text-[15px] font-medium leading-snug mb-3">{c.head}</div>
-              <div className="text-white/40 text-sm leading-relaxed">{c.body}</div>
+              <div className="text-white/62 text-sm leading-relaxed">{c.body}</div>
             </div>
           ))}
         </div>
@@ -414,7 +415,7 @@ export default function Home() {
           <h2 className="text-[40px] font-semibold mb-4">
             Five stages. One auditable pipeline.
           </h2>
-          <p className="text-white/45 text-[16px] mb-5 max-w-lg mx-auto leading-relaxed">
+          <p className="text-white/65 text-[16px] mb-5 max-w-lg mx-auto leading-relaxed">
             Every customer decision passes through all five stages — none skippable,
             none silent, every one logged.
           </p>
@@ -426,7 +427,7 @@ export default function Home() {
       </Motion>
 
       {/* ── LIVE DEMO ── */}
-      <div className="bg-white/[0.025] border-y border-white/[0.05]">
+      <div className="bg-white/[0.05] border-y border-white/[0.09]">
       <Motion>
       <section className="px-8 py-24 max-w-4xl mx-auto text-center">
 
@@ -438,7 +439,7 @@ export default function Home() {
         <h2 className="text-[36px] font-semibold mb-3">
           See a live decision run.
         </h2>
-        <p className="text-white/40 mb-10">
+        <p className="text-white/62 mb-10">
           TRAI window. RBI FPC. DPDP consent. Every check enforced in sequence — before the channel fires.
         </p>
 
@@ -455,7 +456,7 @@ export default function Home() {
         <h2 className="text-[40px] font-semibold mb-4">
           See it live.
         </h2>
-        <p className="text-white/40 mb-8">
+        <p className="text-white/62 mb-8">
           20 minutes. Your use case. Collections, Lending, or Servicing.
         </p>
 
