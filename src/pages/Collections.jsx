@@ -220,7 +220,7 @@ export default function Collections() {
           </Motion>
 
           <Motion delay={0.08}>
-            <h1 className="text-[46px] leading-[1.07] font-semibold mb-5">
+            <h1 className="text-[30px] md:text-[46px] leading-[1.07] font-semibold mb-5">
               Every collections decision.<br />Compliant in real time.
             </h1>
           </Motion>
@@ -262,7 +262,7 @@ export default function Collections() {
             <div className="w-0.5 h-4 rounded-full bg-amber-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">DECISION WORKFLOW</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">How every collections decision runs through ShieldX.</h2>
+          <h2 className="text-[22px] md:text-[34px] font-semibold mb-10">How every collections decision runs through ShieldX.</h2>
         </Motion>
         <Motion delay={0.08}>
           <WorkflowSteps />
@@ -277,7 +277,7 @@ export default function Collections() {
             <div className="w-0.5 h-4 rounded-full bg-amber-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">COMPLIANCE ENFORCEMENT</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-3">Built for the regulatory reality of collections.</h2>
+          <h2 className="text-[22px] md:text-[34px] font-semibold mb-3">Built for the regulatory reality of collections.</h2>
           <p className="text-white/62 mb-10 max-w-xl">Every outreach decision is validated against applicable regulations before execution. Nothing fires without passing every check.</p>
         </Motion>
         <div className="grid md:grid-cols-2 gap-3">
@@ -308,7 +308,7 @@ export default function Collections() {
               <div className="w-0.5 h-4 rounded-full bg-amber-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">THE SHIFT</span>
             </div>
-            <h2 className="text-[34px] font-semibold">Compliant collections. In practice.</h2>
+            <h2 className="text-[22px] md:text-[34px] font-semibold">Compliant collections. In practice.</h2>
           </div>
         </Motion>
         <Motion delay={0.06}>

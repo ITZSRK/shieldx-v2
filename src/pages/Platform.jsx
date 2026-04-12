@@ -247,7 +247,7 @@ function EngineArchitecture() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">ENGINE INTERNALS</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-4">Eight stages.<br />One auditable pipeline.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Eight stages.<br />One auditable pipeline.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           Every interaction traverses the same path — from raw signal to compliant execution.
           No stage is skipped. Every stage is logged.
@@ -352,7 +352,7 @@ function ComplianceSection() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">COMPLIANCE ENFORCEMENT</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-4">Compliance is not a layer.<br />It is the gatekeeper.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Compliance is not a layer.<br />It is the gatekeeper.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           No interaction executes unless it passes every regulatory check — in real time,
           at infrastructure level, before anything reaches the customer.
@@ -463,7 +463,7 @@ function BeforeAfter() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">THE SHIFT</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-4"><span className="text-white/52">Ungoverned decisions have a cost.</span><br />ShieldX eliminates it.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4"><span className="text-white/52">Ungoverned decisions have a cost.</span><br />ShieldX eliminates it.</h2>
         <p className="text-white/66 max-w-md mx-auto leading-relaxed text-sm">
           The same signals. The same channels. Completely different outcomes — when a decision layer sits between them.
         </p>
@@ -560,7 +560,7 @@ function IntegrationSection() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">HOW IT CONNECTS</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-4">Three connection points.<br />Zero core banking changes.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Three connection points.<br />Zero core banking changes.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           Raw CBS, LOS, and CRM events go in. Governed, compliant, routed decisions come out.
           No rip-and-replace — ShieldX plugs into what you already have.
@@ -719,7 +719,7 @@ function ObservabilitySection() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">OBSERVABILITY</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-4">Every decision visible.<br />Every action explainable.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Every decision visible.<br />Every action explainable.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           Banks need to explain every outreach to a regulator on demand.
           ShieldX surfaces compliance health, campaign performance, and decision audit trails in one place.
@@ -890,7 +890,7 @@ function CTASection() {
         boxShadow:"0 0 80px rgba(96,165,250,.07)",
       }}
     >
-      <h2 className="text-[32px] font-semibold mb-4">Watch it run a live pipeline.</h2>
+      <h2 className="text-[24px] md:text-[32px] font-semibold mb-4">Watch it run a live pipeline.</h2>
       <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
         Signal to compliant execution — every stage, live, in 20 minutes.
         Your use case: Collections, Lending, or Servicing.
@@ -924,7 +924,7 @@ export default function Platform() {
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
             PLATFORM
           </div>
-          <h1 className="text-[52px] leading-[1.05] font-semibold mb-5">
+          <h1 className="text-[32px] md:text-[52px] leading-[1.05] font-semibold mb-5">
             The control plane your<br />
             <span className="text-white/55">core banking stack</span><br />
             was never built to include.

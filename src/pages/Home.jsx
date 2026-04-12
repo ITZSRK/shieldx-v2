@@ -320,7 +320,7 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="px-8 pt-32 pb-20 text-center max-w-5xl mx-auto">
         <Motion>
-          <h1 className="text-[62px] leading-[1.04] font-semibold tracking-tight mb-6">
+          <h1 className="text-[36px] md:text-[62px] leading-[1.04] font-semibold tracking-tight mb-6">
             Customer Decisioning<br />Infrastructure.
           </h1>
 
@@ -379,7 +379,7 @@ export default function Home() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">THE PROBLEM</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-          <h2 className="text-[42px] font-semibold leading-tight">
+          <h2 className="text-[26px] md:text-[42px] font-semibold leading-tight">
             Banks have every system.<br />
             <span className="text-white/62">Except the one that sits between them.</span>
           </h2>
@@ -436,7 +436,7 @@ export default function Home() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">LIVE</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-3">
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-3">
           Watch a live decision run.
         </h2>
         <p className="text-white/62 mb-10">
@@ -453,7 +453,7 @@ export default function Home() {
       <Motion>
       <section className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
 
-        <h2 className="text-[40px] font-semibold mb-4">
+        <h2 className="text-[28px] md:text-[40px] font-semibold mb-4">
           Ready to see it for yourself?
         </h2>
         <p className="text-white/62 mb-8">

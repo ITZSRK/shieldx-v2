@@ -78,7 +78,7 @@ export default function Demo() {
               style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
               REQUEST A WALKTHROUGH
             </div>
-            <h1 className="text-[40px] font-semibold leading-tight mb-4 tracking-tight">
+            <h1 className="text-[28px] md:text-[40px] font-semibold leading-tight mb-4 tracking-tight">
               Watch ShieldX govern<br />a live decision.
             </h1>
             <p className="text-white/48 mb-10 max-w-md mx-auto text-[15px] leading-relaxed">

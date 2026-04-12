@@ -327,12 +327,12 @@ function CategoryDeclaration() {
       <div className="relative rounded-2xl overflow-hidden border border-blue-400/[0.15] mb-5">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.12),transparent_58%)]" />
 
-        <div className="relative px-10 pt-14 pb-12 grid md:grid-cols-[1fr_280px] gap-14 items-center">
+        <div className="relative px-5 md:px-10 pt-10 md:pt-14 pb-10 md:pb-12 grid md:grid-cols-[1fr_280px] gap-8 md:gap-14 items-center">
 
           {/* Left: declaration */}
           <div>
             <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A NEW CATEGORY</div>
-            <h2 className="text-[48px] font-semibold leading-[1.06] mb-6">
+            <h2 className="text-[26px] md:text-[48px] font-semibold leading-[1.06] mb-6">
               Customer Decisioning<br />Infrastructure
             </h2>
             <p className="text-white/66 leading-relaxed max-w-md text-[15px]">
@@ -480,7 +480,7 @@ function Beliefs() {
           <div className="flex-1 border-l-2 pl-7 transition-all duration-400"
             style={{borderColor: i === active ? "rgba(96,165,250,0.50)" : "transparent"}}>
             <div
-              className="text-[26px] leading-snug mb-0 transition-all duration-400"
+              className="text-[18px] md:text-[26px] leading-snug mb-0 transition-all duration-400"
               style={{
                 color: i === active ? "white" : "rgba(255,255,255,0.62)",
                 textShadow: i === active ? "0 0 40px rgba(59,130,246,0.25)" : "none",
@@ -647,7 +647,7 @@ export default function Company() {
           </Motion>
 
           <Motion delay={0.08}>
-            <h1 className="text-[50px] leading-[1.07] font-semibold mb-6">
+            <h1 className="text-[32px] md:text-[50px] leading-[1.07] font-semibold mb-6">
               The decision layer<br />BFSI was missing.
             </h1>
           </Motion>
@@ -684,7 +684,7 @@ export default function Company() {
               <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY WE BUILT IT</span>
             </div>
-            <h2 className="text-[36px] font-semibold leading-tight mb-5">
+            <h2 className="text-[26px] md:text-[36px] font-semibold leading-tight mb-5">
               One decision layer<br />between signal and action.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
@@ -764,7 +764,7 @@ export default function Company() {
             <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">INDUSTRY</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">Built for BFSI.</h2>
+          <h2 className="text-[26px] md:text-[34px] font-semibold mb-10">Built for BFSI.</h2>
         </Motion>
         <BFSICards />
       </section>

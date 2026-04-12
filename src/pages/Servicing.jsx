@@ -230,7 +230,7 @@ export default function Servicing() {
           </Motion>
 
           <Motion delay={0.08}>
-            <h1 className="text-[46px] leading-[1.07] font-semibold mb-5">
+            <h1 className="text-[30px] md:text-[46px] leading-[1.07] font-semibold mb-5">
               Every customer request.<br />Classified and resolved.
             </h1>
           </Motion>
@@ -272,7 +272,7 @@ export default function Servicing() {
             <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">DECISION WORKFLOW</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">How every servicing interaction runs through ShieldX.</h2>
+          <h2 className="text-[22px] md:text-[34px] font-semibold mb-10">How every servicing interaction runs through ShieldX.</h2>
         </Motion>
         <Motion delay={0.08}>
           <WorkflowSteps />
@@ -287,7 +287,7 @@ export default function Servicing() {
             <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">COMPLIANCE ENFORCEMENT</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-3">Built for the regulatory reality of servicing.</h2>
+          <h2 className="text-[22px] md:text-[34px] font-semibold mb-3">Built for the regulatory reality of servicing.</h2>
           <p className="text-white/62 mb-10 max-w-xl">Every resolution path is enforced against applicable regulations, statutory timelines, and institutional policy — automatically, not manually managed.</p>
         </Motion>
         <div className="grid md:grid-cols-2 gap-3">
@@ -318,7 +318,7 @@ export default function Servicing() {
               <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">THE SHIFT</span>
             </div>
-            <h2 className="text-[34px] font-semibold">Compliant servicing. In practice.</h2>
+            <h2 className="text-[22px] md:text-[34px] font-semibold">Compliant servicing. In practice.</h2>
           </div>
         </Motion>
         <Motion delay={0.06}>

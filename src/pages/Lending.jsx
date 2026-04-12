@@ -238,7 +238,7 @@ export default function Lending() {
           </Motion>
 
           <Motion delay={0.08}>
-            <h1 className="text-[46px] leading-[1.07] font-semibold mb-5">
+            <h1 className="text-[30px] md:text-[46px] leading-[1.07] font-semibold mb-5">
               Every credit decision.<br />Compliant end to end.
             </h1>
           </Motion>
@@ -280,7 +280,7 @@ export default function Lending() {
             <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">DECISION WORKFLOW</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-10">How every lending decision runs through ShieldX.</h2>
+          <h2 className="text-[22px] md:text-[34px] font-semibold mb-10">How every lending decision runs through ShieldX.</h2>
         </Motion>
         <Motion delay={0.08}>
           <WorkflowSteps />
@@ -295,7 +295,7 @@ export default function Lending() {
             <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
             <span className="text-[11px] text-white/55 tracking-[0.2em]">COMPLIANCE ENFORCEMENT</span>
           </div>
-          <h2 className="text-[34px] font-semibold mb-3">Built for the regulatory reality of lending.</h2>
+          <h2 className="text-[22px] md:text-[34px] font-semibold mb-3">Built for the regulatory reality of lending.</h2>
           <p className="text-white/62 mb-10 max-w-xl">Every application decision is validated against fair lending law, data protection requirements, and product regulations — before a single outcome is delivered.</p>
         </Motion>
         <div className="grid md:grid-cols-2 gap-3">
@@ -326,7 +326,7 @@ export default function Lending() {
               <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">THE SHIFT</span>
             </div>
-            <h2 className="text-[34px] font-semibold">Compliant lending. In practice.</h2>
+            <h2 className="text-[22px] md:text-[34px] font-semibold">Compliant lending. In practice.</h2>
           </div>
         </Motion>
         <Motion delay={0.06}>

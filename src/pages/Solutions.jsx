@@ -212,7 +212,7 @@ function GovernanceCoverage() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">GOVERNANCE COVERAGE</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-        <h2 className="text-[32px] font-semibold mb-3">What ShieldX covers — end to end.</h2>
+        <h2 className="text-[22px] md:text-[32px] font-semibold mb-3">What ShieldX covers — end to end.</h2>
         <p className="text-white/65 max-w-xl mx-auto text-sm leading-relaxed">
           Every use case flows through the same five-stage pipeline. The rules change per workflow. The control architecture does not.
         </p>
@@ -325,7 +325,7 @@ function ExecutionLog() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">EXECUTION LOG</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-        <h2 className="text-[32px] font-semibold mb-3">Three use cases. One governed pipeline.</h2>
+        <h2 className="text-[22px] md:text-[32px] font-semibold mb-3">Three use cases. One governed pipeline.</h2>
         <p className="text-white/65 max-w-xl mx-auto text-sm leading-relaxed">
           Collections, lending, and servicing decisions execute simultaneously — each checked, each logged, each explainable.
         </p>
@@ -400,7 +400,7 @@ export default function Solutions() {
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
             SOLUTIONS
           </div>
-          <h1 className="text-[48px] font-semibold leading-[1.06] mb-5">
+          <h1 className="text-[32px] md:text-[48px] font-semibold leading-[1.06] mb-5">
             Three use cases.<br />
             <span className="text-white/68">One governed</span><br />
             decision layer.
@@ -496,7 +496,7 @@ export default function Solutions() {
           transition={{ duration: 0.5 }}
         >
           <div className="text-[11px] text-white/55 tracking-[0.22em] mb-5">NEXT STEP</div>
-          <h2 className="text-[34px] font-semibold mb-4">
+          <h2 className="text-[24px] md:text-[34px] font-semibold mb-4">
             Walk through all three — in one session.
           </h2>
           <p className="text-white/62 mb-10 max-w-md mx-auto leading-relaxed">
