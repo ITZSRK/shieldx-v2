@@ -128,13 +128,13 @@ function ContactStrategyEngine() {
 
 /* ── WORKFLOW ── */
 const STEPS = [
-  { n: "01", title: "Trigger received",    detail: "Payment missed event ingested from CBS. Payload normalized: customer ID, DPD bucket, outstanding amount, product type. Queued for evaluation in under 5ms." },
-  { n: "02", title: "Customer evaluated",  detail: "Risk tier computed from repayment history, bureau score, and product type. Channel preference derived from past engagement data. Segment classification applied." },
-  { n: "03", title: "Channels scored",     detail: "Each eligible channel scored against customer segment, time-window compliance, historical response rates, and business rules. Compliance-blocked channels are removed before scoring." },
-  { n: "04", title: "Compliance gate",     detail: "TRAI calling window (8 AM–7 PM IST) verified. TRAI DND registry checked in real time. RBI Fair Practices Code rules applied. DPDPA 2025 consent status validated. Frequency cap enforced. Any single violation blocks execution." },
-  { n: "05", title: "Strategy computed",   detail: "Optimal channel, timing window, message template, and offer parameters selected. Decision payload constructed with full reason codes attached." },
-  { n: "06", title: "Execution governed",  detail: "Outreach triggered via selected channel adapter. Response captured and fed back to the decision engine. Next-best action computed based on outcome." },
-  { n: "07", title: "Audit written",       detail: "Immutable record created per interaction. Reason codes, compliance checks, channel rationale, and outcome all logged. Exportable for regulatory review on demand." },
+  { n: "01", title: "Trigger received",    micro: "Delinquency signal arrives from core banking",          detail: "Payment missed event ingested from CBS. Payload normalized: customer ID, DPD bucket, outstanding amount, product type. Queued for evaluation in under 5ms." },
+  { n: "02", title: "Customer evaluated",  micro: "Bureau, behavior, and segment scored in real-time",      detail: "Risk tier computed from repayment history, bureau score, and product type. Channel preference derived from past engagement data. Segment classification applied." },
+  { n: "03", title: "Channels scored",     micro: "Eligible channels ranked against rules and history",     detail: "Each eligible channel scored against customer segment, time-window compliance, historical response rates, and business rules. Compliance-blocked channels are removed before scoring." },
+  { n: "04", title: "Compliance gate",     micro: "TRAI, RBI, and DPDPA checks run before any action",     detail: "TRAI calling window (8 AM–7 PM IST) verified. TRAI DND registry checked in real time. RBI Fair Practices Code rules applied. DPDPA 2025 consent status validated. Frequency cap enforced. Any single violation blocks execution." },
+  { n: "05", title: "Strategy computed",   micro: "Best channel, timing, and template selected",            detail: "Optimal channel, timing window, message template, and offer parameters selected. Decision payload constructed with full reason codes attached." },
+  { n: "06", title: "Execution governed",  micro: "Action dispatched, outcome fed back to the engine",      detail: "Outreach triggered via selected channel adapter. Response captured and fed back to the decision engine. Next-best action computed based on outcome." },
+  { n: "07", title: "Audit written",       micro: "Full decision trail logged, explainable on demand",      detail: "Immutable record created per interaction. Reason codes, compliance checks, channel rationale, and outcome all logged. Exportable for regulatory review on demand." },
 ];
 
 function WorkflowSteps() {
@@ -158,8 +158,11 @@ function WorkflowSteps() {
               i === active ? "bg-white/[0.04] border border-white/10" : "border border-transparent hover:bg-white/[0.04]"
             }`}
           >
-            <span className={`text-[10px] font-mono shrink-0 transition-colors ${i === active ? "text-amber-400" : "text-white/22"}`}>{s.n}</span>
-            <span className={`text-sm transition-colors ${i === active ? "text-white" : "text-white/62"}`}>{s.title}</span>
+            <span className={`text-[10px] font-mono shrink-0 transition-colors mt-0.5 ${i === active ? "text-amber-400" : "text-white/22"}`}>{s.n}</span>
+            <div>
+              <div className={`text-sm transition-colors ${i === active ? "text-white" : "text-white/62"}`}>{s.title}</div>
+              <div className={`text-[11px] leading-snug mt-0.5 transition-colors ${i === active ? "text-white/45" : "text-white/22"}`}>{s.micro}</div>
+            </div>
           </div>
         ))}
       </div>

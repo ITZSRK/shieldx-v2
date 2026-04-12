@@ -400,14 +400,14 @@ export default function Solutions() {
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
             SOLUTIONS
           </div>
-          <h1 className="text-[32px] md:text-[48px] font-semibold leading-[1.06] mb-5">
-            Three verticals.<br />
-            <span className="text-white/68">One governed</span><br />
-            decision layer.
+          <h1 className="text-[32px] md:text-[48px] font-semibold leading-[1.06] mb-3">
+            Collections. Lending. Servicing.
           </h1>
+          <p className="text-[17px] md:text-[20px] text-white/50 font-medium mb-6 leading-snug">
+            Three verticals. One governed decision layer.
+          </p>
           <p className="text-white/68 leading-relaxed mb-8 max-w-md text-[15px]">
-            Collections, lending, and servicing — each a distinct workflow,
-            each running through the same five-stage decision pipeline.
+            Each a distinct workflow, each running through the same five-stage decision pipeline.
             Every signal evaluated. Every action compliant before it executes.
           </p>
           <div className="flex flex-wrap gap-2">
