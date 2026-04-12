@@ -3,7 +3,7 @@ import { useState } from "react";
 import logo from "../assets/shieldx-logo.png";
 
 const SOLUTIONS_ITEMS = [
-  { to: "/solutions",   label: "Overview",    desc: "How ShieldX works across use cases" },
+  { to: "/solutions",   label: "Overview",    desc: "How ShieldX governs each vertical" },
   { to: "/collections", label: "Collections", desc: "Contact strategy and compliance" },
   { to: "/lending",     label: "Lending",     desc: "Application decision pipeline" },
   { to: "/servicing",   label: "Servicing",   desc: "Intent routing and SLA governance" },

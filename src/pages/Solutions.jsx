@@ -214,7 +214,7 @@ function GovernanceCoverage() {
           </div>
         <h2 className="text-[22px] md:text-[32px] font-semibold mb-3">What ShieldX covers — end to end.</h2>
         <p className="text-white/65 max-w-xl mx-auto text-sm leading-relaxed">
-          Every use case flows through the same five-stage pipeline. The rules change per workflow. The control architecture does not.
+          Every vertical flows through the same five-stage pipeline. The rules change per workflow. The control architecture does not.
         </p>
       </div>
 
@@ -222,7 +222,7 @@ function GovernanceCoverage() {
         <table className="w-full text-xs border-collapse">
           <thead>
             <tr style={{background:"rgba(255,255,255,0.025)"}}>
-              <th className="text-left px-5 py-3.5 text-white/30 tracking-widest font-normal text-[10px] w-[130px] border-b border-white/[0.07]">USE CASE</th>
+              <th className="text-left px-5 py-3.5 text-white/30 tracking-widest font-normal text-[10px] w-[130px] border-b border-white/[0.07]">VERTICAL</th>
               {cols.map((c, i) => (
                 <th key={c}
                   className="px-4 py-3.5 font-normal tracking-widest text-[10px] border-b border-white/[0.07] text-center"
@@ -325,7 +325,7 @@ function ExecutionLog() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">EXECUTION LOG</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-        <h2 className="text-[22px] md:text-[32px] font-semibold mb-3">Three use cases. One governed pipeline.</h2>
+        <h2 className="text-[22px] md:text-[32px] font-semibold mb-3">Three verticals. One governed pipeline.</h2>
         <p className="text-white/65 max-w-xl mx-auto text-sm leading-relaxed">
           Collections, lending, and servicing decisions execute simultaneously — each checked, each logged, each explainable.
         </p>
@@ -349,7 +349,7 @@ function ExecutionLog() {
           {/* header row */}
           <div className="grid grid-cols-[140px_110px_110px_1fr_80px_1fr] gap-2 px-4 py-1.5 text-[10px] text-white/22 tracking-widest border-b border-white/[0.05]">
             <span>TIMESTAMP</span>
-            <span>USE CASE</span>
+            <span>VERTICAL</span>
             <span>CUSTOMER</span>
             <span>EVENT</span>
             <span>COMP</span>
@@ -401,7 +401,7 @@ export default function Solutions() {
             SOLUTIONS
           </div>
           <h1 className="text-[32px] md:text-[48px] font-semibold leading-[1.06] mb-5">
-            Three use cases.<br />
+            Three verticals.<br />
             <span className="text-white/68">One governed</span><br />
             decision layer.
           </h1>
@@ -435,7 +435,7 @@ export default function Solutions() {
 
       {/* USE CASE HUBS */}
       <section className="max-w-6xl mx-auto px-8 pb-32">
-        <div className="text-[10px] text-white/65 tracking-[0.2em] mb-6">EXPLORE BY USE CASE</div>
+        <div className="text-[10px] text-white/65 tracking-[0.2em] mb-6">EXPLORE BY VERTICAL</div>
         <h3 className="text-[28px] font-semibold mb-10">Go deeper into each workflow.</h3>
 
         <div className="grid md:grid-cols-3 gap-5 items-stretch">
@@ -497,11 +497,10 @@ export default function Solutions() {
         >
           <div className="text-[11px] text-white/55 tracking-[0.22em] mb-5">NEXT STEP</div>
           <h2 className="text-[24px] md:text-[34px] font-semibold mb-4">
-            Walk through all three — in one session.
+            See the platform run a live decision.
           </h2>
           <p className="text-white/62 mb-10 max-w-md mx-auto leading-relaxed">
-            Collections, lending, and servicing — each a distinct workflow,
-            all covered in a single 20-minute walkthrough.
+            20 minutes. The full five-stage pipeline — your context, your questions.
           </p>
           <Link
             to="/demo"
@@ -510,7 +509,7 @@ export default function Solutions() {
             Request a walkthrough
           </Link>
           <div className="mt-6 text-[11px] text-white/28 flex items-center justify-center gap-3">
-            <span>No commitment</span>
+            <span>Tailored to your scenario</span>
             <span className="text-white/15">·</span>
             <span>India-deployed</span>
             <span className="text-white/15">·</span>

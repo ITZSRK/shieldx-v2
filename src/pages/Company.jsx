@@ -512,8 +512,8 @@ const CREDS = [
   },
   {
     label: "INDUSTRY",
-    val:   "NBFCs · Banks · Fintechs — Indian BFSI",
-    ctx:   "Designed for the regulatory and operational reality of Indian financial services. Not a global tool adapted for India after the fact.",
+    val:   "Indian BFSI — with global applicability.",
+    ctx:   "Designed for the regulatory and operational reality of Indian financial services. Built to extend to any regulated market where governed decisions matter.",
   },
   {
     label: "PROBLEM ORIGIN",
@@ -623,7 +623,7 @@ function BFSICards() {
 
           <div className={`mt-5 text-xs transition-colors duration-300 ${
             i === active ? "text-blue-400/60" : "text-white/18"
-          }`}>See use cases →</div>
+          }`}>Explore →</div>
         </Link>
       ))}
     </div>

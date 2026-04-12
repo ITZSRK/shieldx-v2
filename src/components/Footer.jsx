@@ -14,10 +14,10 @@ export default function Footer() {
           </div>
           <div className="text-white/60 text-sm mt-3 leading-relaxed">
             Building ShieldX — a decision infrastructure layer
-            for real-time financial systems.
+            for real-time financial systems, globally.
           </div>
           <div className="mt-5 text-[11px] text-white/40 tracking-wide">
-            BUILT IN INDIA · FOR BFSI
+            BUILT IN INDIA · FOR GLOBAL BFSI
           </div>
         </div>
 
@@ -33,9 +33,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* USE CASES */}
+          {/* VERTICALS */}
           <div>
-            <div className="text-white/50 text-xs mb-3">Use Cases</div>
+            <div className="text-white/50 text-xs mb-3">Verticals</div>
             <div className="flex flex-col gap-2 text-white/65">
               <Link to="/collections" className="hover:text-white transition">Collections</Link>
               <Link to="/lending"     className="hover:text-white transition">Lending</Link>

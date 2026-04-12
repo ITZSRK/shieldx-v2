@@ -460,7 +460,7 @@ export default function Home() {
         </Link>
 
         <div className="mt-6 flex items-center justify-center gap-4 text-[11px] text-white/22">
-          <span>No commitment</span>
+          <span>Tailored to your scenario</span>
           <span className="text-white/12">·</span>
           <span>India-deployed</span>
           <span className="text-white/12">·</span>

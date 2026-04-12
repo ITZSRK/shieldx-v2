@@ -396,7 +396,7 @@ export default function Lending() {
         <Motion>
           <div className="flex items-center gap-2.5 mb-8">
             <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
-            <span className="text-[11px] text-white/55 tracking-[0.2em]">OTHER USE CASES</span>
+            <span className="text-[11px] text-white/55 tracking-[0.2em]">OTHER VERTICALS</span>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             {[

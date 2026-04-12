@@ -925,7 +925,7 @@ function CTASection() {
       <h2 className="text-[24px] md:text-[32px] font-semibold mb-4">Watch it run a live pipeline.</h2>
       <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
         Signal to compliant execution — every stage, live, in 20 minutes.
-        Your use case: Collections, Lending, or Servicing.
+        Tailored to your vertical and your questions.
       </p>
       <Link to="/demo"
         className="inline-block px-8 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
