@@ -152,7 +152,7 @@ const SCENARIOS = [
       { ms:"13ms", text:"CIBIL — 741, Equifax — 738",     note:"Multi-bureau pull completed",                color:"white" },
       { ms:"17ms", text:"RBI FPC — PASS",                 note:"Fair lending practices verified",            color:"green" },
       { ms:"18ms", text:"DPDP consent — PASS",            note:"Bureau pull consent confirmed",              color:"green" },
-      { ms:"19ms", text:"CICRA 2005 — PASS",              note:"Credit information rules compliant",         color:"green" },
+      { ms:"19ms", text:"KYC Master Direction — PASS",      note:"KYC verification status confirmed",          color:"green" },
       { ms:"20ms", text:"Approval notice triggered",      note:"Communication as per RBI guidelines",        color:"blue"  },
       { ms:"20ms", text:"Decision payload logged",        note:"Reason codes attached · Audit-ready",        color:"dim"   },
     ],
@@ -437,7 +437,7 @@ export default function Home() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[36px] font-semibold mb-3">
-          See a live decision run.
+          Watch a live decision run.
         </h2>
         <p className="text-white/62 mb-10">
           TRAI window. RBI FPC. DPDP consent. Every check enforced in sequence — before the channel fires.
@@ -454,7 +454,7 @@ export default function Home() {
       <section className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
 
         <h2 className="text-[40px] font-semibold mb-4">
-          See it live.
+          Ready to see it for yourself?
         </h2>
         <p className="text-white/62 mb-8">
           20 minutes. Your use case. Collections, Lending, or Servicing.

@@ -188,7 +188,7 @@ const COMP = [
   { label: "RBI Integrated Ombudsman Scheme",  desc: "Grievance submissions tracked from receipt to closure per the RBI Integrated Ombudsman Scheme 2021. 30-day statutory deadline monitored. Escalation triggered automatically before breach." },
   { label: "DPDPA 2025",                    desc: "Customer data accessed only by agents with a verified, need-based purpose per the Digital Personal Data Protection Act, 2023. Access logged per interaction. Data minimisation enforced." },
   { label: "RBI Escalation Framework",         desc: "Mandatory escalation paths enforced for regulated intent types: hardship, disputes, fraud. Once escalated per RBI's customer protection guidelines, cannot be re-routed to lower resolution tiers." },
-  { label: "CICRA Bureau Disputes",            desc: "CIBIL and bureau disputes logged with timestamped acknowledgment. Correction timelines tracked against the 30-day CIC resolution deadline per Credit Information Companies (Regulation) Act, 2005." },
+  { label: "Bureau Dispute Tracking",           desc: "CIBIL and bureau disputes logged with timestamped acknowledgment. Correction timelines tracked against the 30-day resolution deadline per RBI and DPDPA 2025 consumer data rights." },
   { label: "RBI Hardship Protections",         desc: "Hardship intent triggers protected servicing protocols per RBI's guidelines. Recovery outreach paused pending resolution. Debt collection activity restricted for declared hardship customers." },
   { label: "RBI Charter of Customer Rights",   desc: "Customer rights guaranteed under RBI's Charter of Customer Rights enforced at every interaction — right to fair treatment, transparency, and grievance redressal." },
 ];
@@ -281,7 +281,7 @@ export default function Servicing() {
       </div>
 
       {/* COMPLIANCE */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion>
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
@@ -349,34 +349,33 @@ export default function Servicing() {
 
             {/* Center */}
             <div className="hidden md:flex flex-col items-center justify-center gap-3 px-2">
-              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent)"}} />
-              <div className="w-9 h-9 rounded-xl border border-blue-400/25 bg-blue-500/[0.07] flex flex-col items-center justify-center gap-0.5 flex-shrink-0">
-                <span className="text-blue-300/50 text-[8px] tracking-[0.1em]">SX</span>
-                <span className="text-blue-400/45 text-xs leading-none">›</span>
+              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
+              <div className="w-9 h-9 rounded-full border border-white/25 bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+                <span className="text-white/55 text-base leading-none">→</span>
               </div>
-              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent)"}} />
+              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
             </div>
 
             {/* Right — WITH SHIELDX (emerald) */}
-            <div className="rounded-2xl border border-emerald-500/[0.18] bg-emerald-500/[0.025] p-6"
-              style={{boxShadow:"0 0 50px rgba(52,211,153,0.10)"}}>
+            <div className="rounded-2xl border border-emerald-500/[0.30] bg-emerald-500/[0.05] p-6"
+              style={{boxShadow:"0 0 70px rgba(52,211,153,0.18)"}}>
               <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-6 h-6 rounded-full bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/35 flex items-center justify-center flex-shrink-0">
                   <span className="text-emerald-400 text-[10px] leading-none">✓</span>
                 </div>
-                <span className="text-[10px] text-emerald-400/65 tracking-[0.2em] font-medium">WITH SHIELDX</span>
+                <span className="text-[10px] text-emerald-400/80 tracking-[0.2em] font-medium">WITH SHIELDX</span>
               </div>
               <div className="space-y-0.5">
                 {PAIRS.map((p, i) => (
-                  <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.04] last:border-0">
-                    <span className="text-emerald-400/55 text-[11px] flex-shrink-0 mt-0.5">✓</span>
-                    <span className="text-white/72 text-sm leading-relaxed">{p.x}</span>
+                  <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.06] last:border-0">
+                    <span className="text-emerald-400/70 text-[11px] flex-shrink-0 mt-0.5">✓</span>
+                    <span className="text-white/82 text-sm leading-relaxed">{p.x}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/[0.08] border border-emerald-400/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/70" />
-                <span className="text-[10px] text-emerald-400/65 tracking-widest">GOVERNED: ✓</span>
+              <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/[0.12] border border-emerald-400/30">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+                <span className="text-[10px] text-emerald-400/80 tracking-widest">GOVERNED: ✓</span>
               </div>
             </div>
           </div>
@@ -385,7 +384,7 @@ export default function Servicing() {
       </div>
 
       {/* CROSS-LINKS */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion>
           <div className="flex items-center gap-2.5 mb-8">
             <div className="w-0.5 h-4 rounded-full bg-emerald-400/45" />
@@ -419,7 +418,7 @@ export default function Servicing() {
         <Motion>
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
-              <div className="text-xl font-semibold mb-1">See a live servicing interaction.</div>
+              <div className="text-xl font-semibold mb-1">Watch a live servicing interaction.</div>
               <div className="text-white/58 text-sm">Walk through a live intent classification and resolution pipeline — end to end.</div>
             </div>
             <Link to="/demo" className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0">

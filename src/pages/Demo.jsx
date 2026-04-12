@@ -79,7 +79,7 @@ export default function Demo() {
               REQUEST A WALKTHROUGH
             </div>
             <h1 className="text-[40px] font-semibold leading-tight mb-4 tracking-tight">
-              See ShieldX govern<br />a live decision.
+              Watch ShieldX govern<br />a live decision.
             </h1>
             <p className="text-white/48 mb-10 max-w-md mx-auto text-[15px] leading-relaxed">
               20 minutes. Your use case — Collections, Lending, or Servicing.

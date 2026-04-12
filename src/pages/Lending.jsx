@@ -148,7 +148,7 @@ function ApplicationPipeline() {
 const STEPS = [
   { n: "01", title: "Application received",     detail: "Application payload ingested from LOS, bank's digital channel, or partner API. Fields normalised: applicant ID, product type, requested amount, purpose, channel source. Queued for eligibility evaluation in sequence." },
   { n: "02", title: "Eligibility evaluated",    detail: "Age, income, existing liability relationships, and RBI negative list checks applied. FOIR computed against declared and verified income. Applicants below threshold declined with mandatory reason communication before bureau is pulled — preventing unnecessary CIBIL inquiries." },
-  { n: "03", title: "Bureau consent verified",  detail: "DPDPA 2025-compliant consent check executed before any bureau pull. CIBIL, Equifax, and CRIF Highmark queried only after consent is confirmed. Consent scope, purpose, and expiry tracked and enforced automatically per CICRA 2005." },
+  { n: "03", title: "Bureau consent verified",  detail: "DPDPA 2025-compliant consent check executed before any bureau pull. CIBIL, Equifax, and CRIF Highmark queried only after consent is confirmed. Consent scope, purpose, and expiry tracked and enforced automatically per DPDPA 2025." },
   { n: "04", title: "Risk model executed",      detail: "Internal scorecard applied using bureau data, repayment behaviour, and product-specific parameters. FOIR and LTV computed. Segment assigned: Super-Prime / Prime / Near-Prime / Sub-Prime. Risk tier determines decisioning path and applicable rate band." },
   { n: "05", title: "Compliance gate applied",  detail: "RBI Fair Practices Code for Lenders validated. RBI product-specific guidelines checked (interest rate caps, LTV limits, product eligibility). Offer parameters validated against applicable RBI circulars. Any single violation returns decline with correct reason codes — no override permitted." },
   { n: "06", title: "Decision delivered",       detail: "Approval with terms, counter-offer, or decline delivered to originating channel. Approved decisions include rate, tenor, and amount. Declines include mandatory rejection communication with reason codes per RBI's guidelines on transparency in lending decisions." },
@@ -194,7 +194,7 @@ function WorkflowSteps() {
 /* ── COMPLIANCE RULES ── */
 const COMP = [
   { label: "RBI Fair Practices Code",   desc: "Every lending decision governed by RBI's Fair Practices Code for Lenders. Consistent, transparent, and non-discriminatory application across all segments and products." },
-  { label: "DPDPA 2025 Consent",     desc: "Bureau pulls gated behind verified, purpose-specific digital consent per the Digital Personal Data Protection Act, 2023. Consent scope, purpose, and expiry tracked and enforced per CICRA 2005." },
+  { label: "DPDPA 2025 Consent",     desc: "Bureau pulls gated behind verified, purpose-specific digital consent per the Digital Personal Data Protection Act, 2023. Consent scope, purpose, and expiry tracked and enforced per DPDPA 2025." },
   { label: "Rejection Communication",   desc: "All declines trigger mandatory communication with reason codes as required under RBI's guidelines on transparency in lending. Delivered automatically — no manual step required." },
   { label: "RBI Product Circulars",     desc: "Interest rate caps, LTV limits, and product eligibility rules enforced per applicable RBI master directions and circulars. No manual override of regulatory guardrails." },
   { label: "KYC Master Direction",      desc: "KYC verification status validated against RBI KYC Master Direction 2016 (updated) before decisioning proceeds. Incomplete or expired KYC halts the pipeline automatically." },
@@ -289,7 +289,7 @@ export default function Lending() {
       </div>
 
       {/* COMPLIANCE */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion>
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
@@ -357,34 +357,33 @@ export default function Lending() {
 
             {/* Center */}
             <div className="hidden md:flex flex-col items-center justify-center gap-3 px-2">
-              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent)"}} />
-              <div className="w-9 h-9 rounded-xl border border-blue-400/25 bg-blue-500/[0.07] flex flex-col items-center justify-center gap-0.5 flex-shrink-0">
-                <span className="text-blue-300/50 text-[8px] tracking-[0.1em]">SX</span>
-                <span className="text-blue-400/45 text-xs leading-none">›</span>
+              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
+              <div className="w-9 h-9 rounded-full border border-white/25 bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+                <span className="text-white/55 text-base leading-none">→</span>
               </div>
-              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent)"}} />
+              <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
             </div>
 
             {/* Right — WITH SHIELDX (indigo) */}
-            <div className="rounded-2xl border border-indigo-500/[0.18] bg-indigo-500/[0.025] p-6"
-              style={{boxShadow:"0 0 50px rgba(129,140,248,0.10)"}}>
+            <div className="rounded-2xl border border-indigo-500/[0.30] bg-indigo-500/[0.05] p-6"
+              style={{boxShadow:"0 0 70px rgba(129,140,248,0.18)"}}>
               <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-6 h-6 rounded-full bg-indigo-500/15 border border-indigo-400/25 flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-indigo-500/20 border border-indigo-400/35 flex items-center justify-center flex-shrink-0">
                   <span className="text-indigo-400 text-[10px] leading-none">✓</span>
                 </div>
-                <span className="text-[10px] text-indigo-400/65 tracking-[0.2em] font-medium">WITH SHIELDX</span>
+                <span className="text-[10px] text-indigo-400/80 tracking-[0.2em] font-medium">WITH SHIELDX</span>
               </div>
               <div className="space-y-0.5">
                 {PAIRS.map((p, i) => (
-                  <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.04] last:border-0">
-                    <span className="text-indigo-400/55 text-[11px] flex-shrink-0 mt-0.5">✓</span>
-                    <span className="text-white/72 text-sm leading-relaxed">{p.x}</span>
+                  <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.06] last:border-0">
+                    <span className="text-indigo-400/70 text-[11px] flex-shrink-0 mt-0.5">✓</span>
+                    <span className="text-white/82 text-sm leading-relaxed">{p.x}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/[0.08] border border-indigo-400/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400/70" />
-                <span className="text-[10px] text-indigo-400/65 tracking-widest">GOVERNED: ✓</span>
+              <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/[0.12] border border-indigo-400/30">
+                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400/80" />
+                <span className="text-[10px] text-indigo-400/80 tracking-widest">GOVERNED: ✓</span>
               </div>
             </div>
           </div>
@@ -393,7 +392,7 @@ export default function Lending() {
       </div>
 
       {/* CROSS-LINKS */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion>
           <div className="flex items-center gap-2.5 mb-8">
             <div className="w-0.5 h-4 rounded-full bg-indigo-400/45" />
@@ -427,7 +426,7 @@ export default function Lending() {
         <Motion>
           <div className="border-t border-white/[0.08] pt-12 flex items-center justify-between flex-wrap gap-6">
             <div>
-              <div className="text-xl font-semibold mb-1">See a live lending decision.</div>
+              <div className="text-xl font-semibold mb-1">Watch a live lending decision.</div>
               <div className="text-white/58 text-sm">Walk through a live application decision pipeline — from submission to outcome.</div>
             </div>
             <Link to="/demo" className="inline-block bg-white text-black px-7 py-2.5 rounded-md text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shrink-0">

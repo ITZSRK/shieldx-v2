@@ -27,7 +27,7 @@ const SNAPSHOTS = {
   lending: {
     event:"loan_application", customer:"CUST-91042",
     foir:'"34% — within limit"', cibil:'"741 — PRIME"',
-    comp:{ rbi_fpc:"PASS", dpdp_consent:"PASS", cicra_2005:"PASS", kyc_master:"PASS" },
+    comp:{ rbi_fpc:"PASS", dpdp_consent:"PASS", kyc_master:"PASS" },
     action:'"APPROVED"',
   },
   servicing: {
@@ -46,7 +46,7 @@ function LiveDecisionStream() {
 
   const keys = {
     collections: ["event","customer","dpd","risk","trai_window","trai_dnd","dpdp_consent","rbi_fpc","action"],
-    lending:     ["event","customer","foir","cibil","rbi_fpc","dpdp_consent","cicra_2005","kyc_master","action"],
+    lending:     ["event","customer","foir","cibil","rbi_fpc","dpdp_consent","kyc_master","action"],
     servicing:   ["event","customer","intent","sla","ombudsman_scheme","dpdp_rights","rbi_charter","action"],
   };
   const snap = SNAPSHOTS[USE_CASES[ucIdx].key];
@@ -70,7 +70,7 @@ function LiveDecisionStream() {
     return () => clearTimeout(t);
   }, [ucIdx]);
 
-  const compKeys = ["trai_window","trai_dnd","dpdp_consent","rbi_fpc","ombudsman_scheme","dpdp_rights","rbi_charter","cicra_2005","kyc_master"];
+  const compKeys = ["trai_window","trai_dnd","dpdp_consent","rbi_fpc","ombudsman_scheme","dpdp_rights","rbi_charter","kyc_master"];
   const isComp = k => compKeys.includes(k);
   const isAction = k => k === "action";
 
@@ -185,7 +185,7 @@ function GovernanceCoverage() {
       cells: [
         "LOS application submitted",
         "FOIR · CIBIL · risk model",
-        "RBI FPC · CICRA 2005 · DPDP consent · KYC",
+        "RBI FPC · DPDPA 2025 · DPDP consent · KYC",
         "Approval or rejection notice",
         "Decision payload + reason codes",
       ],
@@ -424,12 +424,12 @@ export default function Solutions() {
       </section>
 
       {/* GOVERNANCE COVERAGE */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <GovernanceCoverage />
       </section>
 
       {/* EXECUTION LOG */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <ExecutionLog />
       </section>
 

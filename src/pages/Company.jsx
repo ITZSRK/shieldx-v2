@@ -648,7 +648,7 @@ export default function Company() {
 
           <Motion delay={0.08}>
             <h1 className="text-[50px] leading-[1.07] font-semibold mb-6">
-              Financial institutions have a decision problem.
+              The decision layer<br />BFSI was missing.
             </h1>
           </Motion>
 
@@ -667,7 +667,7 @@ export default function Company() {
 
       </section>
 
-      {/* ═══ FOUNDING INSIGHT — image LEFT, text RIGHT (inverted from hero) ═══ */}
+      {/* ═══ FOUNDING INSIGHT ═══ */}
       <section className="max-w-6xl mx-auto px-8 pb-28 grid md:grid-cols-2 gap-16 items-start">
 
         {/* Compliance enforcement — LEFT on desktop, below text on mobile */}
@@ -682,22 +682,51 @@ export default function Company() {
           <Motion>
             <div className="flex items-center gap-2.5 mb-5">
               <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
-              <span className="text-[11px] text-white/55 tracking-[0.2em]">THE FOUNDING INSIGHT</span>
+              <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY WE BUILT IT</span>
             </div>
             <h2 className="text-[36px] font-semibold leading-tight mb-5">
-              Three systems.<br />Zero decision layer.
+              One decision layer<br />between signal and action.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
               Every financial institution has systems of record, systems of engagement,
               and systems of execution. Between them — nothing governing decisions.
             </p>
             <p className="text-white font-medium">
-              That's the gap ShieldX was built to close.
+              ShieldX is that layer.
             </p>
           </Motion>
         </div>
 
       </section>
+
+      {/* ═══ PRODUCT VIDEO ═══ */}
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-5xl mx-auto px-8 py-20">
+        <Motion>
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <div className="h-px w-6 bg-white/20" />
+              <span className="text-[11px] text-white/55 tracking-[0.22em]">IN ACTION</span>
+              <div className="h-px w-6 bg-white/20" />
+            </div>
+            <h2 className="text-[30px] font-semibold mb-3">Watch ShieldX run a live decision.</h2>
+            <p className="text-white/58 text-sm max-w-md mx-auto leading-relaxed">
+              Signal in. Compliance checked. Governed action out. End to end.
+            </p>
+          </div>
+          <div className="relative w-full rounded-2xl overflow-hidden border border-white/[0.10]"
+            style={{ paddingBottom: "56.25%", background: "rgba(0,0,0,0.5)" }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/sjl9hKDv_3o?controls=1&rel=0&modestbranding=1&color=white"
+              title="ShieldX — Live Decision Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </Motion>
+      </section>
+      </div>
 
       {/* ═══ CATEGORY DECLARATION ═══ */}
       <div className="bg-white/[0.04] border-y border-white/[0.09]">

@@ -463,7 +463,7 @@ function BeforeAfter() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">THE SHIFT</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[36px] font-semibold mb-4">Ungoverned decisions have a cost.<br /><span className="text-white/45">ShieldX eliminates it.</span></h2>
+        <h2 className="text-[36px] font-semibold mb-4"><span className="text-white/52">Ungoverned decisions have a cost.</span><br />ShieldX eliminates it.</h2>
         <p className="text-white/66 max-w-md mx-auto leading-relaxed text-sm">
           The same signals. The same channels. Completely different outcomes — when a decision layer sits between them.
         </p>
@@ -472,7 +472,8 @@ function BeforeAfter() {
       <div className="max-w-5xl mx-auto grid grid-cols-[1fr_52px_1fr]">
 
         {/* Left — UNGOVERNED */}
-        <div className="rounded-2xl border border-red-500/[0.18] bg-red-500/[0.025] p-6">
+        <div className="rounded-2xl border border-red-500/[0.22] bg-red-500/[0.035] p-6"
+          style={{boxShadow:"0 0 60px rgba(239,68,68,0.11)"}}>
           <div className="flex items-center gap-2.5 mb-6">
             <div className="w-6 h-6 rounded-full bg-red-500/15 border border-red-400/25 flex items-center justify-center flex-shrink-0">
               <span className="text-red-400 text-[10px] leading-none">✕</span>
@@ -495,33 +496,33 @@ function BeforeAfter() {
 
         {/* Center */}
         <div className="flex flex-col items-center justify-center gap-3 px-2">
-          <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent)"}} />
-          <div className="w-9 h-9 rounded-xl border border-blue-400/25 bg-blue-500/[0.07] flex flex-col items-center justify-center gap-0.5 flex-shrink-0">
-            <span className="text-blue-300/50 text-[8px] tracking-[0.1em]">SX</span>
-            <span className="text-blue-400/45 text-xs leading-none">›</span>
+          <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
+          <div className="w-9 h-9 rounded-full border border-white/25 bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+            <span className="text-white/55 text-base leading-none">→</span>
           </div>
-          <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.09),transparent)"}} />
+          <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
         </div>
 
         {/* Right — WITH SHIELDX */}
-        <div className="rounded-2xl border border-emerald-500/[0.18] bg-emerald-500/[0.025] p-6">
+        <div className="rounded-2xl border border-emerald-500/[0.30] bg-emerald-500/[0.05] p-6"
+          style={{boxShadow:"0 0 70px rgba(52,211,153,0.18)"}}>
           <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-6 h-6 rounded-full bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center flex-shrink-0">
+            <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/35 flex items-center justify-center flex-shrink-0">
               <span className="text-emerald-400 text-[10px] leading-none">✓</span>
             </div>
-            <span className="text-[10px] text-emerald-400/65 tracking-[0.2em] font-medium">WITH SHIELDX</span>
+            <span className="text-[10px] text-emerald-400/80 tracking-[0.2em] font-medium">WITH SHIELDX</span>
           </div>
           <div className="space-y-0.5">
             {pairs.map((p, i) => (
-              <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.04] last:border-0">
-                <span className="text-emerald-400/55 text-[11px] flex-shrink-0 mt-0.5">✓</span>
-                <span className="text-white/72 text-sm leading-relaxed">{p.with_}</span>
+              <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.06] last:border-0">
+                <span className="text-emerald-400/70 text-[11px] flex-shrink-0 mt-0.5">✓</span>
+                <span className="text-white/82 text-sm leading-relaxed">{p.with_}</span>
               </div>
             ))}
           </div>
-          <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/[0.08] border border-emerald-400/20">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/70" />
-            <span className="text-[10px] text-emerald-400/65 tracking-widest">GOVERNED: 100%</span>
+          <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/[0.12] border border-emerald-400/30">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
+            <span className="text-[10px] text-emerald-400/80 tracking-widest">GOVERNED: 100%</span>
           </div>
         </div>
       </div>
@@ -889,7 +890,7 @@ function CTASection() {
         boxShadow:"0 0 80px rgba(96,165,250,.07)",
       }}
     >
-      <h2 className="text-[32px] font-semibold mb-4">See it run a live pipeline.</h2>
+      <h2 className="text-[32px] font-semibold mb-4">Watch it run a live pipeline.</h2>
       <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
         Signal to compliant execution — every stage, live, in 20 minutes.
         Your use case: Collections, Lending, or Servicing.
