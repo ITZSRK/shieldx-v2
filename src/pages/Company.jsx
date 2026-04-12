@@ -653,9 +653,11 @@ export default function Company() {
           </Motion>
 
           <Motion delay={0.16}>
-            <p className="text-white/68 text-[17px] leading-relaxed">
+            <p className="text-white/68 text-[17px] leading-relaxed mb-4">
               Signals flow from every system. What happens between signal and action
               is uncontrolled, ungoverned, and unauditable.
+            </p>
+            <p className="text-[19px] font-semibold text-white" style={{textShadow:"0 0 28px rgba(52,211,153,0.50)"}}>
               ShieldX closes that gap.
             </p>
           </Motion>
@@ -691,7 +693,7 @@ export default function Company() {
               Every financial institution has systems of record, systems of engagement,
               and systems of execution. Between them — nothing governing decisions.
             </p>
-            <p className="text-white font-medium">
+            <p className="text-[20px] md:text-[24px] font-semibold" style={{color:"#4ade80", textShadow:"0 0 32px rgba(74,222,128,0.55)"}}>
               ShieldX is that layer.
             </p>
           </Motion>

@@ -28,8 +28,8 @@ export default function Navbar() {
 
         {/* DESKTOP NAV */}
         <div className="hidden md:flex gap-8 text-sm text-white/70 items-center">
-          <Link to="/" className="hover:text-white transition">Home</Link>
-          <Link to="/platform" className="hover:text-white transition">Platform</Link>
+          <Link to="/" className={`hover:text-white transition pb-0.5 ${location.pathname === "/" ? "text-white border-b border-white/35" : ""}`}>Home</Link>
+          <Link to="/platform" className={`hover:text-white transition pb-0.5 ${location.pathname === "/platform" ? "text-white border-b border-white/35" : ""}`}>Platform</Link>
 
           {/* SOLUTIONS DROPDOWN */}
           <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
@@ -56,7 +56,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link to="/company" className="hover:text-white transition">Company</Link>
+          <Link to="/company" className={`hover:text-white transition pb-0.5 ${location.pathname === "/company" ? "text-white border-b border-white/35" : ""}`}>Company</Link>
         </div>
 
         {/* DESKTOP CTA */}
