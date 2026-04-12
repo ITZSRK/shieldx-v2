@@ -221,7 +221,7 @@ export default function Collections() {
 
           <Motion delay={0.08}>
             <h1 className="text-[46px] leading-[1.07] font-semibold mb-5">
-              Every collections decision.<br />Governed in real time.
+              Every collections decision.<br />Compliant in real time.
             </h1>
           </Motion>
 

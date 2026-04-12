@@ -408,19 +408,19 @@ function CategoryDeclaration() {
             onMouseLeave={() => setActive(null)}
             className="p-6 rounded-xl border cursor-default transition-all duration-300"
             style={{
-              borderColor: active === i ? "rgba(96,165,250,0.28)" : "rgba(255,255,255,0.07)",
-              background:  active === i ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.02)",
-              boxShadow:   active === i ? "0 0 28px rgba(59,130,246,0.09)" : "none",
+              borderColor: active === i ? "rgba(96,165,250,0.35)" : "rgba(255,255,255,0.12)",
+              background:  active === i ? "rgba(96,165,250,0.07)" : "rgba(255,255,255,0.04)",
+              boxShadow:   active === i ? "0 0 28px rgba(59,130,246,0.12)" : "none",
             }}
           >
             <div className="w-6 h-[1px] mb-4 transition-colors duration-300"
               style={{background: active === i ? "rgba(96,165,250,0.6)" : "rgba(255,255,255,0.15)"}} />
             <div className="text-[13px] font-medium mb-3 transition-colors duration-300"
-              style={{color: active === i ? "white" : "rgba(255,255,255,0.72)"}}>
+              style={{color: active === i ? "white" : "rgba(255,255,255,0.85)"}}>
               {p.label}
             </div>
             <div className="text-xs leading-relaxed transition-colors duration-300"
-              style={{color: active === i ? "rgba(255,255,255,0.52)" : "rgba(255,255,255,0.35)"}}>
+              style={{color: active === i ? "rgba(255,255,255,0.78)" : "rgba(255,255,255,0.62)"}}>
               {p.detail}
             </div>
           </div>
@@ -469,7 +469,7 @@ function Beliefs() {
           onMouseEnter={() => { setActive(i); setPaused(true); }}
           onMouseLeave={() => setPaused(false)}
           className={`py-9 flex items-start gap-10 cursor-default select-none transition-all duration-400 ${
-            i === active ? "opacity-100" : "opacity-38"
+            i === active ? "opacity-100" : "opacity-60"
           }`}
         >
           <div className={`text-[11px] font-mono pt-2.5 w-7 shrink-0 transition-colors duration-300 ${
@@ -608,7 +608,7 @@ function BFSICards() {
           className={`block p-8 rounded-xl border select-none transition-all duration-400 no-underline ${
             i === active
               ? "border-blue-400/28 bg-blue-500/[0.05] shadow-[0_0_35px_rgba(59,130,246,0.1)] opacity-100"
-              : "border-white/[0.12] bg-white/[0.015] opacity-45"
+              : "border-white/[0.12] bg-white/[0.04] opacity-70"
           }`}
         >
           <div className={`text-[10px] tracking-[0.2em] mb-4 transition-colors duration-300 ${
@@ -618,7 +618,7 @@ function BFSICards() {
           <div className="text-white text-[16px] leading-snug mb-3">{item.line}</div>
 
           <div className={`text-sm leading-relaxed transition-colors duration-300 ${
-            i === active ? "text-white/45" : "text-white/22"
+            i === active ? "text-white/68" : "text-white/52"
           }`}>{item.sub}</div>
 
           <div className={`mt-5 text-xs transition-colors duration-300 ${
@@ -700,7 +700,8 @@ export default function Company() {
       </section>
 
       {/* ═══ CATEGORY DECLARATION ═══ */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-3 mb-8">
             <div className="h-px w-6 bg-white/20" />
@@ -712,6 +713,7 @@ export default function Company() {
           <CategoryDeclaration />
         </Motion>
       </section>
+      </div>
 
       {/* ═══ BELIEFS ═══ */}
       <section className="max-w-6xl mx-auto px-8 pb-28">
@@ -726,7 +728,8 @@ export default function Company() {
       </section>
 
       {/* ═══ INDUSTRY ═══ */}
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
@@ -736,6 +739,7 @@ export default function Company() {
         </Motion>
         <BFSICards />
       </section>
+      </div>
 
       {/* ═══ FOUNDER ═══ */}
       <section className="max-w-6xl mx-auto px-8 pb-28">

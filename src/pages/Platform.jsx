@@ -951,9 +951,11 @@ export default function Platform() {
         <Motion delay={0.15}><ControlPlaneSchematic /></Motion>
       </section>
 
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-28">
         <Motion><BeforeAfter /></Motion>
       </section>
+      </div>
 
       <section className="max-w-6xl mx-auto px-8 pb-28">
         <Motion>
@@ -972,17 +974,21 @@ export default function Platform() {
         </Motion>
       </section>
 
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-28">
         <Motion><EngineArchitecture /></Motion>
       </section>
+      </div>
 
       <section className="max-w-6xl mx-auto px-8 pb-28">
         <Motion><ComplianceSection /></Motion>
       </section>
 
-      <section className="max-w-6xl mx-auto px-8 pb-28">
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-28">
         <Motion><IntegrationSection /></Motion>
       </section>
+      </div>
 
       <section className="max-w-6xl mx-auto px-8 pb-28">
         <Motion><ObservabilitySection /></Motion>

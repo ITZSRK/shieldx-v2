@@ -239,7 +239,7 @@ export default function Lending() {
 
           <Motion delay={0.08}>
             <h1 className="text-[46px] leading-[1.07] font-semibold mb-5">
-              Every credit decision.<br />Governed end to end.
+              Every credit decision.<br />Compliant end to end.
             </h1>
           </Motion>
 
