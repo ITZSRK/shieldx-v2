@@ -685,7 +685,7 @@ export default function Company() {
               <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY WE BUILT IT</span>
             </div>
             <h2 className="text-[26px] md:text-[36px] font-semibold leading-tight mb-5">
-              One decision layer<br />between signal and action.
+              Three systems.<br />No layer between them.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
               Every financial institution has systems of record, systems of engagement,

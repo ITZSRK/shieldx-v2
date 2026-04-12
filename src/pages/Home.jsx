@@ -324,19 +324,11 @@ export default function Home() {
             Customer Decisioning<br />Infrastructure.
           </h1>
 
-          <p className="text-[18px] text-white/68 mb-5 max-w-lg mx-auto leading-relaxed">
+          <p className="text-[18px] text-white/68 mb-10 max-w-lg mx-auto leading-relaxed">
             Every customer decision your institution makes — credit, collections,
             servicing, or internal — evaluated, validated against regulation,
-            and audited. Before any action is triggered.
+            and audited before any action fires.
           </p>
-
-          <div className="flex items-center justify-center gap-3 text-[12px] text-white/28 mb-10">
-            <span>Not a CRM</span>
-            <span className="text-white/15">·</span>
-            <span>Not a CPaaS</span>
-            <span className="text-white/15">·</span>
-            <span>Not a rule engine</span>
-          </div>
 
           <div className="flex justify-center gap-3 mb-14 flex-wrap">
             {[
