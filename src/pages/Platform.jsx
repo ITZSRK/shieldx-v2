@@ -16,22 +16,20 @@ function Motion({ children, delay = 0 }) {
   );
 }
 
-/* ─── HERO RIGHT: CONTROL PLANE SCHEMATIC ────────────── */
-const PIPELINE_STAGES = [
-  { label:"Signal Ingestion",  gate:false },
-  { label:"Decision Engine",   gate:false },
-  { label:"Compliance Gate",   gate:true  },
-  { label:"Routing Engine",    gate:false },
-  { label:"Execution Adapter", gate:false },
-];
-const SOURCES  = [{ tag:"CBS",  full:"Core Banking"    }, { tag:"LOS", full:"Loan Origination" }, { tag:"CRM", full:"Campaign / CRM"   }];
-const CHANNELS = ["Voice AI", "SMS", "WhatsApp Business", "Email", "Human in Loop"];
-
-function ControlPlaneSchematic() {
-  const [step, setStep] = useState(0);
+/* ─── HERO RIGHT: LIVE DECISION TRACE ────────────────── */
+function LiveDecisionTrace() {
+  const stages = [
+    { ms:"0ms",  label:"Signal received",     sub:"event ingested · payload normalised",         highlight:false },
+    { ms:"4ms",  label:"Decision computed",   sub:"risk scored · eligibility evaluated",          highlight:false },
+    { ms:"11ms", label:"Compliance validated", sub:"all regulatory checks passed",                highlight:true  },
+    { ms:"18ms", label:"Routing determined",  sub:"channel selected · time window confirmed",     highlight:false },
+    { ms:"24ms", label:"Execution triggered", sub:"action dispatched · response captured",        highlight:false },
+    { ms:"24ms", label:"Audit written",       sub:"immutable log created · AUD-20240411-48321",   highlight:false },
+  ];
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const i = setInterval(() => setStep(s => (s + 1) % PIPELINE_STAGES.length), 850);
+    const i = setInterval(() => setActive(a => (a + 1) % stages.length), 1300);
     return () => clearInterval(i);
   }, []);
 
@@ -43,105 +41,54 @@ function ControlPlaneSchematic() {
           <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
           <div className="w-3 h-3 rounded-full bg-[#28C840]" />
         </div>
-        <span className="flex-1 text-center text-white/40 text-[10px] tracking-[0.15em]">ShieldX — Control Plane</span>
+        <span className="flex-1 text-center text-white/40 text-[10px] tracking-[0.15em]">ShieldX — Decision Runtime</span>
         <div className="flex items-center gap-1.5 text-[10px] text-blue-400">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
           LIVE
         </div>
       </div>
 
-      {/* schematic: sources → ShieldX → channels */}
-      <div className="p-5 grid grid-cols-[1fr_20px_148px_20px_1fr] items-center gap-1">
-
-        {/* left: source systems */}
-        <div>
-          <div className="text-[9px] text-white/22 tracking-widest mb-3 text-right">SOURCE SYSTEMS</div>
-          <div className="space-y-1.5">
-            {SOURCES.map((s, i) => (
-              <div key={i} className="flex items-center justify-end gap-2 px-3 py-2 rounded-lg border transition-all duration-300"
-                style={{
-                  borderColor: step % SOURCES.length === i ? "rgba(96,165,250,0.35)" : "rgba(255,255,255,0.06)",
-                  background:  step % SOURCES.length === i ? "rgba(96,165,250,0.06)" : "rgba(255,255,255,0.015)",
-                }}>
-                <span className="text-[11px] transition-colors duration-300"
-                  style={{color: step % SOURCES.length === i ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.3)"}}>
-                  {s.full}
-                </span>
-                <span className="text-[9px] font-mono font-bold transition-colors duration-300"
-                  style={{color: step % SOURCES.length === i ? "#93c5fd" : "rgba(255,255,255,0.22)"}}>
-                  {s.tag}
-                </span>
+      <div className="p-4 font-mono space-y-0.5">
+        {stages.map((s, i) => (
+          <div key={i}
+            className="flex items-start gap-3 px-3 py-2.5 rounded-lg transition-all duration-400"
+            style={{
+              background: i === active
+                ? (s.highlight ? "rgba(74,222,128,0.07)" : "rgba(96,165,250,0.05)")
+                : "transparent",
+            }}
+          >
+            <span className="text-[10px] w-9 shrink-0 tabular-nums mt-0.5 transition-colors duration-300"
+              style={{ color: i === active ? (s.highlight ? "rgba(74,222,128,0.65)" : "rgba(96,165,250,0.6)") : "rgba(255,255,255,0.16)" }}>
+              {s.ms}
+            </span>
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] leading-tight transition-colors duration-300" style={{
+                color: i === active
+                  ? (s.highlight ? "#4ade80" : "#93c5fd")
+                  : i < active ? "rgba(255,255,255,0.38)" : "rgba(255,255,255,0.20)",
+              }}>
+                {s.label}
+                {i === active && <span className="ml-1.5 animate-pulse" style={{ color: s.highlight ? "rgba(74,222,128,0.7)" : "rgba(96,165,250,0.7)" }}>▮</span>}
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* arrow in */}
-        <div className="flex flex-col items-center justify-center gap-[5px] mt-6">
-          {[0.5, 0.3, 0.15].map((o, i) => (
-            <div key={i} className="w-1 h-1 rounded-full" style={{background:`rgba(96,165,250,${o})`}} />
-          ))}
-          <span className="text-blue-400/35 text-[11px] -mt-0.5">›</span>
-        </div>
-
-        {/* center: ShieldX pipeline */}
-        <div className="border border-blue-400/30 rounded-xl overflow-hidden"
-          style={{background:"rgba(59,130,246,0.04)", boxShadow:"0 0 24px rgba(59,130,246,0.12)"}}>
-          <div className="border-b border-blue-400/[0.12] px-3 py-2 text-center">
-            <span className="text-[10px] text-blue-300/65 tracking-[0.18em]">SHIELDX</span>
-            <div className="text-[8px] text-blue-300/35 tracking-widest mt-0.5">Decision · Compliance · Orchestration</div>
-          </div>
-          <div className="px-2.5 py-3 space-y-1">
-            {PIPELINE_STAGES.map((p, i) => (
-              <div key={i} className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-all duration-300"
-                style={{background: step===i ? (p.gate ? "rgba(74,222,128,0.09)" : "rgba(96,165,250,0.09)") : "transparent"}}>
-                <div className="w-[5px] h-[5px] rounded-full flex-shrink-0 transition-all duration-300" style={{
-                  background: step===i ? (p.gate ? "#4ade80" : "#60a5fa") : "rgba(255,255,255,0.1)",
-                  boxShadow:  step===i ? `0 0 6px ${p.gate ? "rgba(74,222,128,0.9)" : "rgba(96,165,250,0.9)"}` : "none",
-                }}/>
-                <span className="text-[10px] leading-tight transition-colors duration-300" style={{
-                  color: step===i ? (p.gate ? "#4ade80" : "#93c5fd") : "rgba(255,255,255,0.28)",
-                }}>{p.label}</span>
+              <div className="text-[9px] mt-0.5 leading-snug transition-colors duration-300" style={{
+                color: i === active
+                  ? (s.highlight ? "rgba(74,222,128,0.42)" : "rgba(96,165,250,0.38)")
+                  : "rgba(255,255,255,0.10)",
+              }}>
+                {s.sub}
               </div>
-            ))}
+            </div>
+            {i < active && (
+              <span className="text-[10px] shrink-0 mt-0.5" style={{ color: "rgba(74,222,128,0.45)" }}>✓</span>
+            )}
           </div>
-        </div>
-
-        {/* arrow out */}
-        <div className="flex flex-col items-center justify-center gap-[5px] mt-6">
-          <span className="text-blue-400/35 text-[11px] -mb-0.5">›</span>
-          {[0.15, 0.3, 0.5].map((o, i) => (
-            <div key={i} className="w-1 h-1 rounded-full" style={{background:`rgba(96,165,250,${o})`}} />
-          ))}
-        </div>
-
-        {/* right: channels */}
-        <div>
-          <div className="text-[9px] text-white/22 tracking-widest mb-3">CHANNELS</div>
-          <div className="space-y-1.5">
-            {CHANNELS.map((c, i) => {
-              const isActive = step === PIPELINE_STAGES.length - 1 && i === step % CHANNELS.length;
-              return (
-                <div key={i} className="px-3 py-2 rounded-lg border text-[11px] transition-all duration-300"
-                  style={{
-                    borderColor: isActive ? "rgba(96,165,250,0.7)" : "rgba(255,255,255,0.06)",
-                    background:  isActive ? "rgba(96,165,250,0.14)" : "rgba(255,255,255,0.015)",
-                    color:       isActive ? "#93c5fd" : "rgba(255,255,255,0.38)",
-                    boxShadow:   isActive ? "0 0 12px rgba(96,165,250,0.35)" : "none",
-                    transform:   isActive ? "translateX(2px)" : "none",
-                  }}>
-                  {c}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
+        ))}
       </div>
 
-      <div className="border-t border-white/[0.12] px-5 py-2.5 flex justify-between text-[10px]">
-        <span className="text-white/22">API-first · No rip-and-replace · On-prem or cloud</span>
-        <span style={{color:"rgba(74,222,128,0.55)"}}>Compliant ✓</span>
+      <div className="border-t border-white/[0.08] px-4 py-2 flex justify-between text-[9px] text-white/20">
+        <span>One path · Every decision governed</span>
+        <span style={{ color: "rgba(74,222,128,0.50)" }}>Compliant ✓</span>
       </div>
     </div>
   );
@@ -201,15 +148,13 @@ function DecisionDebugger() {
         </div>
         <div className="space-y-[5px] text-white/45">
           <div>customer_id: <span className="text-white/80">48321</span></div>
-          <div>event: <span className="text-white/80">payment_missed</span></div>
           <div>dpd_bucket: <span className="text-white/80">30–60</span></div>
           <div>risk_score: <span className="text-white/80">0.82</span></div>
-          <div>dnd_status: <span style={{color:"#4ade80"}}>CLEAR</span></div>
-          <div>trai_window: <span style={{color:"#4ade80"}}>COMPLIANT</span></div>
           <div>compliance: <span style={{color:"#4ade80"}}>PASS</span></div>
+          <div>channel_selected: <span style={{color:"#93c5fd"}}>voice_ai</span></div>
           <div className="pt-2 mt-1 border-t border-white/15">
             <div style={{color:"#93c5fd"}}>[{steps[active].ms}] {steps[active].label}</div>
-            <div>execution: <span style={{color:"#93c5fd"}}>voice_ai_triggered</span></div>
+            <div>decision_id: <span className="text-white/45">DEC-48321</span></div>
             <div>audit_id: <span className="text-white/45">AUD-20240411-48321</span></div>
           </div>
         </div>
@@ -571,26 +516,6 @@ function BeforeAfter() {
 
 /* ─── INTEGRATION ────────────────────────────────────── */
 function IntegrationSection() {
-  const [activeSrc, setActiveSrc] = useState(0);
-  const [activeCh,  setActiveCh]  = useState(0);
-
-  const sources  = [
-    { tag:"CBS", full:"Core Banking System",  event:"payment_missed →"        },
-    { tag:"LOS", full:"Loan Origination",     event:"application_submitted →" },
-    { tag:"CRM", full:"Campaign / CRM",       event:"grievance_raised →"      },
-  ];
-  const channels = ["Voice AI","SMS","WhatsApp Business","Email","Human in Loop"];
-  const inner    = ["Decision Engine","Compliance Gate","Routing Engine","Audit Writer"];
-
-  useEffect(() => {
-    const i = setInterval(() => setActiveSrc(a => (a + 1) % sources.length), 1800);
-    return () => clearInterval(i);
-  }, []);
-  useEffect(() => {
-    const i = setInterval(() => setActiveCh(a => (a + 1) % channels.length), 1100);
-    return () => clearInterval(i);
-  }, []);
-
   return (
     <div>
       <div className="text-center mb-12">
@@ -601,128 +526,42 @@ function IntegrationSection() {
         </div>
         <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Plug in.<br />Don't rip out.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
-          CBS, LOS, and CRM events go in. Governed, compliant decisions come out.
-          No core banking changes. ShieldX sits between what you already have and what you fire.
+          No middleware rip-out. No core system changes. ShieldX connects via
+          standard APIs — and sits between what you have and every action you fire.
         </p>
       </div>
 
-      {/* Architecture diagram */}
-      <div className="max-w-5xl mx-auto grid grid-cols-[1fr_28px_180px_28px_1fr] items-center gap-0 mb-10">
-
-        {/* Source systems */}
-        <div>
-          <div className="text-[9px] text-white/22 tracking-widest mb-3 text-right">SOURCE SYSTEMS</div>
-          <div className="space-y-2">
-            {sources.map((s, i) => (
-              <div key={i} className="flex items-center justify-end gap-3 px-4 py-3 rounded-xl border transition-all duration-400"
-                style={{
-                  borderColor: activeSrc===i ? "rgba(96,165,250,0.35)" : "rgba(255,255,255,0.06)",
-                  background:  activeSrc===i ? "rgba(96,165,250,0.06)" : "rgba(255,255,255,0.02)",
-                }}>
-                <div className="text-right">
-                  <div className="text-[11px] transition-colors duration-300"
-                    style={{color: activeSrc===i ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.32)"}}>
-                    {s.full}
-                  </div>
-                  {activeSrc===i && (
-                    <motion.div initial={{opacity:0}} animate={{opacity:1}} className="text-[9px] font-mono mt-0.5" style={{color:"rgba(96,165,250,0.55)"}}>
-                      {s.event}
-                    </motion.div>
-                  )}
-                </div>
-                <div className="w-8 h-8 rounded-lg border flex items-center justify-center flex-shrink-0 text-[10px] font-mono font-bold transition-all duration-300"
-                  style={{
-                    borderColor: activeSrc===i ? "rgba(96,165,250,0.40)" : "rgba(255,255,255,0.10)",
-                    background:  activeSrc===i ? "rgba(96,165,250,0.10)" : "rgba(255,255,255,0.03)",
-                    color:       activeSrc===i ? "#93c5fd" : "rgba(255,255,255,0.28)",
-                  }}>{s.tag}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Arrow in */}
-        <div className="flex flex-col items-center justify-center gap-[5px] mt-6">
-          {[0.5,0.32,0.16].map((o,i) => (
-            <div key={i} className="w-1 h-1 rounded-full" style={{background:`rgba(96,165,250,${o})`}} />
-          ))}
-          <span className="text-blue-400/35 text-xs">›</span>
-        </div>
-
-        {/* ShieldX core */}
-        <div className="border border-blue-400/30 rounded-2xl overflow-hidden"
-          style={{background:"rgba(59,130,246,0.04)",boxShadow:"0 0 28px rgba(59,130,246,0.10)"}}>
-          <div className="border-b border-blue-400/[0.12] px-3 py-2 text-center">
-            <span className="text-[10px] text-blue-300/60 tracking-[0.2em]">ShieldX</span>
-          </div>
-          <div className="p-3 space-y-1.5">
-            {inner.map((s, i) => (
-              <div key={i} className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
-                style={{
-                  background: i===1 ? "rgba(74,222,128,0.07)" : "rgba(255,255,255,0.02)",
-                  border: i===1 ? "1px solid rgba(74,222,128,0.18)" : "1px solid rgba(255,255,255,0.04)",
-                }}>
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{
-                    background: i===1 ? "#4ade80" : "rgba(96,165,250,0.6)",
-                    boxShadow:  i===1 ? "0 0 5px rgba(74,222,128,0.8)" : "none",
-                  }} />
-                <span className="text-[10px]"
-                  style={{color: i===1 ? "#4ade80" : "rgba(255,255,255,0.42)"}}>
-                  {s}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="border-t border-blue-400/[0.08] px-3 py-2 text-center">
-            <span className="text-[9px] text-white/20 tracking-widest">API-first · No rip-and-replace</span>
-          </div>
-        </div>
-
-        {/* Arrow out */}
-        <div className="flex flex-col items-center justify-center gap-[5px] mt-6">
-          <span className="text-blue-400/35 text-xs">›</span>
-          {[0.16,0.32,0.5].map((o,i) => (
-            <div key={i} className="w-1 h-1 rounded-full" style={{background:`rgba(96,165,250,${o})`}} />
-          ))}
-        </div>
-
-        {/* Channels */}
-        <div>
-          <div className="text-[9px] text-white/22 tracking-widest mb-3">CHANNELS</div>
-          <div className="space-y-2">
-            {channels.map((c, i) => (
-              <div key={i} className="px-4 py-3 rounded-xl border text-[11px] transition-all duration-300"
-                style={{
-                  borderColor: activeCh===i ? "rgba(96,165,250,0.55)" : "rgba(255,255,255,0.06)",
-                  background:  activeCh===i ? "rgba(96,165,250,0.08)" : "rgba(255,255,255,0.02)",
-                  color:       activeCh===i ? "#93c5fd" : "rgba(255,255,255,0.38)",
-                  transform:   activeCh===i ? "translateX(4px)" : "none",
-                }}>
-                {c}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Three proof-point cards */}
-      <div className="grid md:grid-cols-3 gap-3">
+      <div className="grid md:grid-cols-3 gap-4">
         {[
-          { n:"01", label:"INBOUND",    title:"CBS · LOS · CRM events",     detail:"REST API and webhooks. Event-driven and pull-based both supported.",                                              proof:"Zero CBS / LOS code changes required"           },
-          { n:"02", label:"EXECUTION",  title:"All your existing channels",  detail:"Pre-built adapters for Voice AI, SMS, WhatsApp Business, Email, and Human in Loop.",                            proof:"Existing vendor relationships preserved"          },
-          { n:"03", label:"DEPLOYMENT", title:"Cloud, on-prem, or hybrid",   detail:"Adapts to your infrastructure policy — including air-gapped Tier-1 and DPDP data residency requirements.",     proof:"Typical integration: 3–6 weeks to first decision" },
+          {
+            n:"01", label:"INTEGRATION",
+            title:"API-first, event-driven",
+            detail:"REST endpoints and webhooks. Event-driven and pull-based both supported. Zero changes to your core systems.",
+            proof:"No CBS / LOS code changes required",
+          },
+          {
+            n:"02", label:"DEPLOYMENT",
+            title:"On-prem, cloud, or hybrid",
+            detail:"Adapts to your infrastructure policy — including air-gapped Tier-1 and DPDP data residency requirements.",
+            proof:"Existing infrastructure preserved",
+          },
+          {
+            n:"03", label:"TIME TO VALUE",
+            title:"3–6 weeks to first decision",
+            detail:"From agreement to your first governed, compliant, auditable decision. Phased rollout available.",
+            proof:"Collections live first — expand from there",
+          },
         ].map((col, i) => (
-          <div key={i} className="border border-white/[0.12] rounded-xl px-5 py-4 bg-white/[0.04]">
-            <div className="flex items-center gap-2 mb-2">
+          <div key={i} className="border border-white/[0.12] rounded-xl px-6 py-5 bg-white/[0.04]">
+            <div className="flex items-center gap-2 mb-3">
               <span className="text-[9px] font-mono text-white/22">{col.n}</span>
               <span className="text-[9px] text-white/35 tracking-widest">{col.label}</span>
             </div>
-            <div className="text-sm font-semibold text-white mb-1">{col.title}</div>
-            <div className="text-xs text-white/38 leading-relaxed mb-3">{col.detail}</div>
-            <div className="flex items-center gap-1.5">
+            <div className="text-sm font-semibold text-white mb-2">{col.title}</div>
+            <div className="text-xs text-white/42 leading-relaxed mb-4">{col.detail}</div>
+            <div className="flex items-center gap-1.5 pt-3 border-t border-white/[0.06]">
               <span className="text-[11px]" style={{color:"rgba(74,222,128,0.70)"}}>✓</span>
-              <span className="text-[11px] text-white/38">{col.proof}</span>
+              <span className="text-[11px] text-white/40">{col.proof}</span>
             </div>
           </div>
         ))}
@@ -1002,7 +841,7 @@ export default function Platform() {
             ))}
           </div>
         </Motion>
-        <Motion delay={0.15}><ControlPlaneSchematic /></Motion>
+        <Motion delay={0.15}><LiveDecisionTrace /></Motion>
       </section>
 
       <div className="bg-white/[0.04] border-y border-white/[0.09]">
