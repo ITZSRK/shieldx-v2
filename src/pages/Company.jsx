@@ -797,7 +797,7 @@ export default function Company() {
                 <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
                 <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
                   Observed the gap firsthand — across collections, lending, and servicing
-                  at scale in Indian BFSI. Built the tool that didn't exist.
+                  at scale in Indian BFSI. Built the decision layer that didn't exist.
                 </p>
               </div>
             </div>
