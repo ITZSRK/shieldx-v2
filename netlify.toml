@@ -1,0 +1,16 @@
+[[redirects]]
+  from = "https://queloai.online/*"
+  to = "https://queloshieldx.in/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.queloai.online/*"
+  to = "https://queloshieldx.in/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
