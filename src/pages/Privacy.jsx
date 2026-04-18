@@ -96,7 +96,7 @@ Contact and communication data is retained for up to 3 years from the date of la
     body: `For any privacy-related queries or to exercise your rights under the DPDP Act, contact our Data Protection Officer:
 
 Quelo Technologies Private Limited
-Email: privacy@quelotechnologies.com
+Email: privacy@queloai.online
 
 We will acknowledge your request within 48 hours and respond within the timelines prescribed under the DPDP Act. If you are not satisfied with our response, you may escalate your grievance to the Data Protection Board of India once it is constituted under the DPDP Act.`,
   },

@@ -119,7 +119,7 @@ export default function Security() {
               If you believe you have found a security vulnerability in ShieldX, please report it responsibly to our security team. We commit to acknowledging your report within 48 hours and working with you on a resolution timeline.
             </p>
             <div className="text-sm text-white/50">
-              Contact: <span className="text-white/70">security@quelotechnologies.com</span>
+              Contact: <span className="text-white/70">security@queloai.online</span>
             </div>
           </div>
         </Motion>

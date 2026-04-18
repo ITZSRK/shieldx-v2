@@ -71,7 +71,7 @@ Our total liability for any direct claims arising from use of this website shall
     body: `For any queries about these Terms, contact us at:
 
 Quelo Technologies Private Limited
-Email: legal@quelotechnologies.com`,
+Email: legal@queloai.online`,
   },
 ];
 
