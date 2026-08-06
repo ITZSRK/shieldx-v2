@@ -17,13 +17,13 @@ function Motion({ children, delay = 0 }) {
 const SECTIONS = [
   {
     title: "Agreement",
-    body: `These Terms of Use ("Terms") govern your access to and use of the ShieldX website (shieldx.in) and any product demonstrations or materials made available by Quelo Technologies Private Limited ("we", "us", "our").
+    body: `These Terms of Use ("Terms") govern your access to and use of the ShieldX website (queloshieldx.in) and any product demonstrations or materials made available by Quelo Technologies Private Limited ("we", "us", "our").
 
 By accessing this website or engaging with our product, you agree to these Terms. If you do not agree, please do not use this website.`,
   },
   {
     title: "ShieldX is a B2B product",
-    body: `ShieldX is a decision infrastructure platform sold exclusively to financial institutions — banks, non-banking financial companies (NBFCs), and insurance companies regulated by the Reserve Bank of India (RBI), Insurance Regulatory and Development Authority of India (IRDAI), and other applicable Indian regulatory bodies.
+    body: `ShieldX is a decision infrastructure platform sold exclusively to financial institutions — banks, non-banking financial companies (NBFCs), asset reconstruction companies (ARCs), and their collection partners, regulated by the Reserve Bank of India (RBI) and other applicable Indian regulatory bodies.
 
 This website is intended for institutional decision-makers evaluating enterprise software. It is not a consumer-facing product or service.`,
   },
@@ -60,7 +60,7 @@ Our total liability for any direct claims arising from use of this website shall
   },
   {
     title: "Governing law and jurisdiction",
-    body: `These Terms are governed by the laws of India. Any dispute arising under these Terms shall be subject to the exclusive jurisdiction of the courts in Bengaluru, Karnataka, India.`,
+    body: `These Terms are governed by the laws of India. Any dispute arising under these Terms shall be subject to the exclusive jurisdiction of the courts in Mumbai, Maharashtra, India.`,
   },
   {
     title: "Changes to these Terms",

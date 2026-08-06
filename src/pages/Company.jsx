@@ -29,9 +29,7 @@ function WindowDots() {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   HERO VISUAL — Decision Record
-   Cycles through 3 governed decisions with animated
-   compliance checks and a pass/blocked verdict.
+   HERO VISUAL — Decision Record (collections only)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const DECISIONS = [
   {
@@ -44,28 +42,28 @@ const DECISIONS = [
     checks: [
       { rule:"TRAI Window", result:"PASS", note:"08:00–19:00 IST" },
       { rule:"TRAI DND",    result:"PASS", note:"Not registered"  },
-      { rule:"DPDPA 2025",  result:"PASS", note:"Consent verified"},
+      { rule:"DPDP Act",    result:"PASS", note:"Consent verified"},
       { rule:"RBI FPC",     result:"PASS", note:"Compliant"       },
     ],
     verdict:      "EXECUTE",
-    action:       "Voice AI · 2:00 PM IST",
+    action:       "Agent call · 2:00 PM IST · Assist context",
     verdictColor: "#34d399",
   },
   {
     id:          "DEC-20260411-7822",
-    vertical:    "LENDING",
-    vertColor:   "#818cf8",
-    customer:    "Rajan M.",
-    event:       "application_submitted",
-    context:     "₹8L loan · LTV 58%",
+    vertical:    "COLLECTIONS",
+    vertColor:   "#f59e0b",
+    customer:    "Meera N.",
+    event:       "promise_to_pay",
+    context:     "₹18,000 · DPD-15",
     checks: [
-      { rule:"Bureau Score", result:"PASS", note:"CIBIL 734"    },
-      { rule:"Policy Gate",  result:"PASS", note:"Within band"  },
-      { rule:"DPDPA 2025",   result:"PASS", note:"Consent on file"},
-      { rule:"Dedup Check",  result:"PASS", note:"No duplicate" },
+      { rule:"TRAI Window", result:"PASS", note:"11:00–19:00 IST" },
+      { rule:"DPDP Act",    result:"PASS", note:"Consent verified"},
+      { rule:"RBI FPC",     result:"PASS", note:"Compliant"       },
+      { rule:"Frequency Cap", result:"PASS", note:"Within limit"  },
     ],
     verdict:      "EXECUTE",
-    action:       "Approval notice · Email",
+    action:       "WhatsApp reminder · bank handle",
     verdictColor: "#34d399",
   },
   {
@@ -78,7 +76,7 @@ const DECISIONS = [
     checks: [
       { rule:"TRAI Window", result:"FAIL", note:"07:30 AM — outside window" },
       { rule:"TRAI DND",    result:"PASS", note:"Not registered"            },
-      { rule:"DPDPA 2025",  result:"PASS", note:"Consent verified"          },
+      { rule:"DPDP Act",    result:"PASS", note:"Consent verified"          },
       { rule:"RBI FPC",     result:"PASS", note:"Compliant"                 },
     ],
     verdict:      "BLOCKED",
@@ -121,10 +119,7 @@ function HeroVisual() {
           <span className="text-white/15">·</span>
           <span className="text-[10px] text-white/25 font-mono">{d.id}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-[10px] text-blue-400/70 font-mono">
-          <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-          LIVE
-        </div>
+        <span className="text-[9px] text-white/20 tracking-widest">Illustrative</span>
       </div>
 
       {/* CUSTOMER CONTEXT */}
@@ -179,9 +174,6 @@ function HeroVisual() {
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    COMPLIANCE ENFORCEMENT VISUAL
-   Decision trace — depth view of a single governed decision.
-   Visually distinct from hero: vertical trace with
-   colored BLOCKED / CLEARED gate cards, not a data table.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const TRACE = [
   { ms: "0ms",  text: "Signal received",                    kind: "step",    note: "payment_missed · Priya S. · ₹24,000 · DPD-7"     },
@@ -189,7 +181,7 @@ const TRACE = [
   { ms: "14ms", text: "TRAI Window Violation",              kind: "blocked", note: "Outreach at 7:30 AM — before TRAI window (8 AM IST)" },
   { ms: "15ms", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
   { ms: "19ms", text: "Compliance Cleared",                 kind: "passed",  note: "TRAI ✓  DND ✓  DPDP ✓  RBI FPC ✓"               },
-  { ms: "28ms", text: "Voice AI outreach triggered",        kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
+  { ms: "28ms", text: "Agent call triggered",                kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
   { ms: "29ms", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Immutable"                   },
 ];
 
@@ -208,7 +200,6 @@ function ComplianceCatch() {
   return (
     <div className="border border-white/10 rounded-xl bg-black/55 overflow-hidden font-mono text-xs">
 
-      {/* TITLE BAR — emerald indicator differentiates from hero blue */}
       <div className="border-b border-white/[0.08] px-4 py-2.5 flex items-center gap-3">
         <WindowDots />
         <span className="flex-1 text-center text-white/55 text-[10px] tracking-[0.18em]">
@@ -220,18 +211,15 @@ function ComplianceCatch() {
         </div>
       </div>
 
-      {/* TRIGGER */}
       <div className="px-5 py-2.5 border-b border-white/[0.05] flex items-center gap-2">
         <span className="text-[10px] text-white/35 tracking-widest shrink-0">TRIGGER</span>
         <span className="text-white/58 text-[11px] truncate">payment_missed · Priya S. · ₹24,000 · DPD-7</span>
       </div>
 
-      {/* DECISION TRACE — vertical flow with gate cards */}
       <div className="px-5 py-4 space-y-2.5 h-[256px] overflow-hidden">
         {TRACE.slice(0, visible).map((s, i) => {
           const isLatest = i === visible - 1;
 
-          /* ── BLOCKED gate ── */
           if (s.kind === "blocked") {
             return (
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
@@ -247,7 +235,6 @@ function ComplianceCatch() {
             );
           }
 
-          /* ── PASSED gate ── */
           if (s.kind === "passed") {
             return (
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
@@ -263,7 +250,6 @@ function ComplianceCatch() {
             );
           }
 
-          /* ── Regular trace step ── */
           return (
             <motion.div
               key={i}
@@ -285,11 +271,10 @@ function ComplianceCatch() {
         })}
       </div>
 
-      {/* FOOTER */}
       <div className={`border-t border-white/[0.12] px-5 py-2.5 flex justify-between text-[10px] transition-opacity duration-500 ${
         visible >= total ? "opacity-100" : "opacity-0"
       }`}>
-        <span className="text-white/30">Enforcement latency: 5ms · Zero violations</span>
+        <span className="text-white/30">Zero violations · Illustrative simulation</span>
         <span className="text-emerald-400/65">Governed ✓</span>
       </div>
 
@@ -299,13 +284,11 @@ function ComplianceCatch() {
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CATEGORY DECLARATION
-   Confident category creation — no comparisons, no NOT/IS.
-   Defines what the category IS through three pillars.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const PILLARS = [
   {
     label:  "Infrastructure, not software",
-    detail: "No customer UI. No system replacement. Sits beneath the application layer — a governed layer between signals and execution."
+    detail: "No customer UI required. No system replacement. Sits beneath the application layer — a governed layer between signals and execution."
   },
   {
     label:  "Decisions, not triggers",
@@ -323,24 +306,22 @@ function CategoryDeclaration() {
   return (
     <div>
 
-      {/* Main declaration panel */}
       <div className="relative rounded-2xl overflow-hidden border border-blue-400/[0.15] mb-5">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(59,130,246,0.12),transparent_58%)]" />
 
         <div className="relative px-5 md:px-10 pt-10 md:pt-14 pb-10 md:pb-12 grid md:grid-cols-[1fr_280px] gap-8 md:gap-14 items-center">
 
-          {/* Left: declaration */}
           <div>
-            <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A NEW CATEGORY</div>
+            <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A CATEGORY</div>
             <h2 className="text-[26px] md:text-[48px] font-semibold leading-[1.06] mb-6">
-              Customer Decisioning<br />Infrastructure
+              Real-Time Decisioning<br />Infrastructure
             </h2>
             <p className="text-white/66 leading-relaxed max-w-md text-[15px]">
-              A new layer in the financial technology stack — between systems of record and channels of execution.
-              Not a replacement of any existing system. The decisioning layer between them.
+              A layer in the financial technology stack — between systems of record and channels
+              of execution. Not a replacement of any existing system. The decisioning layer
+              between them.
             </p>
 
-            {/* NOT pills */}
             <div className="mt-8 flex flex-wrap gap-2">
               {["Not a CRM", "Not a CPaaS", "Not a business rule engine"].map((t, i) => (
                 <span key={i} className="text-[11px] px-3 py-1.5 rounded-full border border-white/[0.10] text-white/58">
@@ -350,22 +331,19 @@ function CategoryDeclaration() {
             </div>
           </div>
 
-          {/* Right: category comparison matrix */}
           <div>
-            <div className="text-[9px] text-white/30 tracking-[0.2em] mb-3">HOW CDI DIFFERS</div>
+            <div className="text-[9px] text-white/30 tracking-[0.2em] mb-3">HOW SHIELDX DIFFERS</div>
             <div className="rounded-xl border border-white/[0.08] bg-white/[0.015] overflow-hidden">
-              {/* Header row */}
               <div className="grid px-4 pt-3 pb-2 border-b border-white/[0.06]"
-                style={{gridTemplateColumns:"1fr repeat(4, 30px)", gap:"0 4px"}}>
+                style={{gridTemplateColumns:"1fr repeat(4, 34px)", gap:"0 4px"}}>
                 <div />
-                {["CRM","CPaaS","BRE","CDI"].map((h, i) => (
+                {["CRM","CPaaS","BRE","ShieldX"].map((h, i) => (
                   <div key={h} className="text-center text-[8px] tracking-widest font-medium"
                     style={{color: i === 3 ? "rgba(96,165,250,0.75)" : "rgba(255,255,255,0.25)"}}>
                     {h}
                   </div>
                 ))}
               </div>
-              {/* Capability rows */}
               {[
                 { cap:"Contact management",    v:[1,0,0,1] },
                 { cap:"Channel delivery",       v:[0,1,0,1] },
@@ -376,7 +354,7 @@ function CategoryDeclaration() {
               ].map((row, ri) => (
                 <div key={ri}
                   className="grid px-4 py-2.5 border-b border-white/[0.04] last:border-0 transition-colors duration-200 hover:bg-white/[0.05]"
-                  style={{gridTemplateColumns:"1fr repeat(4, 30px)", gap:"0 4px"}}>
+                  style={{gridTemplateColumns:"1fr repeat(4, 34px)", gap:"0 4px"}}>
                   <div className="text-[10px] text-white/58 leading-tight self-center">{row.cap}</div>
                   {row.v.map((val, ci) => (
                     <div key={ci} className="flex items-center justify-center text-[11px] font-medium"
@@ -392,14 +370,13 @@ function CategoryDeclaration() {
               ))}
             </div>
             <div className="mt-2 text-[9px] text-white/22 px-0.5">
-              CDI is the only layer that covers all six.
+              ShieldX is the only layer that covers all six.
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* Three pillars */}
       <div className="grid md:grid-cols-3 gap-4">
         {PILLARS.map((p, i) => (
           <div
@@ -442,7 +419,7 @@ const BELIEFS = [
     sub:  "Post-execution compliance checks are reports of what went wrong. Pre-execution compliance gates are what prevent it.",
   },
   {
-    text: "Every customer interaction should be intentional.",
+    text: "Every credit conversation should be intentional.",
     sub:  "Accidental outreach — wrong channel, wrong time, no consent — isn't just ineffective. In a regulated environment, it's a liability event.",
   },
   {
@@ -507,8 +484,8 @@ function Beliefs() {
 const CREDS = [
   {
     label: "DOMAIN FOCUS",
-    val:   "Collections · Lending · Servicing",
-    ctx:   "Built across all three verticals — not specialised in one. The same decision layer governs each, with vertical-specific compliance logic built in.",
+    val:   "Collections — the decisioning infrastructure Indian lenders run it on.",
+    ctx:   "One decision spine, purpose-built for how credit conversations happen in Indian BFSI.",
   },
   {
     label: "INDUSTRY",
@@ -565,71 +542,6 @@ function FoundingCred() {
   );
 }
 
-/* ━━━ BFSI CARDS — auto-cycle, hover freezes, links to sub-pages ━━━ */
-const BFSI = [
-  {
-    area: "Collections",
-    to:   "/collections",
-    line: "Every missed payment is a decision point.",
-    sub:  "Who to contact. When. Which channel. What offer. ShieldX governs all of it.",
-  },
-  {
-    area: "Lending",
-    to:   "/lending",
-    line: "Every application is a risk computation.",
-    sub:  "Eligibility, risk, compliance — evaluated at the moment of decision, not after.",
-  },
-  {
-    area: "Servicing",
-    to:   "/servicing",
-    line: "Every request is a decision event.",
-    sub:  "Intent classified. Policy validated. Resolution executed. Every time.",
-  },
-];
-
-function BFSICards() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (paused) return;
-    const i = setInterval(() => setActive(a => (a + 1) % BFSI.length), 2800);
-    return () => clearInterval(i);
-  }, [paused]);
-
-  return (
-    <div className="grid md:grid-cols-3 gap-4">
-      {BFSI.map((item, i) => (
-        <Link
-          key={i}
-          to={item.to}
-          onMouseEnter={() => { setActive(i); setPaused(true); }}
-          onMouseLeave={() => setPaused(false)}
-          className={`block p-8 rounded-xl border select-none transition-all duration-400 no-underline ${
-            i === active
-              ? "border-blue-400/28 bg-blue-500/[0.05] shadow-[0_0_35px_rgba(59,130,246,0.1)] opacity-100"
-              : "border-white/[0.12] bg-white/[0.04] opacity-70"
-          }`}
-        >
-          <div className={`text-[10px] tracking-[0.2em] mb-4 transition-colors duration-300 ${
-            i === active ? "text-blue-400/70" : "text-white/28"
-          }`}>{item.area.toUpperCase()}</div>
-
-          <div className="text-white text-[16px] leading-snug mb-3">{item.line}</div>
-
-          <div className={`text-sm leading-relaxed transition-colors duration-300 ${
-            i === active ? "text-white/68" : "text-white/52"
-          }`}>{item.sub}</div>
-
-          <div className={`mt-5 text-xs transition-colors duration-300 ${
-            i === active ? "text-blue-400/60" : "text-white/18"
-          }`}>Explore →</div>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
 /* ━━━ PAGE ━━━ */
 export default function Company() {
   return (
@@ -648,7 +560,7 @@ export default function Company() {
 
           <Motion delay={0.08}>
             <h1 className="text-[32px] md:text-[50px] leading-[1.07] font-semibold mb-6">
-              The decision layer<br />BFSI was missing.
+              The decision layer<br />collections was missing.
             </h1>
           </Motion>
 
@@ -669,29 +581,37 @@ export default function Company() {
 
       </section>
 
-      {/* ═══ FOUNDING INSIGHT ═══ */}
+      {/* ═══ WHAT SHIELDX IS (Standard boilerplate) ═══ */}
       <section className="max-w-6xl mx-auto px-8 pb-28 grid md:grid-cols-2 gap-16 items-start">
 
-        {/* Compliance enforcement — LEFT on desktop, below text on mobile */}
         <div className="order-last md:order-first">
           <Motion delay={0.15}>
             <ComplianceCatch />
           </Motion>
         </div>
 
-        {/* Text — RIGHT on desktop, first on mobile */}
         <div className="order-first md:order-last">
           <Motion>
             <div className="flex items-center gap-2.5 mb-5">
               <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
-              <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY WE BUILT IT</span>
+              <span className="text-[11px] text-white/55 tracking-[0.2em]">WHAT SHIELDX IS</span>
             </div>
             <h2 className="text-[26px] md:text-[36px] font-semibold leading-tight mb-5">
-              Three systems.<br />No layer between them.
+              The decisioning and<br />governance layer.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
-              Every financial institution has systems of record, systems of engagement,
-              and systems of execution. Between them — nothing governing decisions.
+              Quelo Technologies is a Mumbai-based fintech infrastructure company. Its
+              platform, ShieldX, is the decisioning and governance layer for collections
+              in Indian BFSI — sitting above a lender's communication stack and below its
+              credit policy.
+            </p>
+            <p className="text-white/68 leading-relaxed mb-4">
+              ShieldX decides how every delinquent account should be worked — who, when,
+              through which channel, with what treatment — executes those decisions across
+              calls, messages, and agency networks, and learns from what was actually said
+              in every conversation. Every decision is logged, versioned, and auditable,
+              bringing collections under the model risk management discipline Indian
+              regulation now expects.
             </p>
             <p className="text-[20px] md:text-[24px] font-semibold" style={{color:"#4ade80", textShadow:"0 0 32px rgba(74,222,128,0.55)"}}>
               ShieldX is that layer.
@@ -758,17 +678,36 @@ export default function Company() {
         <Beliefs />
       </section>
 
-      {/* ═══ INDUSTRY ═══ */}
+      {/* ═══ WHY IT WINS ═══ */}
       <div className="bg-white/[0.04] border-y border-white/[0.09]">
       <section className="max-w-6xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
-            <span className="text-[11px] text-white/55 tracking-[0.2em]">INDUSTRY</span>
+            <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY IT WINS</span>
           </div>
-          <h2 className="text-[26px] md:text-[34px] font-semibold mb-10">Built for BFSI.</h2>
+          <h2 className="text-[26px] md:text-[34px] font-semibold mb-6 max-w-2xl">
+            Models are commoditized; the moat is the loop.
+          </h2>
+          <p className="text-white/62 max-w-2xl leading-relaxed mb-10">
+            ShieldX is the only architecture that owns both the decision layer and the
+            conversation layer of collections — so it is the only one where what a
+            borrower says in a call systematically changes the next decision on that
+            account. Every decision is logged, explainable, and auditable by design,
+            aligned with RBI's emerging model risk management framework.
+          </p>
         </Motion>
-        <BFSICards />
+        <Motion delay={0.08}>
+          <div className="flex items-center gap-3 p-6 rounded-xl border border-white/[0.10] bg-white/[0.03] max-w-2xl">
+            <div className="w-8 h-8 rounded-lg border border-emerald-400/25 bg-emerald-500/[0.08] flex items-center justify-center flex-shrink-0">
+              <span className="text-emerald-400 text-xs">✓</span>
+            </div>
+            <p className="text-white/70 text-sm leading-relaxed">
+              Live with <span className="text-white">a leading private-sector bank</span>, with
+              active engagements across ARCs and collection agencies. Quelo is DPIIT-recognized.
+            </p>
+          </div>
+        </Motion>
       </section>
       </div>
 
@@ -785,7 +724,6 @@ export default function Company() {
         <Motion delay={0.08}>
           <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start max-w-4xl">
 
-            {/* Quote + bio */}
             <div>
               <div className="text-[20px] text-white/65 leading-relaxed mb-8 border-l-2 border-blue-400/40 pl-7 italic">
                 "Financial institutions don't have a technology problem. They have a decision
@@ -796,13 +734,12 @@ export default function Company() {
                 <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
                 <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
                 <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
-                  Observed the gap firsthand — across collections, lending, and servicing
-                  at scale in Indian BFSI. Built the decision layer that didn't exist.
+                  18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
+                  and Yubi. Quelo Technologies Pvt. Ltd. is Mumbai-based and DPIIT-recognized.
                 </p>
               </div>
             </div>
 
-            {/* Credibility signals — interactive */}
             <FoundingCred />
 
           </div>
@@ -817,7 +754,7 @@ export default function Company() {
             <div>
               <div className="text-xl font-semibold mb-1">See what ShieldX closes.</div>
               <div className="text-white/58 text-sm">
-                Collections · Lending · Servicing — one decision layer, 20 minutes.
+                Decide, execute, and learn — one decision layer, 20 minutes.
               </div>
             </div>
             <Link

@@ -17,9 +17,9 @@ function Motion({ children, delay = 0 }) {
 const SECTIONS = [
   {
     title: "Who we are",
-    body: `ShieldX is a product of Quelo Technologies Private Limited, a company incorporated in India. We build decision infrastructure for financial institutions — banks, NBFCs, and insurance companies operating in India.
+    body: `ShieldX is a product of Quelo Technologies Private Limited, a company incorporated in India. We build decision infrastructure for financial institutions — banks, NBFCs, ARCs, and their collection partners operating in India.
 
-For the purposes of this Privacy Policy, "we", "us", and "our" refer to Quelo Technologies Private Limited. Our registered address is in India.`,
+For the purposes of this Privacy Policy, "we", "us", and "our" refer to Quelo Technologies Private Limited. Our registered address is in Mumbai, Maharashtra, India.`,
   },
   {
     title: "Applicable law",

@@ -17,7 +17,7 @@ function Motion({ children, delay = 0 }) {
 const PILLARS = [
   {
     tag: "DATA PROTECTION",
-    title: "DPDPA 2025 aligned",
+    title: "DPDP Act, 2023 aligned",
     desc: "Our data handling practices are designed to align with the Digital Personal Data Protection Act, 2023. Purpose limitation, data minimisation, and consent management are built into our processing workflows — not bolted on after the fact.",
   },
   {
@@ -73,7 +73,7 @@ export default function Security() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              {["DPDPA 2025 Aligned", "ISO 27001 In Progress", "AES-256 Encryption", "TLS 1.2+ In Transit"].map((b, i) => (
+              {["DPDP Act Aligned", "ISO 27001 In Progress", "AES-256 Encryption", "TLS 1.2+ In Transit"].map((b, i) => (
                 <span key={i} className="px-4 py-1.5 rounded-full text-xs border border-blue-400/20 bg-blue-500/[0.06] text-blue-300/70">
                   {b}
                 </span>

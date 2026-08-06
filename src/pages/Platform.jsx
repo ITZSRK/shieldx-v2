@@ -20,11 +20,11 @@ function Motion({ children, delay = 0 }) {
 function LiveDecisionTrace() {
   const stages = [
     { ms:"0ms",  label:"Signal received",     sub:"event ingested · payload normalised",         highlight:false },
-    { ms:"4ms",  label:"Decision computed",   sub:"risk scored · eligibility evaluated",          highlight:false },
+    { ms:"4ms",  label:"Decision computed",   sub:"risk tier assigned · eligibility evaluated",   highlight:false },
     { ms:"11ms", label:"Compliance validated", sub:"all regulatory checks passed",                highlight:true  },
-    { ms:"18ms", label:"Routing determined",  sub:"channel selected · time window confirmed",     highlight:false },
-    { ms:"24ms", label:"Execution triggered", sub:"action dispatched · response captured",        highlight:false },
-    { ms:"24ms", label:"Audit written",       sub:"immutable log created · AUD-20240411-48321",   highlight:false },
+    { ms:"18ms", label:"Orchestrated",        sub:"channel and time window confirmed",            highlight:false },
+    { ms:"24ms", label:"Handed off",          sub:"dispatched via adapter · outcome captured",    highlight:false },
+    { ms:"24ms", label:"Audit written",       sub:"immutable log created · AUD-20260614-48321",   highlight:false },
   ];
   const [active, setActive] = useState(0);
 
@@ -42,10 +42,7 @@ function LiveDecisionTrace() {
           <div className="w-3 h-3 rounded-full bg-[#28C840]" />
         </div>
         <span className="flex-1 text-center text-white/40 text-[10px] tracking-[0.15em]">ShieldX — Decision Runtime</span>
-        <div className="flex items-center gap-1.5 text-[10px] text-blue-400">
-          <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-          LIVE
-        </div>
+        <span className="text-[9px] text-white/22 tracking-widest">Illustrative</span>
       </div>
 
       <div className="p-4 font-mono space-y-0.5">
@@ -100,9 +97,9 @@ function DecisionDebugger() {
     { ms:"0ms",  label:"Signal received",      detail:"CBS triggers payment_missed event — payload normalised" },
     { ms:"7ms",  label:"Decision computed",    detail:"Customer scored, channel eligibility evaluated" },
     { ms:"14ms", label:"Compliance validated", detail:"Regulatory check passed — execution permitted", highlight:true },
-    { ms:"21ms", label:"Routing determined",   detail:"Channel selected, time window confirmed" },
-    { ms:"28ms", label:"Execution triggered",  detail:"Outreach placed — response captured" },
-    { ms:"28ms", label:"Audit recorded",       detail:"Immutable log written — AUD-20240411-48321" },
+    { ms:"21ms", label:"Orchestrated",         detail:"Channel selected, time window confirmed" },
+    { ms:"28ms", label:"Handed off",           detail:"Dispatched via adapter — response captured" },
+    { ms:"28ms", label:"Audit recorded",       detail:"Immutable log written — AUD-20260614-48321" },
   ];
   const [active, setActive] = useState(2);
   useEffect(() => {
@@ -144,18 +141,18 @@ function DecisionDebugger() {
           <span className="text-white/65 text-xs font-sans font-medium not-italic">
             Live decision state<span className="inline-block ml-1 animate-pulse" style={{color:"#4ade80"}}>▮</span>
           </span>
-          <span className="text-[10px] tracking-widest" style={{color:"#4ade80"}}>RUNNING</span>
+          <span className="text-[9px] tracking-widest text-white/22">ILLUSTRATIVE</span>
         </div>
         <div className="space-y-[5px] text-white/45">
           <div>customer_id: <span className="text-white/80">48321</span></div>
           <div>dpd_bucket: <span className="text-white/80">30–60</span></div>
-          <div>risk_score: <span className="text-white/80">0.82</span></div>
+          <div>risk_tier: <span className="text-white/80">HIGH</span></div>
           <div>compliance: <span style={{color:"#4ade80"}}>PASS</span></div>
-          <div>channel_selected: <span style={{color:"#93c5fd"}}>voice_ai</span></div>
+          <div>channel_selected: <span style={{color:"#93c5fd"}}>agent_call · assist_context</span></div>
           <div className="pt-2 mt-1 border-t border-white/15">
             <div style={{color:"#93c5fd"}}>[{steps[active].ms}] {steps[active].label}</div>
             <div>decision_id: <span className="text-white/45">DEC-48321</span></div>
-            <div>audit_id: <span className="text-white/45">AUD-20240411-48321</span></div>
+            <div>audit_id: <span className="text-white/45">AUD-20260614-48321</span></div>
           </div>
         </div>
         <div className="mt-4 pt-3 border-t border-white/15 text-white/22 text-[10px]">
@@ -166,20 +163,23 @@ function DecisionDebugger() {
   );
 }
 
-/* ─── ENGINE ARCHITECTURE ────────────────────────────── */
+/* ─── ENGINE ARCHITECTURE — regrouped under product names ───── */
 function EngineArchitecture() {
   const [active, setActive] = useState(4);
   const [paused, setPaused] = useState(false);
   const stages = [
-    { num:"01", name:"Signal Ingestion",    badge:"Input",       color:"blue",  desc:"Receives structured event triggers from CBS, LOS, CRM, and campaign systems via REST API and webhooks. Validates schema and deduplicates before passing downstream." },
-    { num:"02", name:"Normalisation",       badge:"Transform",   color:"blue",  desc:"Parses raw payloads into a canonical decision context object — customer ID, product type, event classification, timestamps, and metadata unified into a single structure." },
-    { num:"03", name:"Scoring Engine",      badge:"AI layer",    color:"blue",  desc:"Evaluates customer risk score, intent classification, contact preference, and channel eligibility using configurable model weights and rule sets." },
-    { num:"04", name:"Rule Evaluation",     badge:"Logic",       color:"blue",  desc:"Applies institution-specific business rules — DPD buckets, product policies, segment overrides, frequency caps — layered on top of the base scoring output." },
-    { num:"05", name:"Compliance Gate",     badge:"Gatekeeper",  color:"green", desc:"Hard regulatory checks run here: TRAI calling window (8AM–7PM IST), TRAI DND scrub, DPDPA 2025 consent validation, RBI Fair Practices Code, and frequency limits. Nothing executes unless all checks pass.", highlight:true },
-    { num:"06", name:"Routing Engine",      badge:"Orchestration",color:"blue", desc:"Selects optimal channel, time slot, language, and agent type based on scoring output, compliance constraints, and customer segment — all resolved in a single routing decision." },
-    { num:"07", name:"Execution Adapter",   badge:"Output",      color:"blue",  desc:"Dispatches to the selected channel via registered adapters — Voice AI, SMS, WhatsApp Business, email, or human agent queue — with real-time response capture and callback handling." },
-    { num:"08", name:"Audit Writer",        badge:"Immutable",   color:"blue",  desc:"Writes an immutable audit record per interaction: event type, decision payload, compliance check results, routing outcome, execution status, and full reason codes. Exportable on demand." },
+    { num:"01", name:"Signal Ingestion",  group:"DECISION", color:"blue", desc:"Receives structured event triggers from CBS, LOS, CRM, and campaign systems via REST API and webhooks. Validates schema and deduplicates before passing downstream." },
+    { num:"02", name:"Normalisation",     group:"DECISION", color:"blue", desc:"Parses raw payloads into a canonical decision context object — customer ID, product type, event classification, timestamps, and metadata unified into a single structure." },
+    { num:"03", name:"Scoring",           group:"DECISION", color:"blue", desc:"Configurable model weights and rule sets evaluate customer risk tier, cohort, and channel eligibility. Champion/challenger by design — every strategy change is measured against the incumbent before promotion." },
+    { num:"04", name:"Rule Evaluation",   group:"DECISION", color:"blue", desc:"Applies institution-specific business rules — DPD buckets, product policies, cohort overrides, frequency caps — layered on top of the base scoring output." },
+    { num:"05", name:"Compliance Gate",   group:"GOVERN",   color:"green", desc:"Hard regulatory checks run here: TRAI calling window (8AM–7PM IST), TRAI DND scrub, DPDP Act consent validation, RBI Fair Practices Code, and frequency limits. Nothing executes unless all checks pass.", highlight:true },
+    { num:"06", name:"Orchestrate",       group:"DECISION", color:"blue", desc:"An internal module of Decision — sequences the governed decision into timed, constrained instructions: retry logic, channel fallback, contact-window compliance, agency capacity allocation." },
+    { num:"07", name:"Execution Adapters", group:"EXECUTE", color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's handles and templates, the bank's dialer, agency work-lists (SFTP/API), Engage, or Diya voice — every adapter speaks the same treatment-in / outcome-out contract.", link:"/deploy" },
+    { num:"08", name:"System of Record",  group:"RECORD",   color:"violet", desc:"Writes an immutable record per interaction: decision payload, compliance check results, routing outcome, execution status, and full reason codes. Exportable on demand." },
+    { num:"09", name:"Intelligence",      group:"SENSE",    color:"emerald", desc:"Post-call analysis of recorded calls — batch, not in-call — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
   ];
+  const COLOR_HEX = { blue:"96,165,250", green:"74,222,128", amber:"251,191,36", violet:"167,139,250", emerald:"52,211,153" };
+
   useEffect(() => {
     if (paused) return;
     const i = setInterval(() => setActive(p => (p+1) % stages.length), 3500);
@@ -187,7 +187,7 @@ function EngineArchitecture() {
   }, [paused]);
 
   const s = stages[active];
-  const isGreen = s.highlight;
+  const rgb = COLOR_HEX[s.color];
 
   return (
     <div>
@@ -197,44 +197,39 @@ function EngineArchitecture() {
           <span className="text-[11px] text-white/55 tracking-[0.22em]">ENGINE INTERNALS</span>
           <div className="h-px w-6 bg-white/20" />
         </div>
-        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Eight stages.<br />One auditable pipeline.</h2>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Nine stages.<br />One closed loop.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
-          Every interaction traverses the same path — from raw signal to compliant execution.
+          Every interaction traverses the same path — from raw signal to compliant execution to the next decision.
           No stage is skipped. Every stage is logged.
         </p>
       </div>
 
       <div className="grid md:grid-cols-[1fr_320px] gap-8 items-start">
         {/* stage list */}
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="grid grid-cols-3 gap-1.5">
           {stages.map((l,i) => (
             <div key={i}
               onClick={() => { setActive(i); setPaused(true); }}
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200"
+              className="flex flex-col gap-1 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200"
               style={{
-                background: i===active ? (l.highlight ? "rgba(74,222,128,.06)" : "rgba(96,165,250,.06)") : "rgba(255,255,255,.015)",
-                border: i===active
-                  ? `1px solid ${l.highlight ? "rgba(74,222,128,.28)" : "rgba(96,165,250,.25)"}`
-                  : "1px solid rgba(255,255,255,.05)",
+                background: i===active ? `rgba(${COLOR_HEX[l.color]},.06)` : "rgba(255,255,255,.015)",
+                border: i===active ? `1px solid rgba(${COLOR_HEX[l.color]},.25)` : "1px solid rgba(255,255,255,.05)",
               }}
             >
-              <span className="text-[10px] font-mono w-5 flex-shrink-0 transition-colors duration-200"
-                style={{color: i===active ? (l.highlight ? "rgba(74,222,128,.7)" : "rgba(96,165,250,.7)") : "rgba(255,255,255,.2)"}}>
-                {l.num}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium leading-tight transition-colors duration-200 truncate" style={{
-                  color: i===active ? (l.highlight ? "#4ade80" : "#93c5fd") : "rgba(255,255,255,.45)",
-                }}>{l.name}</div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono w-5 flex-shrink-0 transition-colors duration-200"
+                  style={{color: i===active ? `rgba(${COLOR_HEX[l.color]},.7)` : "rgba(255,255,255,.2)"}}>
+                  {l.num}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-medium leading-tight transition-colors duration-200 truncate" style={{
+                    color: i===active ? `rgb(${COLOR_HEX[l.color]})` : "rgba(255,255,255,.45)",
+                  }}>{l.name}</div>
+                </div>
               </div>
-              {i===active && (
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-200" style={{
-                  background: l.highlight ? "#4ade80" : "#60a5fa",
-                  boxShadow: `0 0 6px ${l.highlight ? "rgba(74,222,128,.8)" : "rgba(96,165,250,.8)"}`,
-                }} />
-              )}
+              <span className="text-[8px] tracking-widest pl-7" style={{color: i===active ? `rgba(${COLOR_HEX[l.color]},.55)` : "rgba(255,255,255,.15)"}}>{l.group}</span>
             </div>
           ))}
         </div>
@@ -248,28 +243,35 @@ function EngineArchitecture() {
             onMouseLeave={() => setPaused(false)}
             className="rounded-xl p-6 border"
             style={{
-              borderColor: isGreen ? "rgba(74,222,128,.25)" : "rgba(96,165,250,.2)",
-              background:  isGreen ? "rgba(74,222,128,.04)" : "rgba(96,165,250,.04)",
+              borderColor: `rgba(${rgb},.25)`,
+              background:  `rgba(${rgb},.04)`,
             }}
           >
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-xs font-mono" style={{color: isGreen ? "rgba(74,222,128,.5)" : "rgba(96,165,250,.5)"}}>
+              <span className="text-xs font-mono" style={{color: `rgba(${rgb},.5)`}}>
                 Stage {s.num}
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded border" style={{
-                color: isGreen ? "#4ade80" : "#93c5fd",
-                borderColor: isGreen ? "rgba(74,222,128,.3)" : "rgba(96,165,250,.3)",
-                background: isGreen ? "rgba(74,222,128,.08)" : "rgba(96,165,250,.08)",
-              }}>{s.badge}</span>
+                color: `rgb(${rgb})`,
+                borderColor: `rgba(${rgb},.3)`,
+                background: `rgba(${rgb},.08)`,
+              }}>{s.group}</span>
             </div>
-            <div className="text-base font-semibold mb-3" style={{color: isGreen ? "#4ade80" : "white"}}>
+            <div className="text-base font-semibold mb-3" style={{color: s.highlight ? "#4ade80" : "white"}}>
               {s.name}
             </div>
             <div className="text-sm text-white/52 leading-relaxed">{s.desc}</div>
-            {isGreen && (
+            {s.highlight && (
               <div className="mt-4 pt-4 border-t border-white/[0.12] text-[11px] text-emerald-400/60 flex items-center gap-1.5">
                 <span style={{color:"#4ade80"}}>✓</span>
                 Hard gate — execution blocked if any check fails
+              </div>
+            )}
+            {s.link && (
+              <div className="mt-4 pt-4 border-t border-white/[0.12]">
+                <Link to={s.link} className="text-[11px] text-amber-300/70 hover:text-amber-300 transition-colors">
+                  See how adapters work across deployment patterns →
+                </Link>
               </div>
             )}
           </motion.div>
@@ -288,12 +290,12 @@ function ComplianceSection() {
   const checks = [
     { label:"TRAI Window",          detail:"No outreach before 8 AM or after 7 PM IST. Enforced at execution level — no override permitted.",                        reg:"TRAI"     },
     { label:"TRAI DND",            detail:"Real-time scrub against TRAI's Do Not Disturb registry before every contact attempt.",                                   reg:"TRAI"     },
-    { label:"DPDP Consent",        detail:"Per-channel consent validated before any AI-driven interaction triggers. Scope, purpose, and expiry enforced.",            reg:"DPDP"     },
+    { label:"DPDP Consent",        detail:"Per-channel consent validated before any interaction triggers. Scope, purpose, and expiry enforced.",                     reg:"DPDP"     },
     { label:"RBI Fair Practices",  detail:"Recovery conduct governed per RBI circular on Fair Practices Code for Lenders — no coercive or unreasonable contact.",   reg:"RBI"      },
     { label:"Frequency Cap",       detail:"Daily and weekly outreach limits per customer enforced automatically — per applicable RBI and TRAI guidelines.",          reg:"RBI·TRAI" },
   ];
 
-  const pills = ["RBI Fair Practices Code","TRAI Guidelines","DPDPA 2025","Debt Recovery Frameworks","RBI KYC Master Direction"];
+  const pills = ["RBI Fair Practices Code","TRAI Guidelines","DPDP Act, 2023","Debt Recovery Frameworks","RBI Draft MRM Guidance"];
 
   useEffect(() => {
     if (paused) return;
@@ -391,6 +393,10 @@ function ComplianceSection() {
       {/* Proof line */}
       <p className="text-center text-sm text-white/38 mb-8 mt-2">
         Every blocked action is logged with a reason code — exportable for regulatory review on demand.
+        <br className="hidden md:block" />
+        <Link to="/governance" className="text-emerald-400/60 hover:text-emerald-400 transition-colors">
+          Full conduct compliance and model governance detail →
+        </Link>
       </p>
 
       {/* Regulation pills */}
@@ -420,7 +426,7 @@ function BeforeAfter() {
   const pairs = [
     { without:"Independent vendor triggers",               with_:"Single decision engine" },
     { without:"No compliance check before execution",      with_:"Compliance verified before every action" },
-    { without:"Channel conflict — same customer hit twice", with_:"Unified routing — one decision, one channel" },
+    { without:"Channel conflict — same customer hit twice", with_:"Unified orchestration — one decision, one channel" },
     { without:"No audit trail",                            with_:"Immutable audit on every interaction" },
   ];
 
@@ -527,7 +533,7 @@ function IntegrationSection() {
         <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Plug in.<br />Don't rip out.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
           No middleware rip-out. No core system changes. ShieldX connects via
-          standard APIs — and sits between what you have and every action you fire.
+          standard APIs — and sits between what you have and every channel you use.
         </p>
       </div>
 
@@ -549,7 +555,7 @@ function IntegrationSection() {
             n:"03", label:"TIME TO VALUE",
             title:"3–6 weeks to first decision",
             detail:"From agreement to your first governed, compliant, auditable decision. Phased rollout available.",
-            proof:"Collections live first — expand from there",
+            proof:"Live on one portfolio first — expand from there",
           },
         ].map((col, i) => (
           <div key={i} className="border border-white/[0.12] rounded-xl px-6 py-5 bg-white/[0.04]">
@@ -570,18 +576,18 @@ function IntegrationSection() {
   );
 }
 
-/* ─── OBSERVABILITY ──────────────────────────────────── */
+/* ─── OBSERVABILITY (no fabricated volumes/latency; illustrative) ── */
 function ObservabilitySection() {
   const [tick,    setTick]    = useState(0);
   const [hovered, setHovered] = useState(null);
 
   const feed = [
-    { id:"DEC-48331", uc:"COLLECTIONS", result:"VOICE AI · TRAI PASS",          ok:true,  color:"#f59e0b" },
+    { id:"DEC-48331", uc:"COLLECTIONS", result:"AGENT CALL · TRAI PASS",         ok:true,  color:"#f59e0b" },
     { id:"DEC-48330", uc:"COLLECTIONS", result:"SMS BLOCKED · DND MATCH",       ok:false, color:"#f59e0b" },
-    { id:"DEC-48329", uc:"LENDING",     result:"APPROVAL NOTICE · DPDP PASS",   ok:true,  color:"#818cf8" },
-    { id:"DEC-48328", uc:"SERVICING",   result:"GRIEVANCE QUEUED · SLA SET",     ok:true,  color:"#34d399" },
-    { id:"DEC-48327", uc:"COLLECTIONS", result:"VOICE BLOCKED · OUT OF WINDOW",  ok:false, color:"#f59e0b" },
-    { id:"DEC-48326", uc:"LENDING",     result:"REJECTION NOTICE · RBI FPC OK",  ok:true,  color:"#818cf8" },
+    { id:"DEC-48329", uc:"COLLECTIONS", result:"WHATSAPP SENT · DPDP PASS",     ok:true,  color:"#818cf8" },
+    { id:"DEC-48328", uc:"COLLECTIONS", result:"CALL ANALYSED · HARDSHIP FLAGGED", ok:true, color:"#34d399" },
+    { id:"DEC-48327", uc:"COLLECTIONS", result:"AGENT CALL BLOCKED · OUT OF WINDOW", ok:false, color:"#f59e0b" },
+    { id:"DEC-48326", uc:"COLLECTIONS", result:"SETTLEMENT OFFER · RBI FPC OK",  ok:true,  color:"#818cf8" },
   ];
 
   useEffect(() => {
@@ -614,66 +620,56 @@ function ObservabilitySection() {
             <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
           </div>
           <span className="flex-1 text-center text-white/28 text-[10px] tracking-[0.15em]">ShieldX — Observability Console</span>
-          <div className="flex items-center gap-1.5 text-[10px] text-blue-400/80">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            LIVE
-          </div>
+          <span className="text-[9px] text-white/22 tracking-widest">Illustrative</span>
         </div>
 
         <div className="p-5 grid md:grid-cols-[1fr_1fr_220px] gap-4">
-          {/* KPI tiles */}
+          {/* Capability tiles — no fabricated production numbers */}
           <div className="grid grid-cols-2 gap-2 content-start">
             {[
-              { label:"Compliance Score",  val:"99.7%",  sub:"All campaigns",     color:"#4ade80" },
-              { label:"Avg Latency",       val:"28ms",   sub:"Signal to execute", color:"#60a5fa" },
-              { label:"Platform Uptime",   val:"99.95%", sub:"SLA commitment",    color:"#4ade80" },
-              { label:"Interactions",      val:"1.4M+",  sub:"Logged this month", color:"#a78bfa" },
+              { label:"Compliance",      val:"Tracked",  sub:"Per campaign, per channel",  color:"#4ade80" },
+              { label:"Decision latency",val:"Real-time",sub:"Signal to decision",          color:"#60a5fa" },
+              { label:"Audit coverage",  val:"100%",     sub:"Every interaction logged, by design", color:"#4ade80" },
+              { label:"Traceability",    val:"Decision-level", sub:"Not just channel-level", color:"#a78bfa" },
             ].map((k, i) => (
               <div key={i} className="border border-white/[0.12] rounded-xl p-3 bg-white/[0.04]">
-                <div className="text-[20px] font-semibold mb-0.5 leading-none" style={{color:k.color}}>{k.val}</div>
+                <div className="text-[16px] font-semibold mb-0.5 leading-none" style={{color:k.color}}>{k.val}</div>
                 <div className="text-[10px] text-white/58 leading-tight mt-1">{k.label}</div>
                 <div className="text-[9px] text-white/25 mt-0.5">{k.sub}</div>
               </div>
             ))}
           </div>
 
-          {/* Channel compliance scores */}
+          {/* Channel compliance */}
           <div className="border border-white/[0.12] rounded-xl p-4 bg-white/[0.04]">
             <div className="text-[10px] text-white/38 tracking-widest mb-3">CHANNEL COMPLIANCE</div>
             <div className="divide-y divide-white/[0.05]">
               {[
-                { name:"Voice AI",  pct:98.2 },
-                { name:"SMS",       pct:100  },
-                { name:"WhatsApp",  pct:97.6 },
-                { name:"Email",     pct:100  },
-                { name:"Human",     pct:100  },
+                { name:"Agent Call", ok:true },
+                { name:"SMS",        ok:true },
+                { name:"WhatsApp",   ok:true },
+                { name:"Email",      ok:true },
+                { name:"Diya (voice)", ok:true },
               ].map((c, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
                   <div className="flex items-center gap-2">
-                    <div className="w-1 h-1 rounded-full flex-shrink-0"
-                      style={{background: c.pct === 100 ? "rgba(74,222,128,0.7)" : "rgba(251,191,36,0.7)"}} />
+                    <div className="w-1 h-1 rounded-full flex-shrink-0" style={{background: "rgba(74,222,128,0.7)"}} />
                     <span className="text-[11px] text-white/52">{c.name}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[13px] font-semibold tabular-nums"
-                      style={{color: c.pct === 100 ? "rgba(74,222,128,0.85)" : "rgba(251,191,36,0.85)"}}>
-                      {c.pct}%
-                    </span>
-                    <span className="text-[8px] px-1.5 py-0.5 rounded font-medium tracking-wide"
-                      style={{
-                        background: "rgba(74,222,128,0.08)",
-                        border:     "1px solid rgba(74,222,128,0.15)",
-                        color:      "rgba(74,222,128,0.65)",
-                      }}>
-                      PASS
-                    </span>
-                  </div>
+                  <span className="text-[8px] px-1.5 py-0.5 rounded font-medium tracking-wide"
+                    style={{
+                      background: "rgba(74,222,128,0.08)",
+                      border:     "1px solid rgba(74,222,128,0.15)",
+                      color:      "rgba(74,222,128,0.65)",
+                    }}>
+                    MONITORED
+                  </span>
                 </div>
               ))}
             </div>
             <div className="mt-3 pt-3 border-t border-white/[0.05] flex items-center justify-between">
-              <span className="text-[9px] text-white/25 tracking-widest">PLATFORM AVG</span>
-              <span className="text-[11px] font-semibold" style={{color:"rgba(74,222,128,0.85)"}}>99.1%</span>
+              <span className="text-[9px] text-white/25 tracking-widest">SAME SCORECARD</span>
+              <span className="text-[10px] text-white/40">Ours and theirs, alike</span>
             </div>
           </div>
 
@@ -732,8 +728,8 @@ function ObservabilitySection() {
           },
           {
             role: "OPERATIONS HEAD",
-            action: "Campaign performance — in real time.",
-            desc: "Channel-level compliance score, contact rate, and exception count per campaign. Spot what's drifting before it becomes a violation.",
+            action: "Portfolio performance — in real time.",
+            desc: "Channel-level compliance score, contact rate, and exception count per portfolio. Spot what's drifting before it becomes a violation.",
             accent: "#93c5fd",
             accentDim: "rgba(96,165,250,0.55)",
             border: "rgba(96,165,250,0.18)",
@@ -744,8 +740,8 @@ function ObservabilitySection() {
           },
           {
             role: "CEO / BOARD",
-            action: "Governance health — one number.",
-            desc: "Platform-wide compliance score, SLA adherence, and interaction volume. The single view that tells leadership whether the decision layer is working.",
+            action: "Governance health — one view.",
+            desc: "Platform-wide compliance posture, SLA adherence, and decision volume. The single view that tells leadership whether the decision layer is working.",
             accent: "#c4b5fd",
             accentDim: "rgba(167,139,250,0.55)",
             border: "rgba(167,139,250,0.18)",
@@ -775,6 +771,76 @@ function ObservabilitySection() {
   );
 }
 
+/* ─── FOUR PRODUCTS — DEEP DIVE ──────────────────────── */
+const PRODUCT_DEEP = [
+  {
+    id: "decision",
+    name: "Decision",
+    tag: "THE BRAIN",
+    color: "#60a5fa",
+    line: "Mandatory in every deployment.",
+    body: "Scores, rules, cohort strategy, and champion/challenger. Decision computes what should happen to every account — who, when, which channel, with what treatment — and never ships a policy change without measuring it against the incumbent first.",
+  },
+  {
+    id: "engage",
+    name: "Engage",
+    tag: "REFERENCE EXECUTION CHANNEL",
+    color: "#fbbf24",
+    line: "For institutions without pipes of their own.",
+    body: "Have a CPaaS, dialer, and templates already? Keep them — ShieldX routes through your stack. Engage exists for institutions that need execution built in. Tier-one banks may never use it; NBFCs, ARCs, and agencies get brain and hands together.",
+  },
+  {
+    id: "assist",
+    name: "Assist",
+    tag: "THE HUMAN CHANNEL'S ADAPTER",
+    color: "#4ade80",
+    line: "Two tiers, one graceful fallback.",
+    body: "Assist Context is how a governed decision reaches a human — a pre-call briefing built from the treatment instruction. Assist Live extends decisioning into the conversation itself, in real time. If audio fails, Assist degrades to Context — never to blank.",
+  },
+  {
+    id: "intelligence",
+    name: "Intelligence",
+    tag: "THE SENSORY SYSTEM",
+    color: "#a78bfa",
+    line: "Post-call, not in-call.",
+    body: "Batch analysis of recorded calls — compliance conduct flags, agent scorecards, and decision features (objection type, hardship, promise strength) that flow back into the next decision. Also the governance face: registry, drift, and evidence for RBI's draft MRM framework.",
+  },
+];
+
+function ProductDeepDive() {
+  return (
+    <div className="space-y-6">
+      {PRODUCT_DEEP.map((p, i) => (
+        <Motion key={p.id} delay={i * 0.06}>
+          <div id={p.id} className="scroll-mt-28 rounded-2xl border p-8 md:p-10"
+            style={{ borderColor: `${p.color}30`, background: `${p.color}08` }}>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-[10px] tracking-[0.2em] font-medium" style={{ color: p.color }}>{p.tag}</span>
+            </div>
+            <h3 className="text-[26px] font-semibold mb-2" style={{ color: p.color }}>{p.name}</h3>
+            <div className="text-white/70 text-sm mb-4">{p.line}</div>
+            <p className="text-white/60 leading-relaxed max-w-2xl">{p.body}</p>
+            {p.id === "engage" || p.id === "assist" ? (
+              <div className="mt-5 pt-5 border-t border-white/[0.08]">
+                <Link to="/deploy" className="text-[12px] hover:opacity-80 transition-opacity" style={{ color: p.color }}>
+                  See deployment patterns →
+                </Link>
+              </div>
+            ) : null}
+            {p.id === "intelligence" ? (
+              <div className="mt-5 pt-5 border-t border-white/[0.08]">
+                <Link to="/governance" className="text-[12px] hover:opacity-80 transition-opacity" style={{ color: p.color }}>
+                  See governance and model risk detail →
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        </Motion>
+      ))}
+    </div>
+  );
+}
+
 /* ─── CTA ────────────────────────────────────────────── */
 function CTASection() {
   return (
@@ -787,8 +853,8 @@ function CTASection() {
     >
       <h2 className="text-[24px] md:text-[32px] font-semibold mb-4">Watch it run a live pipeline.</h2>
       <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
-        Signal to compliant execution — every stage, live, in 20 minutes.
-        Tailored to your vertical and your questions.
+        Signal to compliant execution to learning — every stage, live, in 20 minutes.
+        Tailored to your portfolio and your questions.
       </p>
       <Link to="/demo"
         className="inline-block px-8 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
@@ -796,14 +862,12 @@ function CTASection() {
       >
         Request a walkthrough
       </Link>
-      <div className="mt-6 text-xs text-white/30 flex items-center justify-center gap-2">
-        <Link to="/collections" className="hover:text-white/60 transition-colors">Collections</Link>
+      <div className="mt-6 text-xs text-white/30 flex items-center justify-center gap-2 flex-wrap">
+        <Link to="/deploy"     className="hover:text-white/60 transition-colors">How we deploy</Link>
         <span className="text-white/15">·</span>
-        <Link to="/lending"     className="hover:text-white/60 transition-colors">Lending</Link>
+        <Link to="/governance" className="hover:text-white/60 transition-colors">Governance</Link>
         <span className="text-white/15">·</span>
-        <Link to="/servicing"   className="hover:text-white/60 transition-colors">Servicing</Link>
-        <span className="text-white/15">·</span>
-        <span className="text-white/20">All controlled by one decision layer</span>
+        <Link to="/neutrality" className="hover:text-white/60 transition-colors">Neutrality</Link>
       </div>
     </div>
   );
@@ -823,16 +887,16 @@ export default function Platform() {
             Signal in.<br />Governed decision out.
           </h1>
           <p className="text-white/68 leading-relaxed mb-8 max-w-xl text-[15px]">
-            Sits between your core systems and customer channels — controlling
-            how every decision is computed, validated, and executed before anything fires.
+            Sits between your core systems and every channel — controlling
+            how every decision is computed, validated, executed, and learned from.
           </p>
           <div className="inline-flex items-center gap-1 p-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05]">
-            {["SIGNAL","DECISION","COMPLIANCE","EXECUTION","AUDIT"].map((s, i, arr) => (
+            {["SIGNAL","DECIDE","GOVERN","EXECUTE","LEARN"].map((s, i, arr) => (
               <span key={s} className="flex items-center gap-1">
                 <span className="text-[11px] px-3 py-1.5 rounded-md font-medium tracking-wide"
                   style={{
-                    color:       s==="COMPLIANCE" ? "rgba(74,222,128,1.0)"  : "rgba(255,255,255,0.65)",
-                    background:  s==="COMPLIANCE" ? "rgba(74,222,128,0.10)" : "transparent",
+                    color:       s==="GOVERN" ? "rgba(74,222,128,1.0)"  : "rgba(255,255,255,0.65)",
+                    background:  s==="GOVERN" ? "rgba(74,222,128,0.10)" : "transparent",
                   }}>
                   {s}
                 </span>
@@ -860,7 +924,7 @@ export default function Platform() {
             </div>
             <h2 className="text-[36px] font-semibold">From signal to governed execution.</h2>
             <p className="text-white/62 max-w-md mx-auto mt-3 leading-relaxed text-sm">
-              One path. Every time. Scored, compliance-checked, routed, executed, and logged — in sequence, before execution.
+              One path. Every time. Scored, compliance-checked, orchestrated, handed off, and logged — in sequence, before execution.
             </p>
           </div>
           <DecisionDebugger />
@@ -874,20 +938,36 @@ export default function Platform() {
       </div>
 
       <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
-        <Motion><ComplianceSection /></Motion>
+        <Motion>
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <div className="h-px w-6 bg-white/20" />
+              <span className="text-[11px] text-white/55 tracking-[0.22em]">THE PRODUCTS</span>
+              <div className="h-px w-6 bg-white/20" />
+            </div>
+            <h2 className="text-[36px] font-semibold mb-3">Four products. One loop.</h2>
+          </div>
+        </Motion>
+        <ProductDeepDive />
       </section>
 
       <div className="bg-white/[0.04] border-y border-white/[0.09]">
       <section className="max-w-6xl mx-auto px-8 py-28">
-        <Motion><IntegrationSection /></Motion>
+        <Motion><ComplianceSection /></Motion>
       </section>
       </div>
 
       <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
-        <Motion><ObservabilitySection /></Motion>
+        <Motion><IntegrationSection /></Motion>
       </section>
 
-      <section className="max-w-4xl mx-auto px-8 pb-32">
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-28">
+        <Motion><ObservabilitySection /></Motion>
+      </section>
+      </div>
+
+      <section className="max-w-4xl mx-auto px-8 pb-32 pt-20">
         <Motion><CTASection /></Motion>
       </section>
     </Layout>

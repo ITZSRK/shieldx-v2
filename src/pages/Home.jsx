@@ -4,7 +4,6 @@ import dashboard from "../assets/dashboard.png";
 import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import { motion } from "framer-motion";
-import Layout from "../layouts/Layout";
 
 /* ================= MOTION ================= */
 function Motion({ children, delay = 0 }) {
@@ -20,22 +19,16 @@ function Motion({ children, delay = 0 }) {
   );
 }
 
-/* ================= ARCHITECTURE ================= */
+/* ================= ARCHITECTURE (SIGNAL -> DECIDE -> GOVERN -> EXECUTE -> LEARN) ================= */
 function ArchitectureStack() {
-  const layers = [
-    "Signal Layer",
-    "Decision Engine",
-    "Compliance Enforcement",
-    "Routing Logic",
-    "Execution"
-  ];
+  const layers = ["Signal", "Decide", "Govern", "Execute", "Learn"];
 
   const layerInfo = [
     "CBS, LOS, and CRM fire events into ShieldX. Every trigger normalised before evaluation begins.",
-    "Customer risk, segment, and context computed before any channel or action is considered.",
+    "Customer risk tier, segment, and cohort computed before any channel or action is considered.",
     "TRAI window, DND, DPDP consent, RBI FPC — enforced in sequence. A single violation blocks execution.",
-    "Channel, timing, message template, and offer parameters determined from the governed decision.",
-    "Outreach fires with full reason codes attached. Immutable audit record written per interaction."
+    "The governed decision is handed off through the adapter for that channel — the bank's own stack, an agency work-list, or ShieldX's own channels.",
+    "Post-call intelligence extracts what was said — objections, hardship, promises — and feeds the next decision. The loop closes.",
   ];
 
   const STAGE_COLORS = [
@@ -63,7 +56,7 @@ function ArchitectureStack() {
         <div className="text-[10px] font-mono text-white/28 tracking-[0.2em] mb-5">5 STAGES · 1 CONTROL PLANE</div>
 
         <p className="text-white/55 text-[15px] leading-relaxed mb-5">
-          Sits between your CBS, LOS, CRM, and every outreach channel. Every decision passes through all five stages — none skippable, none overridable without a logged reason.
+          Sits between your CBS, LOS, CRM, and every channel — theirs or ours. Every decision passes through all five stages, then loops back into the next one.
         </p>
 
         <motion.div
@@ -121,59 +114,23 @@ function ArchitectureStack() {
   );
 }
 
-/* ================= GOVERNED DECISION SCENARIOS ================= */
-const SCENARIOS = [
-  {
-    label: "COLLECTIONS",
-    color: "#fbbf24",
-    bg: "rgba(251,191,36,0.08)",
-    event: "payment_missed",
-    customer: "CUST-48321 · DPD 30–60 · ₹24,000",
-    steps: [
-      { ms:"0ms",  text:"Signal received",               note:"CBS payment_missed event ingested",           color:"white" },
-      { ms:"8ms",  text:"Risk scored — 0.82 HIGH",        note:"DPD bucket evaluated, channel assessed",     color:"white" },
-      { ms:"14ms", text:"TRAI window — COMPLIANT",        note:"2:00 PM IST — within 8 AM–7 PM window",     color:"green" },
-      { ms:"16ms", text:"TRAI DND — CLEAR",               note:"DND check passed",                           color:"green" },
-      { ms:"17ms", text:"DPDP consent — PASS",            note:"Consent verified before execution",          color:"green" },
-      { ms:"18ms", text:"RBI FPC — PASS",                 note:"Fair practices code compliant",              color:"green" },
-      { ms:"19ms", text:"Voice AI outreach triggered",    note:"Governed · hardship-aware · optimal window", color:"blue"  },
-      { ms:"19ms", text:"Audit record written",           note:"AUD-20260614-48321 · Immutable",             color:"dim"   },
-    ],
-  },
-  {
-    label: "LENDING",
-    color: "#818cf8",
-    bg: "rgba(129,140,248,0.10)",
-    event: "loan_application",
-    customer: "CUST-91042 · PRIME · ₹5,00,000",
-    steps: [
-      { ms:"0ms",  text:"Application received",           note:"LOS event ingested, payload normalised",     color:"white" },
-      { ms:"9ms",  text:"FOIR evaluated — 34% (OK)",      note:"Within institution threshold",               color:"white" },
-      { ms:"13ms", text:"CIBIL — 741, Equifax — 738",     note:"Multi-bureau pull completed",                color:"white" },
-      { ms:"17ms", text:"RBI FPC — PASS",                 note:"Fair lending practices verified",            color:"green" },
-      { ms:"18ms", text:"DPDP consent — PASS",            note:"Bureau pull consent confirmed",              color:"green" },
-      { ms:"19ms", text:"KYC Master Direction — PASS",      note:"KYC verification status confirmed",          color:"green" },
-      { ms:"20ms", text:"Approval notice triggered",      note:"Communication as per RBI guidelines",        color:"blue"  },
-      { ms:"20ms", text:"Decision payload logged",        note:"Reason codes attached · Audit-ready",        color:"dim"   },
-    ],
-  },
-  {
-    label: "SERVICING",
-    color: "#34d399",
-    bg: "rgba(52,211,153,0.08)",
-    event: "grievance_raised",
-    customer: "CUST-73218 · BILLING_DISPUTE",
-    steps: [
-      { ms:"0ms",  text:"Grievance received",             note:"CRM event ingested, intent extraction begins",color:"white"},
-      { ms:"6ms",  text:"Intent — BILLING_DISPUTE",       note:"Classification confidence: 0.94",            color:"white" },
-      { ms:"11ms", text:"RBI Ombudsman SLA — 30 days",    note:"SLA clock started, deadline set",            color:"green" },
-      { ms:"14ms", text:"DPDP rights — PASS",             note:"Customer rights verified",                   color:"green" },
-      { ms:"16ms", text:"RBI Charter — PASS",             note:"Charter of customer rights compliant",       color:"green" },
-      { ms:"18ms", text:"Grievance queue routed",         note:"Assigned to billing dispute handler",        color:"blue"  },
-      { ms:"18ms", text:"SLA-tracked log written",        note:"AUD-20260614-73218 · RBI-ready",             color:"dim"   },
-    ],
-  },
-];
+/* ================= GOVERNED DECISION — SINGLE COLLECTIONS SCENARIO ================= */
+const SCENARIO = {
+  event: "payment_missed",
+  customer: "CUST-48321 · DPD 30–60 · ₹24,000",
+  steps: [
+    { ms:"0ms",  text:"Signal received",                 note:"CBS payment_missed event ingested",             color:"white" },
+    { ms:"8ms",  text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
+    { ms:"12ms", text:"Eligible channels: agent call, WhatsApp, SMS", note:"Voice AI eligible, not selected",   color:"white" },
+    { ms:"14ms", text:"TRAI window — COMPLIANT",          note:"2:00 PM IST — within 8 AM–7 PM window",         color:"green" },
+    { ms:"16ms", text:"TRAI DND — CLEAR",                 note:"DND check passed",                              color:"green" },
+    { ms:"17ms", text:"DPDP consent — PASS",               note:"Consent verified before execution",             color:"green" },
+    { ms:"18ms", text:"RBI FPC — PASS",                    note:"Fair practices code compliant",                 color:"green" },
+    { ms:"19ms", text:"Handoff: agent call · Assist context", note:"Governed decision handed off through adapter", color:"blue" },
+    { ms:"19ms", text:"Audit record written",              note:"AUD-20260614-48321 · Immutable",                color:"dim"   },
+    { ms:"—",    text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
+  ],
+};
 
 const STEP_COLORS = {
   white: { text:"rgba(255,255,255,0.75)", dot:"rgba(255,255,255,0.4)"  },
@@ -183,66 +140,40 @@ const STEP_COLORS = {
 };
 
 function GovernedDecisionView() {
-  const [scIdx, setScIdx] = useState(0);
   const [stepIdx, setStepIdx] = useState(0);
-
-  const sc = SCENARIOS[scIdx];
-
-  useEffect(() => {
-    setStepIdx(0);
-  }, [scIdx]);
 
   useEffect(() => {
     const i = setInterval(() => {
-      setStepIdx(s => {
-        if (s >= sc.steps.length - 1) {
-          setScIdx(p => (p + 1) % SCENARIOS.length);
-          return 0;
-        }
-        return s + 1;
-      });
-    }, 600);
+      setStepIdx(s => (s >= SCENARIO.steps.length - 1 ? 0 : s + 1));
+    }, 650);
     return () => clearInterval(i);
-  }, [sc]);
+  }, []);
 
   return (
     <div className="border border-white/15 rounded-xl bg-black/50 overflow-hidden font-mono text-xs">
 
-      {/* tab row */}
-      <div className="flex border-b border-white/[0.07]">
-        {SCENARIOS.map((s, i) => (
-          <button key={s.label} onClick={() => setScIdx(i)}
-            className="flex-1 px-3 pt-2.5 pb-2 text-[10px] tracking-widest transition-all duration-200 border-r border-white/[0.06] last:border-r-0 relative"
-            style={{
-              color: i===scIdx ? s.color : "rgba(255,255,255,0.38)",
-              background: i===scIdx ? s.bg : "transparent",
-              fontWeight: i===scIdx ? "600" : "400",
-            }}>
-            {s.label}
-            {i===scIdx && (
-              <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-t"
-                style={{ background: s.color, opacity: 0.75 }} />
-            )}
-          </button>
-        ))}
+      {/* header */}
+      <div className="flex items-center justify-between px-5 py-2.5 border-b border-white/[0.07]">
+        <span className="text-[10px] tracking-widest text-amber-300/70">COLLECTIONS</span>
+        <span className="text-[9px] text-white/25 tracking-widest">Illustrative simulation</span>
       </div>
 
       {/* trigger line */}
       <div className="px-5 py-2.5 border-b border-white/[0.09] flex items-center gap-3">
         <span className="text-[9px] text-white/25 tracking-widest">TRIGGER</span>
-        <span className="text-white/55 text-[11px]">{sc.event}</span>
+        <span className="text-white/55 text-[11px]">{SCENARIO.event}</span>
         <span className="text-white/28 text-[10px]">·</span>
-        <span className="text-white/35 text-[10px]">{sc.customer}</span>
+        <span className="text-white/35 text-[10px]">{SCENARIO.customer}</span>
       </div>
 
       {/* steps */}
-      <div className="px-5 py-4 space-y-2.5 min-h-[240px]">
-        {sc.steps.map((step, i) => {
+      <div className="px-5 py-4 space-y-2.5 min-h-[280px]">
+        {SCENARIO.steps.map((step, i) => {
           const shown = i <= stepIdx;
           const isActive = i === stepIdx;
           const c = STEP_COLORS[step.color];
           return (
-            <motion.div key={`${scIdx}-${i}`}
+            <motion.div key={i}
               initial={{opacity:0, x:-6}} animate={{opacity: shown ? 1 : 0, x: shown ? 0 : -6}}
               transition={{duration:.22}}
               className="flex items-start gap-3"
@@ -302,6 +233,62 @@ const PROBLEMS = [
   },
 ];
 
+/* ================= THE STACK ================= */
+const STACK = [
+  { label: "System of record", desc: "Decision log + outcome log + conversation-derived features. The permanent asset." },
+  { label: "Decision",         desc: "Scores, rules, cohorts, champion/challenger. Mandatory in every deployment." },
+  { label: "Orchestrate",      desc: "Decisions sequenced into timed, constrained instructions — retry logic, channel fallback, contact-window compliance." },
+  { label: "Execution adapters", desc: "Pluggable and neutral — the bank's own stack or ShieldX's, behind one treatment-in / outcome-out contract." },
+  { label: "Sensing (Intelligence)", desc: "Post-call analysis and outcome ingestion flow back into the record, regardless of whose pipes executed." },
+];
+
+function TheStack() {
+  return (
+    <div className="max-w-3xl mx-auto space-y-2">
+      {STACK.map((row, i) => (
+        <Motion key={i} delay={i * 0.05}>
+          <div className="flex items-start gap-5 p-5 rounded-xl border border-white/[0.10] bg-white/[0.03] hover:border-blue-400/25 hover:bg-white/[0.05] transition-all duration-200">
+            <span className="text-[10px] font-mono text-white/25 pt-1 w-5 shrink-0">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <div className="text-white text-[15px] font-medium mb-1">{row.label}</div>
+              <div className="text-white/58 text-sm leading-relaxed">{row.desc}</div>
+            </div>
+          </div>
+        </Motion>
+      ))}
+    </div>
+  );
+}
+
+/* ================= FOUR PRODUCTS ================= */
+const PRODUCTS = [
+  { name: "Decision",     to: "/platform#decision",     color: "#60a5fa", line: "The brain. Scores, rules, and champion/challenger — mandatory in every deployment." },
+  { name: "Engage",       to: "/platform#engage",       color: "#fbbf24", line: "The reference execution channel for institutions without pipes of their own." },
+  { name: "Assist",       to: "/platform#assist",       color: "#4ade80", line: "The human channel's adapter — pre-call context, in-call guidance." },
+  { name: "Intelligence", to: "/platform#intelligence", color: "#a78bfa", line: "The sensory system — post-call analysis that feeds the next decision." },
+];
+
+function ProductCards() {
+  const [hovered, setHovered] = useState(null);
+  return (
+    <div className="grid md:grid-cols-4 gap-4">
+      {PRODUCTS.map((p, i) => (
+        <Link key={p.name} to={p.to}
+          onMouseEnter={() => setHovered(i)}
+          onMouseLeave={() => setHovered(null)}
+          className="block p-6 rounded-xl border transition-all duration-200 no-underline"
+          style={{
+            borderColor: hovered === i ? `${p.color}55` : "rgba(255,255,255,0.10)",
+            background:  hovered === i ? `${p.color}0d` : "rgba(255,255,255,0.03)",
+          }}>
+          <div className="text-sm font-medium mb-2" style={{ color: hovered === i ? p.color : "white" }}>{p.name}</div>
+          <div className="text-white/55 text-xs leading-relaxed">{p.line}</div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 /* ================= PAGE ================= */
 export default function Home() {
   return (
@@ -320,27 +307,31 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="px-8 pt-32 pb-20 text-center max-w-5xl mx-auto">
         <Motion>
-          <h1 className="text-[36px] md:text-[62px] leading-[1.04] font-semibold tracking-tight mb-6">
-            Customer Decisioning<br />Infrastructure.
+          <h1 className="text-[32px] md:text-[56px] leading-[1.08] font-semibold tracking-tight mb-6">
+            Real-time decisioning infrastructure<br />for India's credit conversations.
           </h1>
 
-          <p className="text-[18px] text-white/68 mb-10 max-w-lg mx-auto leading-relaxed">
-            Every customer decision your institution makes — credit, collections,
-            servicing, or internal — evaluated, validated against regulation,
-            and audited before any action fires.
+          <p className="text-[18px] text-white/68 mb-8 max-w-xl mx-auto leading-relaxed">
+            ShieldX decides how every credit conversation should happen, executes it
+            across every channel, and learns from what was actually said — governed
+            and auditable end to end.
           </p>
 
-          <div className="flex justify-center gap-3 mb-14 flex-wrap">
-            {[
-              { label:"Collections", to:"/collections", cls:"border-amber-400/25 text-amber-300/80 bg-amber-500/[0.08] hover:border-amber-400/50 hover:text-amber-200 hover:bg-amber-500/[0.14]" },
-              { label:"Lending",     to:"/lending",     cls:"border-indigo-400/25 text-indigo-300/80 bg-indigo-500/[0.08] hover:border-indigo-400/50 hover:text-indigo-200 hover:bg-indigo-500/[0.14]" },
-              { label:"Servicing",   to:"/servicing",   cls:"border-emerald-400/25 text-emerald-300/80 bg-emerald-500/[0.08] hover:border-emerald-400/50 hover:text-emerald-200 hover:bg-emerald-500/[0.14]" },
-            ].map((t) => (
-              <Link key={t.label} to={t.to}
-                className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ${t.cls}`}>
-                {t.label}
-              </Link>
-            ))}
+          <div className="flex justify-center mb-6">
+            <Link to="/demo"
+              className="inline-block bg-white text-black px-8 py-3 rounded-lg text-sm font-semibold
+                hover:opacity-90 hover:scale-[1.02] transition-all duration-200
+                shadow-[0_0_30px_rgba(255,255,255,0.12)]">
+              Request a walkthrough
+            </Link>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 mb-14 text-[12px] text-white/40 flex-wrap">
+            <span>Live with a leading private-sector bank</span>
+            <span className="text-white/15">·</span>
+            <span>DPIIT-recognized</span>
+            <span className="text-white/15">·</span>
+            <span>Mumbai</span>
           </div>
         </Motion>
 
@@ -394,7 +385,43 @@ export default function Home() {
       </Motion>
       </div>{/* ── close THE GAP band ── */}
 
-      {/* ── WHAT SHIELDX IS ── */}
+      {/* ── THE STACK ── */}
+      <Motion>
+      <section className="px-8 py-24 max-w-6xl mx-auto">
+        <div className="mb-14 text-center">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE STACK</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+          <h2 className="text-[32px] md:text-[42px] font-semibold mb-4">One control plane. Any set of pipes.</h2>
+          <p className="text-white/65 text-[16px] max-w-lg mx-auto leading-relaxed">
+            ShieldX owns the decisions, the orchestration, and the record. Execution is
+            agnostic — the bank's own channels, an agency's, or ShieldX's own.
+          </p>
+        </div>
+        <TheStack />
+      </section>
+      </Motion>
+
+      {/* ── FOUR PRODUCTS ── */}
+      <div className="bg-white/[0.05] border-y border-white/[0.09]">
+      <Motion>
+      <section className="px-8 py-24 max-w-6xl mx-auto">
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE PRODUCTS</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+          <h2 className="text-[26px] md:text-[36px] font-semibold">One loop, four products.</h2>
+        </div>
+        <ProductCards />
+      </section>
+      </Motion>
+      </div>
+
+      {/* ── HOW IT WORKS ── */}
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
 
@@ -405,11 +432,11 @@ export default function Home() {
             <div className="h-px w-6 bg-white/20" />
           </div>
           <h2 className="text-[40px] font-semibold mb-4">
-            Five stages. One auditable pipeline.
+            Five stages. One closed loop.
           </h2>
           <p className="text-white/65 text-[16px] mb-5 max-w-lg mx-auto leading-relaxed">
-            Every customer decision passes through all five stages — none skippable,
-            none silent, every one logged.
+            Every customer decision passes through all five stages — and what happens
+            on the call feeds the next decision.
           </p>
         </div>
 
@@ -429,7 +456,7 @@ export default function Home() {
           <div className="h-px w-6 bg-white/20" />
         </div>
         <h2 className="text-[24px] md:text-[36px] font-semibold mb-3">
-          Watch a live decision run.
+          Watch a governed decision run.
         </h2>
         <p className="text-white/62 mb-10">
           TRAI window. RBI FPC. DPDP consent. Every check enforced in sequence — before the channel fires.
@@ -449,7 +476,7 @@ export default function Home() {
           Ready to see it for yourself?
         </h2>
         <p className="text-white/62 mb-8">
-          20 minutes. Your use case. Collections, Lending, or Servicing.
+          20 minutes. Your portfolio, your channels — every decision and every compliance check, live.
         </p>
 
         <Link to="/demo"
@@ -460,11 +487,11 @@ export default function Home() {
         </Link>
 
         <div className="mt-6 flex items-center justify-center gap-4 text-[11px] text-white/22">
-          <span>Tailored to your scenario</span>
+          <span>Tailored to your portfolio</span>
           <span className="text-white/12">·</span>
           <span>India-deployed</span>
           <span className="text-white/12">·</span>
-          <span>DPDPA 2025 rules-ready</span>
+          <span>DPDP Act-ready</span>
         </div>
 
       </section>

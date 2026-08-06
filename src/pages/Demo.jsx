@@ -82,8 +82,8 @@ export default function Demo() {
               Watch ShieldX govern<br />a live decision.
             </h1>
             <p className="text-white/48 mb-10 max-w-md mx-auto text-[15px] leading-relaxed">
-              20 minutes. Your use case — Collections, Lending, or Servicing.
-              Every compliance check, every decision, live.
+              20 minutes. Your portfolio, your channels — every decision and every
+              compliance check, live.
             </p>
 
             {/* FORM CARD */}
@@ -105,7 +105,7 @@ export default function Demo() {
                   <option value="">Your Role</option>
                   <option>CXO / Founder</option>
                   <option>Head of Collections</option>
-                  <option>Head of Lending</option>
+                  <option>Head of Recovery / Agency</option>
                   <option>Operations</option>
                   <option>Compliance / Risk</option>
                   <option>Other</option>
@@ -113,10 +113,10 @@ export default function Demo() {
 
                 <select name="useCase" value={form.useCase} onChange={handleChange} required className="input">
                   <option value="">Primary use case</option>
-                  <option>Collections</option>
-                  <option>Lending</option>
-                  <option>Customer Servicing</option>
-                  <option>Compliance / Risk</option>
+                  <option>Live-book collections</option>
+                  <option>Write-off / NPA recovery</option>
+                  <option>Agency performance</option>
+                  <option>Compliance & governance</option>
                 </select>
 
                 {/* CTA */}
@@ -142,7 +142,7 @@ export default function Demo() {
               {[
                 "Built for BFSI",
                 "Enterprise-grade security",
-                "DPDPA 2025 aligned"
+                "DPDP Act aligned"
               ].map((item, i) => (
                 <div
                   key={i}

@@ -28,18 +28,18 @@ export default function Footer() {
           <div>
             <div className="text-white/50 text-xs mb-3">Product</div>
             <div className="flex flex-col gap-2 text-white/65">
-              <Link to="/platform"  className="hover:text-white transition">Platform</Link>
-              <Link to="/solutions" className="hover:text-white transition">Solutions</Link>
+              <Link to="/platform"   className="hover:text-white transition">Platform</Link>
+              <Link to="/deploy"     className="hover:text-white transition">How we deploy</Link>
             </div>
           </div>
 
-          {/* VERTICALS */}
+          {/* TRUST */}
           <div>
-            <div className="text-white/50 text-xs mb-3">Verticals</div>
+            <div className="text-white/50 text-xs mb-3">Trust</div>
             <div className="flex flex-col gap-2 text-white/65">
-              <Link to="/collections" className="hover:text-white transition">Collections</Link>
-              <Link to="/lending"     className="hover:text-white transition">Lending</Link>
-              <Link to="/servicing"   className="hover:text-white transition">Servicing</Link>
+              <Link to="/governance"  className="hover:text-white transition">Governance</Link>
+              <Link to="/neutrality"  className="hover:text-white transition">Neutrality</Link>
+              <Link to="/security"    className="hover:text-white transition">Security</Link>
             </div>
           </div>
 
@@ -58,7 +58,6 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-white/65">
               <Link to="/privacy"  className="hover:text-white transition">Privacy Policy</Link>
               <Link to="/terms"    className="hover:text-white transition">Terms of Use</Link>
-              <Link to="/security" className="hover:text-white transition">Security</Link>
             </div>
           </div>
 
@@ -71,9 +70,9 @@ export default function Footer() {
 
       {/* BOTTOM STRIP */}
       <div className="flex flex-col md:flex-row justify-between items-center text-xs text-white/40">
-        <div>© 2026 Quelo Technologies Private Limited. All rights reserved.</div>
+        <div>ShieldX · Real-Time Decisioning Infrastructure · © Quelo Technologies Pvt. Ltd.</div>
         <div className="mt-2 md:mt-0 flex items-center gap-4">
-          <span className="text-white/25">DPDPA 2025 Aligned</span>
+          <span className="text-white/25">DPDP Act Aligned</span>
           <span className="text-white/15">·</span>
           <span className="text-white/25">ISO 27001 In Progress</span>
         </div>
