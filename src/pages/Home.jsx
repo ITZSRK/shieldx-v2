@@ -254,6 +254,68 @@ function TheStack() {
   );
 }
 
+/* ================= WHAT THIS MOVES =================
+   Deliberately mechanism, not measured outcomes. The deployment is early
+   and allocation hasn't started, so there are no results to publish — and
+   inventing a lift percentage is the fastest way to lose a bank's risk
+   committee. Naming the levers and how the system operates on them gives
+   an internal champion something real to take to a committee without
+   claiming anything we can't stand behind. */
+const LEVERS = [
+  {
+    metric: "Right-party contact rate",
+    how: "Channel and time-of-day are decided per account from contactability signals, rather than a fixed campaign schedule applied to a whole bucket.",
+  },
+  {
+    metric: "Cost to collect",
+    how: "Outreach that shouldn't fire — self-curing accounts, wrong contact window, no consent — is suppressed before it costs anything. Expensive channels are reserved for accounts where the cohort justifies them.",
+  },
+  {
+    metric: "Roll rates",
+    how: "Accounts scored as likely to roll are treated earlier and differently, instead of every account in a DPD bucket receiving the same sequence.",
+  },
+  {
+    metric: "Compliance exposure",
+    how: "TRAI window, DND, DPDP consent, and RBI FPC checks run as a gate before execution. A violation prevented costs nothing; one found in a post-call audit is already a reportable event.",
+  },
+  {
+    metric: "Agency performance",
+    how: "Every channel and partner is scored on one methodology — including ShieldX's own. Allocation follows measured performance under the institution's stated policy.",
+  },
+];
+
+function WhatThisMoves() {
+  return (
+    <div>
+      <div className="mb-12">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="h-px w-6 bg-white/20" />
+          <span className="text-[11px] text-white/55 tracking-[0.22em]">WHAT THIS MOVES</span>
+        </div>
+        <h2 className="text-[26px] md:text-[38px] font-semibold leading-tight mb-5">
+          The levers, and how<br />the system pulls them.
+        </h2>
+        <p className="text-white/55 text-[15px] leading-relaxed max-w-xl">
+          We don't publish outcome numbers. The deployment is early, allocation
+          hasn't started, and a lift percentage we can't evidence is worth less
+          than nothing to your risk committee. What follows is the mechanism —
+          verifiable in a walkthrough against your own portfolio.
+        </p>
+      </div>
+
+      <div className="border-t border-white/[0.08]">
+        {LEVERS.map((l) => (
+          <div key={l.metric}
+            className="border-b border-white/[0.08] py-6 grid md:grid-cols-[240px_1fr] gap-2 md:gap-10">
+            <div className="text-white text-[15px] font-medium">{l.metric}</div>
+            <div className="text-white/52 text-[14.5px] leading-relaxed">{l.how}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ================= PROBLEM CARDS ================= */
 const PROBLEMS = [
   {
@@ -437,6 +499,13 @@ export default function Home() {
       </section>
       </Motion>
       </div>{/* ── close LIVE DEMO band ── */}
+
+      {/* ── WHAT THIS MOVES ── */}
+      <Motion>
+      <section className="px-8 py-24 max-w-4xl mx-auto">
+        <WhatThisMoves />
+      </section>
+      </Motion>
 
       {/* ── CTA ── */}
       <Motion>
