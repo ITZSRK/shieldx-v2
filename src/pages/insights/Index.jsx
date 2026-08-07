@@ -24,7 +24,7 @@ const PIECES = [
     to: "/insights/who-scores-the-agencies",
     kicker: "NEUTRALITY",
     title: "Who scores the agencies?",
-    dek: "In most collections stacks, the system recommending where accounts go is operated by a company that also wants to receive them. That isn't an ethics problem — it's a structural one.",
+    dek: "Every collections vendor optimises the slice it was given. None can see the whole book — which leaves the most consequential decision in collections made on the least information.",
     date: "August 2026",
   },
 ];
