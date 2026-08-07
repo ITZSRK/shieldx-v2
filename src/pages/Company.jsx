@@ -755,27 +755,30 @@ export default function Company() {
         </Motion>
 
         <Motion delay={0.08}>
-          <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start max-w-4xl">
+          <div className="grid md:grid-cols-[1fr_300px] gap-12 items-start max-w-5xl">
 
-            <div>
-              <div className="text-[20px] text-white/65 leading-relaxed mb-8 border-l-2 border-blue-400/40 pl-7 italic">
-                "Financial institutions don't have a technology problem. They have a decision
-                governance problem. Every system generates signals — but nothing governs what
-                happens between that signal and the action it triggers. ShieldX is that layer."
-              </div>
-              <div className="pl-7 flex items-start gap-5">
-                <img
-                  src={founder}
-                  alt="Sudarson Radhakrishnan, Founder & CEO of ShieldX"
-                  className="w-[120px] h-[120px] md:w-[136px] md:h-[136px] rounded-full object-cover shrink-0 border border-white/[0.14]"
-                  style={{ boxShadow: "0 0 30px rgba(59,130,246,0.14)" }}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div>
+            {/* Portrait leads, quote and attribution to its right — the photo
+                carries enough size to read as a portrait rather than an avatar.
+                Stacks on mobile. */}
+            <div className="grid md:grid-cols-[190px_1fr] gap-7 md:gap-8 items-start">
+              <img
+                src={founder}
+                alt="Sudarson Radhakrishnan, Founder & CEO of ShieldX"
+                className="w-[165px] md:w-[190px] rounded-xl object-cover border border-white/[0.14]"
+                style={{ aspectRatio: "470 / 600", boxShadow: "0 0 34px rgba(59,130,246,0.12)" }}
+                loading="lazy"
+                decoding="async"
+              />
+              <div>
+                <div className="text-[19px] md:text-[20px] text-white/65 leading-relaxed mb-7 border-l-2 border-blue-400/40 pl-7 italic">
+                  "Financial institutions don't have a technology problem. They have a decision
+                  governance problem. Every system generates signals — but nothing governs what
+                  happens between that signal and the action it triggers. ShieldX is that layer."
+                </div>
+                <div className="pl-7">
                   <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
                   <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
-                  <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
+                  <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-md">
                     18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
                     and Yubi. Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
                   </p>
