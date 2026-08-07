@@ -22,9 +22,14 @@ const PILLARS = [
     desc: "Our data handling practices are designed to align with the Digital Personal Data Protection Act, 2023. Purpose limitation, data minimisation, and consent management are built into our processing workflows — not bolted on after the fact.",
   },
   {
+    tag: "ASSURANCE",
+    title: "Independent VAPT completed",
+    desc: "Vulnerability assessment and penetration testing has been carried out by an independent third party. The report is available to prospective and existing clients under NDA as part of vendor due diligence.",
+  },
+  {
     tag: "CERTIFICATION",
     title: "ISO 27001 certification in progress",
-    desc: "We are actively working towards ISO/IEC 27001:2022 certification for our information security management system. Controls across access management, incident response, vulnerability management, and business continuity are being implemented and documented.",
+    desc: "We are actively working towards ISO/IEC 27001:2022 certification for our information security management system. Controls across access management, incident response, vulnerability management, and business continuity are being implemented and documented. We are not SOC 2 audited.",
   },
   {
     tag: "ACCESS CONTROL",
@@ -48,15 +53,30 @@ const PILLARS = [
   },
 ];
 
+// Every line here has to be defensible in a bank's InfoSec questionnaire —
+// an unsupported claim discovered in diligence discredits the supported ones
+// alongside it. Aspirational practices belong in the roadmap, not this list.
 const PRACTICES = [
   "Secure development lifecycle with mandatory code review",
-  "Dependency vulnerability scanning on every build",
-  "Regular penetration testing by third-party security firms",
+  "Automated dependency vulnerability scanning across all repositories",
+  "Independent VAPT completed — report available under NDA",
   "No customer production data used in development or test environments",
-  "Vendor security assessment before onboarding third-party processors",
-  "Business continuity and disaster recovery plans maintained and tested",
-  "Employee security awareness training conducted regularly",
+  "Backup and point-in-time recovery, with restore drills performed",
   "Sensitive credentials managed through secrets management tooling — never hardcoded",
+];
+
+// Platform subprocessors — third parties that may process client or borrower
+// data in the course of delivering the service. Deliberately scoped to the
+// platform: vendors that only handle website enquiry data (analytics, the
+// contact form) are covered in the Privacy Policy instead, since they never
+// touch client data.
+const SUBPROCESSORS = [
+  { name: "Amazon Web Services",   role: "Infrastructure, storage, key management",   region: "India (ap-south-1)" },
+  { name: "LiveKit",               role: "Real-time voice session transport",          region: "Configurable" },
+  { name: "Deepgram",              role: "Speech recognition",                          region: "Configurable" },
+  { name: "Sarvam AI",             role: "Indic speech and language models",            region: "India" },
+  { name: "OpenAI",                role: "Language model inference",                     region: "United States" },
+  { name: "Cartesia / ElevenLabs", role: "Speech synthesis",                             region: "United States" },
 ];
 
 export default function Security() {
@@ -117,6 +137,55 @@ export default function Security() {
                 </div>
               ))}
             </div>
+          </div>
+        </Motion>
+
+        {/* DATA RESIDENCY & PROCESSING */}
+        <Motion>
+          <div className="border-t border-white/[0.08] pt-12 mt-16">
+            <div className="text-[10px] text-white/40 tracking-[0.2em] mb-6">DATA RESIDENCY &amp; PROCESSING</div>
+            <h2 className="text-2xl font-semibold mb-5">Where your data sits, and who touches it.</h2>
+            <p className="text-white/50 text-sm leading-relaxed max-w-2xl mb-4">
+              Client and borrower data is hosted in India, in AWS's Mumbai region
+              (ap-south-1). Deployment can be cloud, hybrid, or on-premise within
+              the institution's own boundary where infrastructure policy requires it.
+            </p>
+            <p className="text-white/50 text-sm leading-relaxed max-w-2xl mb-10">
+              Data processing agreements are in place with each processor listed
+              below. Processors are engaged only for the function described, and
+              record-level data is never used for any cross-client purpose — see
+              the{" "}
+              <a href="/neutrality" className="text-blue-300/80 hover:text-blue-300 underline underline-offset-2 transition-colors">
+                Neutrality Charter
+              </a>.
+            </p>
+
+            <div className="text-[10px] text-white/40 tracking-[0.2em] mb-4">PLATFORM SUBPROCESSORS</div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse min-w-[520px]">
+                <thead>
+                  <tr className="text-[10px] text-white/35 tracking-[0.14em] text-left">
+                    <th className="font-normal pb-3 pr-6">PROCESSOR</th>
+                    <th className="font-normal pb-3 pr-6">PURPOSE</th>
+                    <th className="font-normal pb-3">PROCESSING REGION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SUBPROCESSORS.map((s, i) => (
+                    <tr key={i} className="border-t border-white/[0.06]">
+                      <td className="py-3 pr-6 text-white/75 whitespace-nowrap">{s.name}</td>
+                      <td className="py-3 pr-6 text-white/45">{s.role}</td>
+                      <td className="py-3 text-white/45 whitespace-nowrap">{s.region}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-white/32 text-[12.5px] leading-relaxed mt-5 max-w-2xl">
+              Voice-layer processors apply only where the institution uses ShieldX
+              voice channels. Brain-only deployments, where execution runs entirely
+              on the institution's own rails, engage infrastructure processors alone.
+            </p>
           </div>
         </Motion>
 
