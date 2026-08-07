@@ -214,9 +214,10 @@ function EngineArchitecture() {
 const CONNECTS = [
   {
     n:"01", label:"INTEGRATION", color:"#60a5fa",
-    title:"API-first, event-driven",
-    detail:"REST endpoints and webhooks. Event-driven and pull-based both supported. Zero changes to your core systems.",
+    title:"Built for how banks actually integrate",
+    detail:"Secure file-based exchange — SFTP, encrypted, whitelisted endpoints — mapped into ShieldX's canonical schema. The pattern tier-one InfoSec approves fastest. The voice channel additionally runs on API keys and signed webhooks.",
     proof:"No CBS / LOS code changes required",
+    link:"/integration",
   },
   {
     n:"02", label:"DEPLOYMENT", color:"#fbbf24",
@@ -273,6 +274,12 @@ function IntegrationSection() {
                 <span className="text-[11px]" style={{ color: active ? col.color : "rgba(74,222,128,0.70)" }}>✓</span>
                 <span className="text-[11px] transition-colors duration-300" style={{ color: active ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.40)" }}>{col.proof}</span>
               </div>
+              {col.link && (
+                <Link to={col.link} className="inline-block mt-3 text-[11px] transition-colors duration-300"
+                  style={{ color: active ? col.color : "rgba(255,255,255,0.35)" }}>
+                  What your IT team builds →
+                </Link>
+              )}
             </div>
           );
         })}

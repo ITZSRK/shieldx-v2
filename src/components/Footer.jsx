@@ -30,6 +30,7 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-white/65">
               <Link to="/platform"   className="hover:text-white transition">Platform</Link>
               <Link to="/deploy"     className="hover:text-white transition">How we deploy</Link>
+              <Link to="/integration" className="hover:text-white transition">Integration</Link>
             </div>
           </div>
 
