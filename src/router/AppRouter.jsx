@@ -31,6 +31,8 @@ import Terms from "../pages/Terms";
 import Security from "../pages/Security";
 import Outsourcing from "../pages/Outsourcing";
 import Integration from "../pages/Integration";
+import InsightsIndex from "../pages/insights/Index";
+import WhoScoresTheAgencies from "../pages/insights/WhoScoresTheAgencies";
 import NotFound from "../pages/NotFound";
 import CookieConsent from "../components/CookieConsent";
 
@@ -58,6 +60,8 @@ export default function AppRouter() {
         <Route path="/security" element={<Security />} />
         <Route path="/outsourcing" element={<Outsourcing />} />
         <Route path="/integration" element={<Integration />} />
+        <Route path="/insights" element={<InsightsIndex />} />
+        <Route path="/insights/who-scores-the-agencies" element={<WhoScoresTheAgencies />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

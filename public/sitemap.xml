@@ -71,6 +71,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://queloshieldx.in/insights</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://queloshieldx.in/insights/who-scores-the-agencies</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://queloshieldx.in/integration</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

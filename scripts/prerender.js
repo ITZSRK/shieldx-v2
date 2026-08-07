@@ -35,6 +35,8 @@ const ROUTES = [
   "/security",
   "/outsourcing",
   "/integration",
+  "/insights",
+  "/insights/who-scores-the-agencies",
 ];
 
 function outputPathFor(route) {

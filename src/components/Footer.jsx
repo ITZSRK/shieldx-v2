@@ -50,6 +50,7 @@ export default function Footer() {
             <div className="text-white/50 text-xs mb-3">Company</div>
             <div className="flex flex-col gap-2 text-white/65">
               <Link to="/company" className="hover:text-white transition">About</Link>
+              <Link to="/insights" className="hover:text-white transition">Insights</Link>
               <Link to="/demo"    className="hover:text-white transition">Request Demo</Link>
             </div>
           </div>
