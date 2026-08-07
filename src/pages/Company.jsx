@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import { useEffect, useState } from "react";
 import SEO from "../components/SEO";
+import founder from "../assets/founder.png";
 
 /* ━━━ MOTION ━━━ */
 function Motion({ children, delay = 0 }) {
@@ -762,13 +763,23 @@ export default function Company() {
                 governance problem. Every system generates signals — but nothing governs what
                 happens between that signal and the action it triggers. ShieldX is that layer."
               </div>
-              <div className="pl-7">
-                <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
-                <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
-                <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
-                  18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
-                  and Yubi. Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
-                </p>
+              <div className="pl-7 flex items-start gap-5">
+                <img
+                  src={founder}
+                  alt="Sudarson Radhakrishnan, Founder & CEO of ShieldX"
+                  className="w-[76px] h-[76px] rounded-full object-cover shrink-0 border border-white/[0.14]"
+                  style={{ boxShadow: "0 0 22px rgba(59,130,246,0.12)" }}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div>
+                  <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
+                  <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
+                  <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
+                    18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
+                    and Yubi. Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
+                  </p>
+                </div>
               </div>
             </div>
 
