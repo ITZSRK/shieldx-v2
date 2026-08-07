@@ -67,7 +67,14 @@ async function main() {
     await waitForServer(BASE);
     console.log("Preview server ready. Launching browser...");
 
-    const browser = await puppeteer.launch({ headless: true });
+    // --no-sandbox is required on GitHub Actions' ubuntu-latest runners,
+    // which ship with unprivileged user namespaces restricted (AppArmor),
+    // breaking Chrome's default sandbox. Safe here: this browser only ever
+    // renders our own built site, never untrusted third-party input.
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     const page = await browser.newPage();
     page.on("pageerror", (err) => console.error(`  [page error] ${err.message}`));
     page.on("console", (msg) => {
