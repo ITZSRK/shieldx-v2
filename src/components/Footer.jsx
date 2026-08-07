@@ -40,6 +40,7 @@ export default function Footer() {
               <Link to="/governance"  className="hover:text-white transition">Governance</Link>
               <Link to="/neutrality"  className="hover:text-white transition">Neutrality</Link>
               <Link to="/security"    className="hover:text-white transition">Security</Link>
+              <Link to="/outsourcing" className="hover:text-white transition">RBI Outsourcing</Link>
             </div>
           </div>
 

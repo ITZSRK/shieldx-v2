@@ -29,6 +29,7 @@ import Demo from "../pages/Demo";
 import Privacy from "../pages/Privacy";
 import Terms from "../pages/Terms";
 import Security from "../pages/Security";
+import Outsourcing from "../pages/Outsourcing";
 import NotFound from "../pages/NotFound";
 import CookieConsent from "../components/CookieConsent";
 
@@ -54,6 +55,7 @@ export default function AppRouter() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/security" element={<Security />} />
+        <Route path="/outsourcing" element={<Outsourcing />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

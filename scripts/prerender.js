@@ -33,6 +33,7 @@ const ROUTES = [
   "/privacy",
   "/terms",
   "/security",
+  "/outsourcing",
 ];
 
 function outputPathFor(route) {
