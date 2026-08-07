@@ -34,22 +34,22 @@ const PILLARS = [
   {
     tag: "ACCESS CONTROL",
     title: "Least-privilege access architecture",
-    desc: "Role-based access controls are enforced across all internal systems. Engineers access only what their role requires. Access reviews are conducted periodically. No standing privileged access to production environments.",
+    desc: "Role-based access control is enforced in the application, with MFA on all accounts and immediate session revocation. Infrastructure access is key-based and limited to named individuals.",
   },
   {
     tag: "ENCRYPTION",
     title: "Encryption at rest and in transit",
-    desc: "All data is encrypted at rest using AES-256. All data in transit is protected using TLS 1.2 or higher. Keys are managed through dedicated key management infrastructure and rotated regularly.",
+    desc: "Personal data is encrypted at the column level with AES-256-GCM under KMS-managed keys, rotated annually. Backups and object storage use AES-256 server-side encryption. Data in transit is protected with TLS 1.2 or higher.",
   },
   {
     tag: "AUDIT",
-    title: "Immutable audit infrastructure",
-    desc: "Every decision, access event, and configuration change is logged to an immutable audit trail. Logs cannot be altered or deleted by application-layer operations. Exportable for regulatory review on demand.",
+    title: "Tamper-evident audit infrastructure",
+    desc: "Decisions and administrative actions are written to append-only, hash-chained logs. Any later edit, deletion or reordering breaks the chain and is surfaced by an on-demand integrity check. PII access is recorded insert-only. Records are browsable per account and per period, and produced for auditors on request.",
   },
   {
     tag: "INCIDENT RESPONSE",
     title: "Incident detection and response",
-    desc: "We maintain a documented incident response plan covering detection, containment, investigation, and notification. Security events are monitored continuously. Affected parties are notified within timelines required under applicable Indian regulations.",
+    desc: "Security events are monitored continuously through metrics and log-based alerting. Affected parties are notified within the timelines required under applicable Indian regulations, including the CERT-In reporting window.",
   },
 ];
 
@@ -58,10 +58,10 @@ const PILLARS = [
 // alongside it. Aspirational practices belong in the roadmap, not this list.
 const PRACTICES = [
   "Secure development lifecycle with mandatory code review",
-  "Automated dependency vulnerability scanning across all repositories",
+  "Automated dependency vulnerability scanning across production repositories",
   "Independent VAPT completed — report available under NDA",
   "No customer production data used in development or test environments",
-  "Backup and point-in-time recovery, with restore drills performed",
+  "Daily logical backups, weekly base backups, and continuous WAL archiving supporting point-in-time recovery, with a documented restore procedure",
   "Sensitive credentials managed through secrets management tooling — never hardcoded",
 ];
 
@@ -106,7 +106,7 @@ export default function Security() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              {["DPDP Act Aligned", "ISO 27001 In Progress", "AES-256 Encryption", "TLS 1.2+ In Transit"].map((b, i) => (
+              {["DPDP Act Aligned", "ISO 27001 In Progress", "AES-256 PII Encryption", "TLS 1.2+ In Transit"].map((b, i) => (
                 <span key={i} className="px-4 py-1.5 rounded-full text-xs border border-blue-400/20 bg-blue-500/[0.06] text-blue-300/70">
                   {b}
                 </span>

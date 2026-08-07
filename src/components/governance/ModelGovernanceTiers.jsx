@@ -79,7 +79,7 @@ function MonitoringVisual() {
 }
 
 function EvidenceVisual() {
-  const docs = ["Decision Audit Trail", "Version History", "Champion/Challenger Report"];
+  const docs = ["Decision Audit Trail", "Model Version History", "Holdout Study Definition"];
   return (
     <div className="rounded-lg border border-white/[0.10] p-4 space-y-2">
       {docs.map((d, i) => (
@@ -88,7 +88,7 @@ function EvidenceVisual() {
           <span style={{ color: BLUE }}>▤</span> {d}
         </motion.div>
       ))}
-      <div className="text-[9.5px] text-white/40 pt-1">→ Exportable on demand for regulatory inspection</div>
+      <div className="text-[9.5px] text-white/40 pt-1">→ Produced for regulatory inspection on request</div>
     </div>
   );
 }
@@ -97,19 +97,19 @@ const TIERS = [
   {
     tier: "01",
     name: "Inventory",
-    desc: "A model registry for every model touching collections — owner, purpose, vendor, version, last validation, and risk tier — including models that never touch ShieldX.",
+    desc: "The models ShieldX runs are versioned, and every decision records the engine version that produced it — so any decision can be traced back to the exact model behind it. A registry spanning an institution's other collections models is on the roadmap.",
     Visual: InventoryVisual,
   },
   {
     tier: "02",
     name: "Monitoring",
-    desc: "For scores flowing through ShieldX as inputs: distribution drift, cohort stability, and — because ShieldX captures outcomes — actual predictive performance over time.",
+    desc: "Population drift is measured against each model's training-time baseline, and because ShieldX captures outcomes, realised predictive performance is tracked over time rather than assumed from launch.",
     Visual: MonitoringVisual,
   },
   {
     tier: "03",
     name: "Evidence packs",
-    desc: "Challenger comparison reports, decision audit trails, and version histories, exportable as documentation for regulatory inspection. Governance gates feed this automatically.",
+    desc: "Decision audit trails with the full rule waterfall, model version histories, and holdout study definitions — browsable per account and per period, and produced for an auditor on request.",
     Visual: EvidenceVisual,
   },
 ];

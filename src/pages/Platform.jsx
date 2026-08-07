@@ -22,10 +22,10 @@ function LiveDecisionTrace() {
   const stages = [
     { ms:"0ms",  label:"Signal received",     sub:"event ingested · payload normalised",         highlight:false },
     { ms:"4ms",  label:"Decision computed",   sub:"risk tier assigned · eligibility evaluated",   highlight:false },
-    { ms:"11ms", label:"Compliance validated", sub:"all regulatory checks passed",                highlight:true  },
+    { ms:"11ms", label:"Compliance validated", sub:"contact rules re-checked at dispatch",                highlight:true  },
     { ms:"18ms", label:"Orchestrated",        sub:"channel and time window confirmed",            highlight:false },
     { ms:"24ms", label:"Handed off",          sub:"dispatched via adapter · outcome captured",    highlight:false },
-    { ms:"24ms", label:"Audit written",       sub:"immutable log created · AUD-20260614-48321",   highlight:false },
+    { ms:"24ms", label:"Audit written",       sub:"hash-chained log written · AUD-20260614-48321",   highlight:false },
   ];
   const [active, setActive] = useState(0);
 
@@ -97,14 +97,14 @@ function EngineArchitecture() {
   const [active, setActive] = useState(4);
   const [paused, setPaused] = useState(false);
   const stages = [
-    { num:"01", name:"Signal Ingestion",  group:"DECISION", color:"blue", desc:"Receives structured event triggers from CBS, LOS, CRM, and campaign systems via REST API and webhooks. Validates schema and deduplicates before passing downstream." },
+    { num:"01", name:"Signal Ingestion",  group:"DECISION", color:"blue", desc:"Receives allocation files and out-of-band signal feeds over secure SFTP, plus direct scoring calls where an institution prefers them. Validates schema and surfaces duplicates for resolution before processing." },
     { num:"02", name:"Normalisation",     group:"DECISION", color:"blue", desc:"Parses raw payloads into a canonical decision context object — customer ID, product type, event classification, timestamps, and metadata unified into a single structure." },
-    { num:"03", name:"Scoring",           group:"DECISION", color:"blue", desc:"Configurable model weights and rule sets evaluate customer risk tier, cohort, and channel eligibility. Champion/challenger by design — every strategy change is measured against the incumbent before promotion." },
+    { num:"03", name:"Scoring",           group:"DECISION", color:"blue", desc:"Configurable model weights and rule sets evaluate customer risk tier, cohort, and channel eligibility. Holdout studies with deterministic, reproducible account assignment, so a lift claim can be reconstructed rather than asserted." },
     { num:"04", name:"Rule Evaluation",   group:"DECISION", color:"blue", desc:"Applies institution-specific business rules — DPD buckets, product policies, cohort overrides, frequency caps — layered on top of the base scoring output." },
-    { num:"05", name:"Compliance Gate",   group:"GOVERN",   color:"green", desc:"Hard regulatory checks run here: TRAI calling window (8AM–7PM IST), TRAI DND scrub, DPDP Act consent validation, RBI Fair Practices Code, and frequency limits. Nothing executes unless all checks pass.", highlight:true },
-    { num:"06", name:"Orchestrate",       group:"DECISION", color:"blue", desc:"An internal module of Decision — sequences the governed decision into timed, constrained instructions: retry logic, channel fallback, contact-window compliance, agency capacity allocation." },
+    { num:"05", name:"Compliance Gate",   group:"GOVERN",   color:"green", desc:"Contact rules are re-evaluated at dispatch, not at decision time: calling window (8AM–7PM IST by default), Sunday and national-holiday rules in IST, daily frequency caps, and institution-set suppression entries. Automated channel sends are blocked if any rule fails. Rules resolve per product and portfolio, with effective dating.", highlight:true },
+    { num:"06", name:"Orchestrate",       group:"DECISION", color:"blue", desc:"An internal module of Decision — sequences the governed decision into timed, constrained instructions: retry logic, contact-window compliance, and escalation when a channel is exhausted." },
     { num:"07", name:"Execution Adapters", group:"EXECUTE", color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's handles and templates, the bank's dialer, agency work-lists (SFTP/API), Engage, or Diya voice — every adapter speaks the same treatment-in / outcome-out contract.", link:"/deploy" },
-    { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes an immutable record per interaction: decision payload, compliance check results, routing outcome, execution status, and full reason codes. Exportable on demand." },
+    { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes a tamper-evident, hash-chained record per decision: payload, the rule waterfall evaluated, the rule that fired, routing outcome and execution status — with an integrity-verification endpoint." },
     { num:"09", name:"Intelligence",      group:"SENSE",    color:"violet", desc:"Post-call analysis of recorded calls — batch, not in-call (Assist covers the live call) — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
   ];
   const COLOR_HEX = { blue:"96,165,250", green:"74,222,128", amber:"251,191,36", violet:"167,139,250", emerald:"52,211,153" };
@@ -294,12 +294,12 @@ function ObservabilitySection() {
   const [hovered, setHovered] = useState(null);
 
   const feed = [
-    { id:"DEC-48331", uc:"COLLECTIONS", result:"AGENT CALL · TRAI PASS",         ok:true,  color:"#f59e0b" },
-    { id:"DEC-48330", uc:"COLLECTIONS", result:"SMS BLOCKED · DND MATCH",       ok:false, color:"#f59e0b" },
-    { id:"DEC-48329", uc:"COLLECTIONS", result:"WHATSAPP SENT · DPDP PASS",     ok:true,  color:"#818cf8" },
+    { id:"DEC-48331", uc:"COLLECTIONS", result:"VOICE QUEUED · WINDOW OK",         ok:true,  color:"#f59e0b" },
+    { id:"DEC-48330", uc:"COLLECTIONS", result:"SMS BLOCKED · SUPPRESSION LIST",       ok:false, color:"#f59e0b" },
+    { id:"DEC-48329", uc:"COLLECTIONS", result:"WHATSAPP SENT · WITHIN CAP",     ok:true,  color:"#818cf8" },
     { id:"DEC-48328", uc:"COLLECTIONS", result:"CALL ANALYSED · HARDSHIP FLAGGED", ok:true, color:"#34d399" },
-    { id:"DEC-48327", uc:"COLLECTIONS", result:"AGENT CALL BLOCKED · OUT OF WINDOW", ok:false, color:"#f59e0b" },
-    { id:"DEC-48326", uc:"COLLECTIONS", result:"SETTLEMENT OFFER · RBI FPC OK",  ok:true,  color:"#818cf8" },
+    { id:"DEC-48327", uc:"COLLECTIONS", result:"VOICE BLOCKED · OUTSIDE HOURS", ok:false, color:"#f59e0b" },
+    { id:"DEC-48326", uc:"COLLECTIONS", result:"SETTLEMENT OFFER · DAY RULE OK",  ok:true,  color:"#818cf8" },
   ];
 
   useEffect(() => {
@@ -429,7 +429,7 @@ function ObservabilitySection() {
           {
             role: "COMPLIANCE OFFICER",
             action: "Regulatory review — on demand.",
-            desc: "Every blocked decision logged with a reason code. Exception reports formatted for RBI and TRAI review — ready when the regulator asks, not scrambled after the fact.",
+            desc: "Detected breaches recorded with rule type, reviewer, timestamp and disposition — filterable by rule, portfolio and period. An audit trail you can query rather than reconstruct.",
             accent: "#4ade80",
             accentDim: "rgba(74,222,128,0.55)",
             border: "rgba(74,222,128,0.18)",
@@ -453,7 +453,7 @@ function ObservabilitySection() {
           {
             role: "CEO / BOARD",
             action: "Governance health — one view.",
-            desc: "Platform-wide compliance posture, SLA adherence, and decision volume. The single view that tells leadership whether the decision layer is working.",
+            desc: "Platform-wide compliance posture and decision volume. The single view that tells leadership whether the decision layer is working.",
             accent: "#c4b5fd",
             accentDim: "rgba(167,139,250,0.55)",
             border: "rgba(167,139,250,0.18)",

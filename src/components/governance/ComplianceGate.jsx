@@ -4,26 +4,29 @@ import { motion } from "framer-motion";
 const EMERALD = "#34d399";
 const BLOCKED = "#f87171";
 
+// These are the checks the dispatch gate actually evaluates —
+// src/services/ComplianceGate.js, whose rule table constrains attributes to
+// exactly FREQUENCY, TIME_OF_DAY and DAY_OF_WEEK_HOLIDAY. Controls handled
+// elsewhere in the chain (DND upstream at the institution, conduct detection
+// post-call in Intelligence) are described where they happen, not here.
 const CHECKS = [
-  { label: "TRAI Calling Window", desc: "No outreach before 8 AM or after 7 PM IST." },
-  { label: "TRAI DND", desc: "Real-time check against the Do Not Disturb registry." },
-  { label: "RBI Fair Practices Code", desc: "No coercive recovery. Grievance paths enforced." },
-  { label: "RBI Recovery Agent Rules", desc: "Communication restricted to regulated conduct." },
-  { label: "DPDP Act, 2023", desc: "Channel-level consent verified before AI-driven contact." },
-  { label: "Frequency Caps", desc: "Per-customer, per-product daily/weekly limits enforced." },
+  { label: "Calling Window", desc: "No voice outreach before 8 AM or after 7 PM IST. Configurable per institution." },
+  { label: "Day & Holiday Rule", desc: "Sundays and national holidays blocked, evaluated in IST." },
+  { label: "Frequency Cap", desc: "Daily contact limits, configurable per product and portfolio." },
+  { label: "Suppression List", desc: "Institution-set do-not-contact entries honoured before every send." },
 ];
 
 const SCENARIOS = [
   {
     id: "CUST-33210",
     result: "cleared",
-    payoff: "All checks cleared — decision fires within the TRAI window.",
+    payoff: "All checks cleared — decision dispatches inside the permitted window.",
   },
   {
     id: "CUST-59042",
     result: "blocked",
     blockedAt: 1,
-    payoff: "Blocked at TRAI DND — outreach suppressed, no manual override.",
+    payoff: "Blocked at the calling window — outreach suppressed, re-evaluated at the next valid slot.",
   },
 ];
 

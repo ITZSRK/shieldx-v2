@@ -103,11 +103,11 @@ const SCENARIO = {
     { ms:"8ms",  text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
     { ms:"12ms", text:"Eligible channels: agent call, WhatsApp, SMS", note:"Voice AI eligible, not selected",   color:"white" },
     { ms:"14ms", text:"TRAI window — COMPLIANT",          note:"2:00 PM IST — within 8 AM–7 PM window",         color:"green" },
-    { ms:"16ms", text:"TRAI DND — CLEAR",                 note:"DND check passed",                              color:"green" },
-    { ms:"17ms", text:"DPDP consent — PASS",               note:"Consent verified before execution",             color:"green" },
-    { ms:"18ms", text:"RBI FPC — PASS",                    note:"Fair practices code compliant",                 color:"green" },
+    { ms:"16ms", text:"Suppression list — CLEAR",         note:"No do-not-contact entry for this account",      color:"green" },
+    { ms:"17ms", text:"Frequency cap — WITHIN LIMIT",      note:"Under the daily contact limit for this product", color:"green" },
+    { ms:"18ms", text:"Day rule — COMPLIANT",              note:"Not a Sunday or national holiday (IST)",        color:"green" },
     { ms:"19ms", text:"Handoff: agent call · Assist context", note:"Governed decision handed off through adapter", color:"blue" },
-    { ms:"19ms", text:"Audit record written",              note:"AUD-20260614-48321 · Immutable",                color:"dim"   },
+    { ms:"19ms", text:"Audit record written",              note:"AUD-20260614-48321 · Hash-chained",                color:"dim"   },
     { ms:"—",    text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
   ],
 };
@@ -188,7 +188,7 @@ function GovernedDecisionView() {
 /* ================= THE STACK — 5-layer control plane ================= */
 const STACK_LAYERS = [
   { n: "01", name: "System of record",   color: "#93c5fd", line: "Decision log, outcome log, and conversation-derived features — the permanent asset." },
-  { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, champion/challenger. Mandatory in every deployment." },
+  { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, and holdout studies. Mandatory in every deployment." },
   { n: "03", name: "Orchestrate",        color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. An internal module of Decision." },
   { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, Diya — theirs or ours, one treatment-in / outcome-out contract." },
   { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
@@ -276,7 +276,7 @@ const LEVERS = [
   },
   {
     metric: "Compliance exposure",
-    how: "TRAI window, DND, DPDP consent, and RBI FPC checks run as a gate before execution. A violation prevented costs nothing; one found in a post-call audit is already a reportable event.",
+    how: "Calling window, day-and-holiday rules, frequency caps and suppression entries are re-checked at the moment of dispatch, not just when the decision was made. A send prevented costs nothing; one found in a post-call audit is already a reportable event.",
   },
   {
     metric: "Agency performance",
@@ -337,7 +337,7 @@ const PROBLEMS = [
   {
     n: "03",
     head: "When RBI asks, there's no answer.",
-    body: "No reason codes, no immutable log, no evidence when it matters.",
+    body: "No reason codes, no verifiable record, no evidence when it matters.",
     num: "#c084fc",
     dot: "rgba(192,132,252,0.55)",
     card: "border-violet-400/[0.15] bg-violet-500/[0.02] hover:border-violet-400/[0.42] hover:bg-violet-500/[0.04] hover:shadow-[0_0_28px_rgba(192,132,252,0.08)]",
@@ -491,7 +491,7 @@ export default function Home() {
           Watch a governed decision run.
         </h2>
         <p className="text-white/62 mb-10">
-          TRAI window. RBI FPC. DPDP consent. Every check enforced in sequence — before the channel fires.
+          Calling window. Day rules. Frequency caps. Every check re-run in sequence — at the moment the channel fires, not when the decision was made.
         </p>
 
         <GovernedDecisionView />

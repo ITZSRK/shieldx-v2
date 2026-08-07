@@ -43,9 +43,9 @@ const DECISIONS = [
     context:     "₹24,000 · DPD-7",
     checks: [
       { rule:"TRAI Window", result:"PASS", note:"08:00–19:00 IST" },
-      { rule:"TRAI DND",    result:"PASS", note:"Not registered"  },
-      { rule:"DPDP Act",    result:"PASS", note:"Consent verified"},
-      { rule:"RBI FPC",     result:"PASS", note:"Compliant"       },
+      { rule:"Suppression", result:"PASS", note:"Not listed"      },
+      { rule:"Day rule",    result:"PASS", note:"Not Sun/holiday" },
+      { rule:"Frequency",   result:"PASS", note:"Within limit"    },
     ],
     verdict:      "EXECUTE",
     action:       "Agent call · 2:00 PM IST · Assist context",
@@ -60,8 +60,8 @@ const DECISIONS = [
     context:     "₹18,000 · DPD-15",
     checks: [
       { rule:"TRAI Window", result:"PASS", note:"11:00–19:00 IST" },
-      { rule:"DPDP Act",    result:"PASS", note:"Consent verified"},
-      { rule:"RBI FPC",     result:"PASS", note:"Compliant"       },
+      { rule:"Day rule",    result:"PASS", note:"Not Sun/holiday" },
+      { rule:"Frequency",   result:"PASS", note:"Within limit"    },
       { rule:"Frequency Cap", result:"PASS", note:"Within limit"  },
     ],
     verdict:      "EXECUTE",
@@ -77,9 +77,9 @@ const DECISIONS = [
     context:     "₹11,500 · DPD-3",
     checks: [
       { rule:"TRAI Window", result:"FAIL", note:"07:30 AM — outside window" },
-      { rule:"TRAI DND",    result:"PASS", note:"Not registered"            },
-      { rule:"DPDP Act",    result:"PASS", note:"Consent verified"          },
-      { rule:"RBI FPC",     result:"PASS", note:"Compliant"                 },
+      { rule:"Suppression", result:"PASS", note:"Not listed"                },
+      { rule:"Day rule",    result:"PASS", note:"Not Sun/holiday"           },
+      { rule:"Frequency",   result:"PASS", note:"Within limit"              },
     ],
     verdict:      "BLOCKED",
     action:       "Rescheduled · 10:00 AM IST",
@@ -182,9 +182,9 @@ const TRACE = [
   { ms: "11ms", text: "Decision: Call customer at 7:30 AM", kind: "step",    note: null                                               },
   { ms: "14ms", text: "TRAI Window Violation",              kind: "blocked", note: "Outreach at 7:30 AM — before TRAI window (8 AM IST)" },
   { ms: "15ms", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
-  { ms: "19ms", text: "Compliance Cleared",                 kind: "passed",  note: "TRAI ✓  DND ✓  DPDP ✓  RBI FPC ✓"               },
+  { ms: "19ms", text: "Compliance Cleared",                 kind: "passed",  note: "Window ✓  Day rule ✓  Frequency ✓  Suppression ✓"               },
   { ms: "28ms", text: "Agent call triggered",                kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
-  { ms: "29ms", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Immutable"                   },
+  { ms: "29ms", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Hash-chained"                   },
 ];
 
 const TRACE_DELAYS = [400, 650, 700, 1700, 700, 1400, 700, 3500];
@@ -557,7 +557,7 @@ const CREDS = [
   {
     label: "BUILT FOR",
     val:   "High-volume, regulated decision workflows",
-    ctx:   "Engineered for thousands of decisions per minute — each one compliant, explainable, and auditable without performance trade-offs.",
+    ctx:   "Engineered for a full loan book in a single scored run — each one compliant, explainable, and auditable without performance trade-offs.",
   },
 ];
 
