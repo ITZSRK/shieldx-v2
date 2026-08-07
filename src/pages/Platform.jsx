@@ -91,78 +91,6 @@ function LiveDecisionTrace() {
   );
 }
 
-/* ─── DECISION DEBUGGER ──────────────────────────────── */
-function DecisionDebugger() {
-  const steps = [
-    { ms:"0ms",  label:"Signal received",      detail:"CBS triggers payment_missed event — payload normalised" },
-    { ms:"7ms",  label:"Decision computed",    detail:"Customer scored, channel eligibility evaluated" },
-    { ms:"14ms", label:"Compliance validated", detail:"Regulatory check passed — execution permitted", highlight:true },
-    { ms:"21ms", label:"Orchestrated",         detail:"Channel selected, time window confirmed" },
-    { ms:"28ms", label:"Handed off",           detail:"Dispatched via adapter — response captured" },
-    { ms:"28ms", label:"Audit recorded",       detail:"Immutable log written — AUD-20260614-48321" },
-  ];
-  const [active, setActive] = useState(2);
-  useEffect(() => {
-    const i = setInterval(() => setActive(p => (p+1) % steps.length), 1900);
-    return () => clearInterval(i);
-  }, []);
-
-  return (
-    <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-      <div className="space-y-1">
-        {steps.map((s,i) => (
-          <div key={i}
-            onClick={() => setActive(i)}
-            className="flex items-start gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-colors duration-200"
-            style={{ background: i===active ? "rgba(255,255,255,0.03)" : "transparent" }}
-          >
-            <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 transition-all duration-300 ${i===active ? "animate-pulse" : ""}`} style={{
-              background: i===active ? (s.highlight ? "#4ade80" : "#60a5fa") : "rgba(255,255,255,0.14)",
-              boxShadow: i===active ? `0 0 10px ${s.highlight ? "rgba(74,222,128,.8)" : "rgba(96,165,250,.8)"}` : "none",
-            }} />
-            <div>
-              <div className="text-sm font-mono transition-colors duration-200" style={{
-                color: i===active ? (s.highlight ? "#4ade80" : "#93c5fd")
-                  : i<active ? "rgba(255,255,255,.55)" : "rgba(255,255,255,.45)",
-              }}>
-                [{s.ms}] {s.label}
-              </div>
-              {i===active && (
-                <motion.div initial={{opacity:0,y:3}} animate={{opacity:1,y:0}}
-                  className="text-xs text-white/35 mt-0.5">{s.detail}</motion.div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="border border-white/15 rounded-xl p-5 bg-black/50 font-mono text-xs">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-white/65 text-xs font-sans font-medium not-italic">
-            Live decision state<span className="inline-block ml-1 animate-pulse" style={{color:"#4ade80"}}>▮</span>
-          </span>
-          <span className="text-[9px] tracking-widest text-white/22">ILLUSTRATIVE</span>
-        </div>
-        <div className="space-y-[5px] text-white/45">
-          <div>customer_id: <span className="text-white/80">48321</span></div>
-          <div>dpd_bucket: <span className="text-white/80">30–60</span></div>
-          <div>risk_tier: <span className="text-white/80">HIGH</span></div>
-          <div>compliance: <span style={{color:"#4ade80"}}>PASS</span></div>
-          <div>channel_selected: <span style={{color:"#93c5fd"}}>agent_call · assist_context</span></div>
-          <div className="pt-2 mt-1 border-t border-white/15">
-            <div style={{color:"#93c5fd"}}>[{steps[active].ms}] {steps[active].label}</div>
-            <div>decision_id: <span className="text-white/45">DEC-48321</span></div>
-            <div>audit_id: <span className="text-white/45">AUD-20260614-48321</span></div>
-          </div>
-        </div>
-        <div className="mt-4 pt-3 border-t border-white/15 text-white/22 text-[10px]">
-          Every field logged immutably · Exportable for regulatory audit on demand
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── ENGINE ARCHITECTURE — regrouped under product names ───── */
 function EngineArchitecture() {
   const [active, setActive] = useState(4);
@@ -175,8 +103,8 @@ function EngineArchitecture() {
     { num:"05", name:"Compliance Gate",   group:"GOVERN",   color:"green", desc:"Hard regulatory checks run here: TRAI calling window (8AM–7PM IST), TRAI DND scrub, DPDP Act consent validation, RBI Fair Practices Code, and frequency limits. Nothing executes unless all checks pass.", highlight:true },
     { num:"06", name:"Orchestrate",       group:"DECISION", color:"blue", desc:"An internal module of Decision — sequences the governed decision into timed, constrained instructions: retry logic, channel fallback, contact-window compliance, agency capacity allocation." },
     { num:"07", name:"Execution Adapters", group:"EXECUTE", color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's handles and templates, the bank's dialer, agency work-lists (SFTP/API), Engage, or Diya voice — every adapter speaks the same treatment-in / outcome-out contract.", link:"/deploy" },
-    { num:"08", name:"System of Record",  group:"RECORD",   color:"violet", desc:"Writes an immutable record per interaction: decision payload, compliance check results, routing outcome, execution status, and full reason codes. Exportable on demand." },
-    { num:"09", name:"Intelligence",      group:"SENSE",    color:"emerald", desc:"Post-call analysis of recorded calls — batch, not in-call — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
+    { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes an immutable record per interaction: decision payload, compliance check results, routing outcome, execution status, and full reason codes. Exportable on demand." },
+    { num:"09", name:"Intelligence",      group:"SENSE",    color:"violet", desc:"Post-call analysis of recorded calls — batch, not in-call (Assist covers the live call) — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
   ];
   const COLOR_HEX = { blue:"96,165,250", green:"74,222,128", amber:"251,191,36", violet:"167,139,250", emerald:"52,211,153" };
 
@@ -281,247 +209,30 @@ function EngineArchitecture() {
   );
 }
 
-/* ─── COMPLIANCE ─────────────────────────────────────── */
-function ComplianceSection() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [hPill,  setHPill]  = useState(null);
-
-  const checks = [
-    { label:"TRAI Window",          detail:"No outreach before 8 AM or after 7 PM IST. Enforced at execution level — no override permitted.",                        reg:"TRAI"     },
-    { label:"TRAI DND",            detail:"Real-time scrub against TRAI's Do Not Disturb registry before every contact attempt.",                                   reg:"TRAI"     },
-    { label:"DPDP Consent",        detail:"Per-channel consent validated before any interaction triggers. Scope, purpose, and expiry enforced.",                     reg:"DPDP"     },
-    { label:"RBI Fair Practices",  detail:"Recovery conduct governed per RBI circular on Fair Practices Code for Lenders — no coercive or unreasonable contact.",   reg:"RBI"      },
-    { label:"Frequency Cap",       detail:"Daily and weekly outreach limits per customer enforced automatically — per applicable RBI and TRAI guidelines.",          reg:"RBI·TRAI" },
-  ];
-
-  const pills = ["RBI Fair Practices Code","TRAI Guidelines","DPDP Act, 2023","Debt Recovery Frameworks","RBI Draft MRM Guidance"];
-
-  useEffect(() => {
-    if (paused) return;
-    const i = setInterval(() => setActive(a => (a + 1) % checks.length), 2800);
-    return () => clearInterval(i);
-  }, [paused]);
-
-  return (
-    <div>
-      <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-3 mb-5">
-          <div className="h-px w-6 bg-white/20" />
-          <span className="text-[11px] text-white/55 tracking-[0.22em]">COMPLIANCE ENFORCEMENT</span>
-          <div className="h-px w-6 bg-white/20" />
-        </div>
-        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Compliance is not a layer.<br />It is the gatekeeper.</h2>
-        <p className="text-[17px] md:text-[20px] font-medium text-white/90 max-w-xl mx-auto mb-3 leading-snug">
-          Every decision is blocked unless compliant.
-        </p>
-        <p className="text-white/55 max-w-lg mx-auto leading-relaxed text-sm">
-          Every regulatory check runs at infrastructure level, in real time,
-          before anything reaches the customer.
-        </p>
-      </div>
-
-      <div className="max-w-4xl mx-auto mb-10">
-        {/* Flow header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="px-4 py-2 rounded-lg border border-blue-400/25 bg-blue-500/[0.06] shrink-0">
-            <div className="text-[9px] text-blue-300/50 tracking-widest mb-0.5">DECISION</div>
-            <div className="text-[11px] text-blue-300/65 font-mono">SIGNAL ›</div>
-          </div>
-          <div className="flex-1 border-t border-dashed border-white/[0.09]" />
-          <div className="text-[9px] text-white/32 tracking-[0.2em] shrink-0 font-medium">COMPLIANCE GATE</div>
-          <div className="flex-1 border-t border-dashed border-white/[0.09]" />
-          <div className="px-4 py-2 rounded-lg border border-emerald-400/25 bg-emerald-500/[0.06] shrink-0">
-            <div className="text-[9px] text-emerald-300/50 tracking-widest mb-0.5">GOVERNED</div>
-            <div className="text-[11px] text-emerald-300/65 font-mono">EXECUTE ✓</div>
-          </div>
-        </div>
-
-        {/* Five gate cards */}
-        <div className="grid grid-cols-5 gap-2 mb-6">
-          {checks.map((c, i) => (
-            <div key={i}
-              className="rounded-xl p-3 border text-center cursor-pointer transition-all duration-300"
-              style={{
-                borderColor: i === active ? "rgba(74,222,128,0.42)" : i < active ? "rgba(74,222,128,0.18)" : "rgba(255,255,255,0.06)",
-                background:  i === active ? "rgba(74,222,128,0.07)" : i < active ? "rgba(74,222,128,0.03)" : "rgba(255,255,255,0.015)",
-                transform:   i === active ? "translateY(-4px)" : "none",
-                boxShadow:   i === active ? "0 8px 20px rgba(74,222,128,0.08)" : "none",
-              }}
-              onClick={() => { setActive(i); setPaused(true); }}
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-            >
-              <div className="text-sm mb-1.5 transition-all duration-300"
-                style={{color: i <= active ? "#4ade80" : "rgba(255,255,255,0.15)"}}>
-                {i < active ? "✓" : i === active ? "●" : "○"}
-              </div>
-              <div className="text-[10px] font-medium leading-snug mb-1 transition-colors duration-300"
-                style={{color: i <= active ? "rgba(255,255,255,0.82)" : "rgba(255,255,255,0.30)"}}>
-                {c.label}
-              </div>
-              <div className="text-[9px] tracking-wider transition-colors duration-300"
-                style={{color: i <= active ? "rgba(74,222,128,0.60)" : "rgba(255,255,255,0.15)"}}>
-                {c.reg}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Active detail */}
-        <AnimatePresence mode="wait">
-          <motion.div key={active}
-            initial={{opacity:0,y:5}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-5}}
-            transition={{duration:.2}}
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-            className="border rounded-xl px-6 py-4 flex items-center gap-5"
-            style={{borderColor:"rgba(74,222,128,0.22)",background:"rgba(74,222,128,0.03)"}}
-          >
-            <div className="w-9 h-9 rounded-xl border border-emerald-400/30 bg-emerald-500/[0.08] flex items-center justify-center flex-shrink-0">
-              <span className="text-emerald-400 text-sm">✓</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-white mb-1">{checks[active].label}</div>
-              <div className="text-sm text-white/66 leading-relaxed">{checks[active].detail}</div>
-            </div>
-            <div className="text-[10px] text-emerald-400/60 tracking-widest shrink-0 font-medium">PASS</div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Proof line */}
-      <p className="text-center text-sm text-white/38 mb-8 mt-2">
-        Every blocked action is logged with a reason code — exportable for regulatory review on demand.
-        <br className="hidden md:block" />
-        <Link to="/governance" className="text-emerald-400/60 hover:text-emerald-400 transition-colors">
-          Full conduct compliance and model governance detail →
-        </Link>
-      </p>
-
-      {/* Regulation pills */}
-      <div className="flex flex-wrap justify-center gap-2">
-        {pills.map((p,i) => (
-          <motion.span key={i}
-            className="text-xs px-4 py-1.5 rounded-full border cursor-default"
-            style={{
-              borderColor: hPill===i ? "rgba(74,222,128,.40)" : "rgba(255,255,255,.10)",
-              color:       hPill===i ? "#4ade80" : "rgba(255,255,255,.42)",
-              background:  hPill===i ? "rgba(74,222,128,.06)" : "transparent",
-            }}
-            onMouseEnter={() => setHPill(i)}
-            onMouseLeave={() => setHPill(null)}
-            animate={{ y: hPill===i ? -2 : 0 }}
-            transition={{ duration:.14 }}
-          >{p}</motion.span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── BEFORE / AFTER ─────────────────────────────────── */
-function BeforeAfter() {
-  const [hovered, setHovered] = useState(null);
-  const pairs = [
-    { without:"Independent vendor triggers",               with_:"Single decision engine" },
-    { without:"No compliance check before execution",      with_:"Compliance verified before every action" },
-    { without:"Channel conflict — same customer hit twice", with_:"Unified orchestration — one decision, one channel" },
-    { without:"No audit trail",                            with_:"Immutable audit on every interaction" },
-  ];
-
-  return (
-    <div>
-      <div className="text-center mb-10">
-        <div className="flex items-center justify-center gap-3 mb-5">
-          <div className="h-px w-6 bg-white/20" />
-          <span className="text-[11px] text-white/55 tracking-[0.22em]">THE SHIFT</span>
-          <div className="h-px w-6 bg-white/20" />
-        </div>
-        <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">
-          <span className="text-white/32">Ungoverned decisions have a cost.</span><br />
-          <span style={{textShadow:"0 0 32px rgba(52,211,153,0.55)"}}>ShieldX eliminates it.</span>
-        </h2>
-        <p className="text-white/66 max-w-md mx-auto leading-relaxed text-sm">
-          The same signals. The same channels. Completely different outcomes — when a decision layer sits between them.
-        </p>
-      </div>
-
-      <div className="max-w-5xl mx-auto grid grid-cols-[1fr_52px_1fr]">
-
-        {/* Left — UNGOVERNED */}
-        <div className="rounded-2xl border p-6 transition-all duration-400 cursor-default"
-          onMouseEnter={() => setHovered("left")}
-          onMouseLeave={() => setHovered(null)}
-          style={{
-            borderColor: hovered==="left" ? "rgba(239,68,68,0.40)" : "rgba(239,68,68,0.22)",
-            background:  hovered==="left" ? "rgba(239,68,68,0.07)"  : "rgba(239,68,68,0.035)",
-            boxShadow:   hovered==="left" ? "0 0 80px rgba(239,68,68,0.28)" : "0 0 60px rgba(239,68,68,0.11)",
-          }}>
-          <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-6 h-6 rounded-full bg-red-500/15 border border-red-400/25 flex items-center justify-center flex-shrink-0">
-              <span className="text-red-400 text-[10px] leading-none">✕</span>
-            </div>
-            <span className="text-[10px] text-red-400/65 tracking-[0.2em] font-medium">WITHOUT SHIELDX</span>
-          </div>
-          <div className="space-y-0.5">
-            {pairs.map((p, i) => (
-              <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.04] last:border-0">
-                <span className="text-red-400/45 text-[11px] flex-shrink-0 mt-0.5">✕</span>
-                <span className="text-white/52 text-sm leading-relaxed">{p.without}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/[0.08] border border-red-400/20">
-            <div className="w-1.5 h-1.5 rounded-full bg-red-400/70" />
-            <span className="text-[10px] text-red-400/65 tracking-widest">EXPOSURE: HIGH</span>
-          </div>
-        </div>
-
-        {/* Center */}
-        <div className="flex flex-col items-center justify-center gap-3 px-2">
-          <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
-          <div className="w-9 h-9 rounded-full border border-white/25 bg-white/[0.06] flex items-center justify-center flex-shrink-0">
-            <span className="text-white/55 text-base leading-none">→</span>
-          </div>
-          <div className="w-px flex-1" style={{background:"linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent)"}} />
-        </div>
-
-        {/* Right — WITH SHIELDX */}
-        <div className="rounded-2xl border p-6 transition-all duration-400 cursor-default"
-          onMouseEnter={() => setHovered("right")}
-          onMouseLeave={() => setHovered(null)}
-          style={{
-            borderColor: hovered==="right" ? "rgba(52,211,153,0.50)"  : "rgba(52,211,153,0.30)",
-            background:  hovered==="right" ? "rgba(52,211,153,0.09)"  : "rgba(52,211,153,0.05)",
-            boxShadow:   hovered==="right" ? "0 0 90px rgba(52,211,153,0.35)" : "0 0 70px rgba(52,211,153,0.18)",
-          }}>
-          <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/35 flex items-center justify-center flex-shrink-0">
-              <span className="text-emerald-400 text-[10px] leading-none">✓</span>
-            </div>
-            <span className="text-[10px] text-emerald-400/80 tracking-[0.2em] font-medium">WITH SHIELDX</span>
-          </div>
-          <div className="space-y-0.5">
-            {pairs.map((p, i) => (
-              <div key={i} className="flex items-start gap-3 py-3.5 border-b border-white/[0.06] last:border-0">
-                <span className="text-emerald-400/70 text-[11px] flex-shrink-0 mt-0.5">✓</span>
-                <span className="text-white/82 text-sm leading-relaxed">{p.with_}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/[0.12] border border-emerald-400/30">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/80" />
-            <span className="text-[10px] text-emerald-400/80 tracking-widest">GOVERNED: 100%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── INTEGRATION ────────────────────────────────────── */
+const CONNECTS = [
+  {
+    n:"01", label:"INTEGRATION", color:"#60a5fa",
+    title:"API-first, event-driven",
+    detail:"REST endpoints and webhooks. Event-driven and pull-based both supported. Zero changes to your core systems.",
+    proof:"No CBS / LOS code changes required",
+  },
+  {
+    n:"02", label:"DEPLOYMENT", color:"#fbbf24",
+    title:"On-prem, cloud, or hybrid",
+    detail:"Adapts to your infrastructure policy — including air-gapped Tier-1 and DPDP data residency requirements.",
+    proof:"Existing infrastructure preserved",
+  },
+  {
+    n:"03", label:"TIME TO VALUE", color:"#4ade80",
+    title:"3–6 weeks to first decision",
+    detail:"From agreement to your first governed, compliant, auditable decision. Phased rollout available.",
+    proof:"Live on one portfolio first — expand from there",
+  },
+];
+
 function IntegrationSection() {
+  const [hovered, setHovered] = useState(null);
   return (
     <div>
       <div className="text-center mb-12">
@@ -538,39 +249,32 @@ function IntegrationSection() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        {[
-          {
-            n:"01", label:"INTEGRATION",
-            title:"API-first, event-driven",
-            detail:"REST endpoints and webhooks. Event-driven and pull-based both supported. Zero changes to your core systems.",
-            proof:"No CBS / LOS code changes required",
-          },
-          {
-            n:"02", label:"DEPLOYMENT",
-            title:"On-prem, cloud, or hybrid",
-            detail:"Adapts to your infrastructure policy — including air-gapped Tier-1 and DPDP data residency requirements.",
-            proof:"Existing infrastructure preserved",
-          },
-          {
-            n:"03", label:"TIME TO VALUE",
-            title:"3–6 weeks to first decision",
-            detail:"From agreement to your first governed, compliant, auditable decision. Phased rollout available.",
-            proof:"Live on one portfolio first — expand from there",
-          },
-        ].map((col, i) => (
-          <div key={i} className="border border-white/[0.12] rounded-xl px-6 py-5 bg-white/[0.04]">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[9px] font-mono text-white/22">{col.n}</span>
-              <span className="text-[9px] text-white/35 tracking-widest">{col.label}</span>
+        {CONNECTS.map((col, i) => {
+          const active = hovered === i;
+          return (
+            <div key={i}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              className="rounded-xl px-6 py-5 border cursor-default transition-all duration-300"
+              style={{
+                borderColor: active ? `${col.color}60` : "rgba(255,255,255,0.12)",
+                background:  active ? `${col.color}0d` : "rgba(255,255,255,0.04)",
+                boxShadow:   active ? `0 12px 32px ${col.color}22` : "none",
+                transform:   active ? "translateY(-4px)" : "none",
+              }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[9px] font-mono transition-colors duration-300" style={{ color: active ? col.color : "rgba(255,255,255,0.22)" }}>{col.n}</span>
+                <span className="text-[9px] tracking-widest transition-colors duration-300" style={{ color: active ? `${col.color}cc` : "rgba(255,255,255,0.35)" }}>{col.label}</span>
+              </div>
+              <div className="text-sm font-semibold text-white mb-2">{col.title}</div>
+              <div className="text-xs text-white/42 leading-relaxed mb-4">{col.detail}</div>
+              <div className="flex items-center gap-1.5 pt-3 border-t transition-colors duration-300" style={{ borderColor: active ? `${col.color}30` : "rgba(255,255,255,0.06)" }}>
+                <span className="text-[11px]" style={{ color: active ? col.color : "rgba(74,222,128,0.70)" }}>✓</span>
+                <span className="text-[11px] transition-colors duration-300" style={{ color: active ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.40)" }}>{col.proof}</span>
+              </div>
             </div>
-            <div className="text-sm font-semibold text-white mb-2">{col.title}</div>
-            <div className="text-xs text-white/42 leading-relaxed mb-4">{col.detail}</div>
-            <div className="flex items-center gap-1.5 pt-3 border-t border-white/[0.06]">
-              <span className="text-[11px]" style={{color:"rgba(74,222,128,0.70)"}}>✓</span>
-              <span className="text-[11px] text-white/40">{col.proof}</span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -771,70 +475,27 @@ function ObservabilitySection() {
   );
 }
 
-/* ─── FOUR PRODUCTS — DEEP DIVE ──────────────────────── */
-const PRODUCT_DEEP = [
-  {
-    id: "decision",
-    name: "Decision",
-    tag: "THE BRAIN",
-    color: "#60a5fa",
-    line: "Mandatory in every deployment.",
-    body: "Scores, rules, cohort strategy, and champion/challenger. Decision computes what should happen to every account — who, when, which channel, with what treatment — and never ships a policy change without measuring it against the incumbent first.",
-  },
-  {
-    id: "engage",
-    name: "Engage",
-    tag: "REFERENCE EXECUTION CHANNEL",
-    color: "#fbbf24",
-    line: "For institutions without pipes of their own.",
-    body: "Have a CPaaS, dialer, and templates already? Keep them — ShieldX routes through your stack. Engage exists for institutions that need execution built in. Tier-one banks may never use it; NBFCs, ARCs, and agencies get brain and hands together.",
-  },
-  {
-    id: "assist",
-    name: "Assist",
-    tag: "THE HUMAN CHANNEL'S ADAPTER",
-    color: "#4ade80",
-    line: "Two tiers, one graceful fallback.",
-    body: "Assist Context is how a governed decision reaches a human — a pre-call briefing built from the treatment instruction. Assist Live extends decisioning into the conversation itself, in real time. If audio fails, Assist degrades to Context — never to blank.",
-  },
-  {
-    id: "intelligence",
-    name: "Intelligence",
-    tag: "THE SENSORY SYSTEM",
-    color: "#a78bfa",
-    line: "Post-call, not in-call.",
-    body: "Batch analysis of recorded calls — compliance conduct flags, agent scorecards, and decision features (objection type, hardship, promise strength) that flow back into the next decision. Also the governance face: registry, drift, and evidence for RBI's draft MRM framework.",
-  },
+/* ─── FOUR CAPABILITIES — teasers linking to their own pages ─── */
+const CAPABILITY_TEASERS = [
+  { id: "decision",     name: "Decision",     tag: "THE BRAIN",                       color: "#60a5fa", line: "Builds the customer footprint, then computes the treatment." },
+  { id: "engage",       name: "Engage",       tag: "REFERENCE EXECUTION CHANNEL",     color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes." },
+  { id: "assist",       name: "Assist",       tag: "THE HUMAN CHANNEL'S ADAPTER",     color: "#4ade80", line: "Two tiers, one graceful fallback." },
+  { id: "intelligence", name: "Intelligence", tag: "THE SENSORY SYSTEM",              color: "#a78bfa", line: "Post-call, not in-call." },
 ];
 
-function ProductDeepDive() {
+function CapabilityTeasers() {
   return (
-    <div className="space-y-6">
-      {PRODUCT_DEEP.map((p, i) => (
+    <div className="grid md:grid-cols-2 gap-4">
+      {CAPABILITY_TEASERS.map((p, i) => (
         <Motion key={p.id} delay={i * 0.06}>
-          <div id={p.id} className="scroll-mt-28 rounded-2xl border p-8 md:p-10"
+          <Link to={`/platform/${p.id}`}
+            className="block rounded-2xl border p-7 no-underline transition-all duration-200 hover:scale-[1.01]"
             style={{ borderColor: `${p.color}30`, background: `${p.color}08` }}>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-[10px] tracking-[0.2em] font-medium" style={{ color: p.color }}>{p.tag}</span>
-            </div>
-            <h3 className="text-[26px] font-semibold mb-2" style={{ color: p.color }}>{p.name}</h3>
-            <div className="text-white/70 text-sm mb-4">{p.line}</div>
-            <p className="text-white/60 leading-relaxed max-w-2xl">{p.body}</p>
-            {p.id === "engage" || p.id === "assist" ? (
-              <div className="mt-5 pt-5 border-t border-white/[0.08]">
-                <Link to="/deploy" className="text-[12px] hover:opacity-80 transition-opacity" style={{ color: p.color }}>
-                  See deployment patterns →
-                </Link>
-              </div>
-            ) : null}
-            {p.id === "intelligence" ? (
-              <div className="mt-5 pt-5 border-t border-white/[0.08]">
-                <Link to="/governance" className="text-[12px] hover:opacity-80 transition-opacity" style={{ color: p.color }}>
-                  See governance and model risk detail →
-                </Link>
-              </div>
-            ) : null}
-          </div>
+            <span className="text-[10px] tracking-[0.2em] font-medium" style={{ color: p.color }}>{p.tag}</span>
+            <h3 className="text-[22px] font-semibold mt-2 mb-1.5" style={{ color: p.color }}>{p.name}</h3>
+            <div className="text-white/60 text-sm mb-4">{p.line}</div>
+            <span className="text-[12px]" style={{ color: `${p.color}cc` }}>Explore {p.name} →</span>
+          </Link>
         </Motion>
       ))}
     </div>
@@ -887,8 +548,9 @@ export default function Platform() {
             Signal in.<br />Governed decision out.
           </h1>
           <p className="text-white/68 leading-relaxed mb-8 max-w-xl text-[15px]">
-            Sits between your core systems and every channel — controlling
-            how every decision is computed, validated, executed, and learned from.
+            One decision engine, not four separate products. It sits between your
+            core systems and every channel — controlling how every decision is
+            computed, validated, executed, and learned from.
           </p>
           <div className="inline-flex items-center gap-1 p-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05]">
             {["SIGNAL","DECIDE","GOVERN","EXECUTE","LEARN"].map((s, i, arr) => (
@@ -910,29 +572,6 @@ export default function Platform() {
 
       <div className="bg-white/[0.04] border-y border-white/[0.09]">
       <section className="max-w-6xl mx-auto px-8 py-28">
-        <Motion><BeforeAfter /></Motion>
-      </section>
-      </div>
-
-      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
-        <Motion>
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-6 bg-white/20" />
-              <span className="text-[11px] text-white/55 tracking-[0.22em]">DECISION RUNTIME</span>
-              <div className="h-px w-6 bg-white/20" />
-            </div>
-            <h2 className="text-[36px] font-semibold">From signal to governed execution.</h2>
-            <p className="text-white/62 max-w-md mx-auto mt-3 leading-relaxed text-sm">
-              One path. Every time. Scored, compliance-checked, orchestrated, handed off, and logged — in sequence, before execution.
-            </p>
-          </div>
-          <DecisionDebugger />
-        </Motion>
-      </section>
-
-      <div className="bg-white/[0.04] border-y border-white/[0.09]">
-      <section className="max-w-6xl mx-auto px-8 py-28">
         <Motion><EngineArchitecture /></Motion>
       </section>
       </div>
@@ -942,20 +581,18 @@ export default function Platform() {
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-5">
               <div className="h-px w-6 bg-white/20" />
-              <span className="text-[11px] text-white/55 tracking-[0.22em]">THE PRODUCTS</span>
+              <span className="text-[11px] text-white/55 tracking-[0.22em]">ONE DECISION SPINE</span>
               <div className="h-px w-6 bg-white/20" />
             </div>
-            <h2 className="text-[36px] font-semibold mb-3">Four products. One loop.</h2>
+            <h2 className="text-[36px] font-semibold mb-3">Four capabilities. One system.</h2>
+            <p className="text-white/62 max-w-md mx-auto mt-3 leading-relaxed text-sm">
+              Not four separate products with their own brains — one decision engine,
+              reaching every point it needs to. Each has its own page.
+            </p>
           </div>
         </Motion>
-        <ProductDeepDive />
+        <CapabilityTeasers />
       </section>
-
-      <div className="bg-white/[0.04] border-y border-white/[0.09]">
-      <section className="max-w-6xl mx-auto px-8 py-28">
-        <Motion><ComplianceSection /></Motion>
-      </section>
-      </div>
 
       <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
         <Motion><IntegrationSection /></Motion>

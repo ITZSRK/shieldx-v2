@@ -19,97 +19,76 @@ function Motion({ children, delay = 0 }) {
   );
 }
 
-/* ================= ARCHITECTURE (SIGNAL -> DECIDE -> GOVERN -> EXECUTE -> LEARN) ================= */
-function ArchitectureStack() {
-  const layers = ["Signal", "Decide", "Govern", "Execute", "Learn"];
+/* ================= SYSTEM LOOP — capabilities + the stages they drive, merged ================= */
+const STAGES = ["Signal", "Decide", "Govern", "Execute", "Learn"];
 
-  const layerInfo = [
-    "CBS, LOS, and CRM fire events into ShieldX. Every trigger normalised before evaluation begins.",
-    "Customer risk tier, segment, and cohort computed before any channel or action is considered.",
-    "TRAI window, DND, DPDP consent, RBI FPC — enforced in sequence. A single violation blocks execution.",
-    "The governed decision is handed off through the adapter for that channel — the bank's own stack, an agency work-list, or ShieldX's own channels.",
-    "Post-call intelligence extracts what was said — objections, hardship, promises — and feeds the next decision. The loop closes.",
-  ];
+const LOOP_CAPABILITIES = [
+  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Builds the customer footprint, then computes the treatment.", stages: [1, 2] },
+  { letter: "E", name: "Engage",       to: "/platform/engage",       color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes.", stages: [3] },
+  { letter: "A", name: "Assist",       to: "/platform/assist",       color: "#4ade80", line: "The human channel's adapter, before and during the call.", stages: [3] },
+  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was actually said.",                     stages: [4] },
+];
 
-  const STAGE_COLORS = [
-    { hex:"#94a3b8", border:"rgba(148,163,184,0.28)", bg:"rgba(148,163,184,0.06)", label:"rgba(148,163,184,0.65)", glow:"rgba(148,163,184,0.45)" },
-    { hex:"#60a5fa", border:"rgba(96,165,250,0.28)",  bg:"rgba(96,165,250,0.06)",  label:"rgba(96,165,250,0.65)",  glow:"rgba(96,165,250,0.50)"  },
-    { hex:"#4ade80", border:"rgba(74,222,128,0.28)",  bg:"rgba(74,222,128,0.06)",  label:"rgba(74,222,128,0.65)",  glow:"rgba(74,222,128,0.50)"  },
-    { hex:"#fb923c", border:"rgba(251,146,60,0.28)",  bg:"rgba(251,146,60,0.06)",  label:"rgba(251,146,60,0.65)",  glow:"rgba(251,146,60,0.50)"  },
-    { hex:"#a78bfa", border:"rgba(167,139,250,0.28)", bg:"rgba(167,139,250,0.06)", label:"rgba(167,139,250,0.65)", glow:"rgba(167,139,250,0.50)" },
-  ];
-
+function SystemLoop() {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    const i = setInterval(() => {
-      setActive((p) => (p + 1) % layers.length);
-    }, 2800);
+    if (paused) return;
+    const i = setInterval(() => setActive(a => (a + 1) % LOOP_CAPABILITIES.length), 3200);
     return () => clearInterval(i);
-  }, []);
+  }, [paused]);
+
+  const cap = LOOP_CAPABILITIES[active];
 
   return (
-    <div className="grid md:grid-cols-2 gap-16 items-center">
-
-      {/* LEFT */}
-      <div>
-        <div className="text-[10px] font-mono text-white/28 tracking-[0.2em] mb-5">5 STAGES · 1 CONTROL PLANE</div>
-
-        <p className="text-white/55 text-[15px] leading-relaxed mb-5">
-          Sits between your CBS, LOS, CRM, and every channel — theirs or ours. Every decision passes through all five stages, then loops back into the next one.
-        </p>
-
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22 }}
-          className="rounded-xl p-4 border"
-          style={{ borderColor: STAGE_COLORS[active].border, background: STAGE_COLORS[active].bg }}
-        >
-          <div className="text-[9px] font-mono tracking-[0.2em] mb-2"
-            style={{ color: STAGE_COLORS[active].label }}>
-            {layers[active].toUpperCase()}
-          </div>
-          <p className="text-white/78 text-sm leading-relaxed">{layerInfo[active]}</p>
-        </motion.div>
-      </div>
-
-      {/* RIGHT */}
-      <div className="
-        rounded-2xl p-6
-        bg-black/60
-        border border-white/15
-        shadow-[0_0_50px_rgba(59,130,246,0.2)]
-      ">
-        <div className="space-y-4">
-          {layers.map((layer, i) => {
-            const isActive = i === active;
-            const sc = STAGE_COLORS[i];
-
-            return (
-              <div
-                key={i}
-                className="h-11 rounded-md flex items-center justify-center gap-2 text-sm transition-all duration-500"
-                style={isActive ? {
-                  background: sc.bg,
-                  border: `1px solid ${sc.border}`,
-                  color: sc.hex,
-                  transform: "scale(1.03)",
-                  boxShadow: `0 0 22px ${sc.glow}`,
-                } : {
-                  border: "1px solid transparent",
-                  color: "rgba(255,255,255,0.45)",
-                }}
-              >
-                {isActive && <div className="w-[5px] h-[5px] rounded-full flex-shrink-0" style={{ background: sc.hex }} />}
-                {layer}
+    <div>
+      {/* stage pills — light up with whichever capability is active below */}
+      <div className="flex items-center justify-center gap-1.5 mb-16 flex-wrap">
+        {STAGES.map((stage, i) => {
+          const isLit = cap.stages.includes(i);
+          return (
+            <div key={stage} className="flex items-center gap-1.5">
+              <div className="px-4 py-2.5 rounded-lg border text-[12px] font-medium tracking-wide transition-all duration-300"
+                style={{
+                  borderColor: isLit ? `${cap.color}70` : "rgba(255,255,255,0.10)",
+                  background:  isLit ? `${cap.color}18` : "rgba(255,255,255,0.03)",
+                  color:       isLit ? cap.color : "rgba(255,255,255,0.45)",
+                  boxShadow:   isLit ? `0 0 20px ${cap.color}30` : "none",
+                  transform:   isLit ? "translateY(-2px)" : "none",
+                }}>
+                {stage}
               </div>
-            );
-          })}
-        </div>
+              {i < STAGES.length - 1 && <span className="text-white/15 text-xs">›</span>}
+            </div>
+          );
+        })}
       </div>
 
+      {/* capability cards — hover/click drives which stages light up above */}
+      <div className="grid md:grid-cols-4 gap-4">
+        {LOOP_CAPABILITIES.map((c, i) => (
+          <Link key={c.name} to={c.to}
+            onMouseEnter={() => { setActive(i); setPaused(true); }}
+            onMouseLeave={() => setPaused(false)}
+            className="block p-6 rounded-xl border transition-all duration-200 no-underline"
+            style={{
+              borderColor: active === i ? `${c.color}55` : "rgba(255,255,255,0.10)",
+              background:  active === i ? `${c.color}0d` : "rgba(255,255,255,0.03)",
+            }}>
+            <div className="w-9 h-9 rounded-lg border flex items-center justify-center mb-4 font-mono text-sm font-semibold transition-all duration-200"
+              style={{
+                borderColor: active === i ? `${c.color}70` : `${c.color}30`,
+                color: c.color,
+                background: `${c.color}12`,
+              }}>
+              {c.letter}
+            </div>
+            <div className="text-sm font-medium mb-2" style={{ color: active === i ? c.color : "white" }}>{c.name}</div>
+            <div className="text-white/55 text-xs leading-relaxed">{c.line}</div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
@@ -210,7 +189,7 @@ const PROBLEMS = [
   {
     n: "01",
     head: "CBS fires signals directly into channels.",
-    body: "No scoring. No compliance check. No channel logic between the event and the outreach.",
+    body: "No scoring, no compliance check, no channel logic in between.",
     num: "#fbbf24",
     dot: "rgba(251,191,36,0.55)",
     card: "border-amber-400/[0.15] bg-amber-500/[0.02] hover:border-amber-400/[0.42] hover:bg-amber-500/[0.04] hover:shadow-[0_0_28px_rgba(251,191,36,0.07)]",
@@ -218,7 +197,7 @@ const PROBLEMS = [
   {
     n: "02",
     head: "Vendors operate with no shared compliance gate.",
-    body: "TRAI violations. RBI FPC breaches. Discovered in post-call audits — not blocked before they happen.",
+    body: "Violations surface in post-call audits — never blocked before they happen.",
     num: "#f87171",
     dot: "rgba(248,113,113,0.55)",
     card: "border-red-400/[0.15] bg-red-500/[0.02] hover:border-red-400/[0.42] hover:bg-red-500/[0.04] hover:shadow-[0_0_28px_rgba(248,113,113,0.08)]",
@@ -226,68 +205,12 @@ const PROBLEMS = [
   {
     n: "03",
     head: "When RBI asks, there's no answer.",
-    body: "No reason codes. No immutable log. No evidence of why a customer was contacted at 7:30 AM.",
+    body: "No reason codes, no immutable log, no evidence when it matters.",
     num: "#c084fc",
     dot: "rgba(192,132,252,0.55)",
     card: "border-violet-400/[0.15] bg-violet-500/[0.02] hover:border-violet-400/[0.42] hover:bg-violet-500/[0.04] hover:shadow-[0_0_28px_rgba(192,132,252,0.08)]",
   },
 ];
-
-/* ================= THE STACK ================= */
-const STACK = [
-  { label: "System of record", desc: "Decision log + outcome log + conversation-derived features. The permanent asset." },
-  { label: "Decision",         desc: "Scores, rules, cohorts, champion/challenger. Mandatory in every deployment." },
-  { label: "Orchestrate",      desc: "Decisions sequenced into timed, constrained instructions — retry logic, channel fallback, contact-window compliance." },
-  { label: "Execution adapters", desc: "Pluggable and neutral — the bank's own stack or ShieldX's, behind one treatment-in / outcome-out contract." },
-  { label: "Sensing (Intelligence)", desc: "Post-call analysis and outcome ingestion flow back into the record, regardless of whose pipes executed." },
-];
-
-function TheStack() {
-  return (
-    <div className="max-w-3xl mx-auto space-y-2">
-      {STACK.map((row, i) => (
-        <Motion key={i} delay={i * 0.05}>
-          <div className="flex items-start gap-5 p-5 rounded-xl border border-white/[0.10] bg-white/[0.03] hover:border-blue-400/25 hover:bg-white/[0.05] transition-all duration-200">
-            <span className="text-[10px] font-mono text-white/25 pt-1 w-5 shrink-0">{String(i + 1).padStart(2, "0")}</span>
-            <div>
-              <div className="text-white text-[15px] font-medium mb-1">{row.label}</div>
-              <div className="text-white/58 text-sm leading-relaxed">{row.desc}</div>
-            </div>
-          </div>
-        </Motion>
-      ))}
-    </div>
-  );
-}
-
-/* ================= FOUR PRODUCTS ================= */
-const PRODUCTS = [
-  { name: "Decision",     to: "/platform#decision",     color: "#60a5fa", line: "The brain. Scores, rules, and champion/challenger — mandatory in every deployment." },
-  { name: "Engage",       to: "/platform#engage",       color: "#fbbf24", line: "The reference execution channel for institutions without pipes of their own." },
-  { name: "Assist",       to: "/platform#assist",       color: "#4ade80", line: "The human channel's adapter — pre-call context, in-call guidance." },
-  { name: "Intelligence", to: "/platform#intelligence", color: "#a78bfa", line: "The sensory system — post-call analysis that feeds the next decision." },
-];
-
-function ProductCards() {
-  const [hovered, setHovered] = useState(null);
-  return (
-    <div className="grid md:grid-cols-4 gap-4">
-      {PRODUCTS.map((p, i) => (
-        <Link key={p.name} to={p.to}
-          onMouseEnter={() => setHovered(i)}
-          onMouseLeave={() => setHovered(null)}
-          className="block p-6 rounded-xl border transition-all duration-200 no-underline"
-          style={{
-            borderColor: hovered === i ? `${p.color}55` : "rgba(255,255,255,0.10)",
-            background:  hovered === i ? `${p.color}0d` : "rgba(255,255,255,0.03)",
-          }}>
-          <div className="text-sm font-medium mb-2" style={{ color: hovered === i ? p.color : "white" }}>{p.name}</div>
-          <div className="text-white/55 text-xs leading-relaxed">{p.line}</div>
-        </Link>
-      ))}
-    </div>
-  );
-}
 
 /* ================= PAGE ================= */
 export default function Home() {
@@ -305,34 +228,20 @@ export default function Home() {
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.07),transparent_50%)]" />
 
       {/* ── HERO ── */}
-      <section className="px-8 pt-32 pb-20 text-center max-w-5xl mx-auto">
+      <section className="px-8 pt-32 pb-20 text-center max-w-4xl mx-auto">
         <Motion>
-          <h1 className="text-[32px] md:text-[56px] leading-[1.08] font-semibold tracking-tight mb-6">
-            Real-time decisioning infrastructure<br />for India's credit conversations.
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
+            style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
+            REAL-TIME DECISIONING INFRASTRUCTURE
+          </div>
+          <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
+            Every credit decision<br />your bank makes, ungoverned.
           </h1>
 
-          <p className="text-[18px] text-white/68 mb-8 max-w-xl mx-auto leading-relaxed">
-            ShieldX decides how every credit conversation should happen, executes it
-            across every channel, and learns from what was actually said — governed
-            and auditable end to end.
+          <p className="text-[18px] text-white/62 mb-16 max-w-lg mx-auto leading-relaxed">
+            ShieldX closes that gap — deciding, executing, and learning from every
+            credit conversation, governed end to end.
           </p>
-
-          <div className="flex justify-center mb-6">
-            <Link to="/demo"
-              className="inline-block bg-white text-black px-8 py-3 rounded-lg text-sm font-semibold
-                hover:opacity-90 hover:scale-[1.02] transition-all duration-200
-                shadow-[0_0_30px_rgba(255,255,255,0.12)]">
-              Request a walkthrough
-            </Link>
-          </div>
-
-          <div className="flex items-center justify-center gap-3 mb-14 text-[12px] text-white/40 flex-wrap">
-            <span>Live with a leading private-sector bank</span>
-            <span className="text-white/15">·</span>
-            <span>DPIIT-recognized</span>
-            <span className="text-white/15">·</span>
-            <span>Mumbai</span>
-          </div>
         </Motion>
 
         <Motion delay={0.15}>
@@ -385,63 +294,48 @@ export default function Home() {
       </Motion>
       </div>{/* ── close THE GAP band ── */}
 
-      {/* ── THE STACK ── */}
-      <Motion>
-      <section className="px-8 py-24 max-w-6xl mx-auto">
-        <div className="mb-14 text-center">
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE STACK</span>
-            <div className="h-px w-6 bg-white/20" />
-          </div>
-          <h2 className="text-[32px] md:text-[42px] font-semibold mb-4">One control plane. Any set of pipes.</h2>
-          <p className="text-white/65 text-[16px] max-w-lg mx-auto leading-relaxed">
-            ShieldX owns the decisions, the orchestration, and the record. Execution is
-            agnostic — the bank's own channels, an agency's, or ShieldX's own.
-          </p>
-        </div>
-        <TheStack />
-      </section>
-      </Motion>
-
-      {/* ── FOUR PRODUCTS ── */}
+      {/* ── VIDEO ── */}
       <div className="bg-white/[0.05] border-y border-white/[0.09]">
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE PRODUCTS</span>
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">SEE IT IN 90 SECONDS</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-          <h2 className="text-[26px] md:text-[36px] font-semibold">One loop, four products.</h2>
+          <h2 className="text-[26px] md:text-[36px] font-semibold">Watch ShieldX run a live decision.</h2>
         </div>
-        <ProductCards />
+        <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/[0.10]"
+          style={{ paddingBottom: "42%", background: "rgba(0,0,0,0.5)" }}>
+          <iframe
+            className="absolute inset-0 w-full h-full"
+            src="https://www.youtube-nocookie.com/embed/sjl9hKDv_3o?controls=1&rel=0&modestbranding=1&color=white"
+            title="ShieldX — Live Decision Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
       </section>
       </Motion>
-      </div>
+      </div>{/* ── close VIDEO band ── */}
 
-      {/* ── HOW IT WORKS ── */}
+      {/* ── ONE DECISION SPINE (capabilities + the stages they drive, merged) ── */}
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
-
-        <div className="mb-16 text-center">
+        <div className="mb-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">HOW IT WORKS</span>
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">ONE DECISION SPINE</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-          <h2 className="text-[40px] font-semibold mb-4">
-            Five stages. One closed loop.
-          </h2>
-          <p className="text-white/65 text-[16px] mb-5 max-w-lg mx-auto leading-relaxed">
-            Every customer decision passes through all five stages — and what happens
-            on the call feeds the next decision.
+          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">Four capabilities. Five stages. One loop.</h2>
+          <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
+            Not four separate products — one decision engine. Hover a capability to
+            see which stage of the loop it drives.
           </p>
         </div>
-
-        <ArchitectureStack />
-
+        <SystemLoop />
       </section>
       </Motion>
 
@@ -471,6 +365,14 @@ export default function Home() {
       {/* ── CTA ── */}
       <Motion>
       <section className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
+
+        <div className="flex items-center justify-center gap-3 mb-8 text-[12px] text-white/35 flex-wrap">
+          <span>Live with a leading private-sector bank</span>
+          <span className="text-white/15">·</span>
+          <span>DPIIT-recognized</span>
+          <span className="text-white/15">·</span>
+          <span>Mumbai</span>
+        </div>
 
         <h2 className="text-[28px] md:text-[40px] font-semibold mb-4">
           Ready to see it for yourself?

@@ -66,7 +66,10 @@ export default function Security() {
         {/* HEADER */}
         <Motion>
           <div className="mb-16">
-            <div className="text-[10px] text-white/40 tracking-[0.2em] mb-4">TRUST & SECURITY</div>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-6"
+              style={{ boxShadow: "0 0 18px rgba(59,130,246,0.22)" }}>
+              TRUST & SECURITY
+            </div>
             <h1 className="text-[40px] font-semibold mb-5">Security at ShieldX</h1>
             <p className="text-white/50 text-[17px] leading-relaxed max-w-2xl">
               ShieldX processes decision-critical data for financial institutions. Security is infrastructure — not a feature.

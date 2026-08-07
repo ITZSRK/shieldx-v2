@@ -17,6 +17,10 @@ function ScrollToTop() {
 }
 import Home from "../pages/Home";
 import Platform from "../pages/Platform";
+import PlatformDecision from "../pages/platform/Decision";
+import PlatformEngage from "../pages/platform/Engage";
+import PlatformAssist from "../pages/platform/Assist";
+import PlatformIntelligence from "../pages/platform/Intelligence";
 import Deploy from "../pages/Deploy";
 import Governance from "../pages/Governance";
 import Neutrality from "../pages/Neutrality";
@@ -25,6 +29,7 @@ import Demo from "../pages/Demo";
 import Privacy from "../pages/Privacy";
 import Terms from "../pages/Terms";
 import Security from "../pages/Security";
+import NotFound from "../pages/NotFound";
 
 export default function AppRouter() {
   return (
@@ -33,6 +38,10 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/platform" element={<Platform />} />
+        <Route path="/platform/decision" element={<PlatformDecision />} />
+        <Route path="/platform/engage" element={<PlatformEngage />} />
+        <Route path="/platform/assist" element={<PlatformAssist />} />
+        <Route path="/platform/intelligence" element={<PlatformIntelligence />} />
         <Route path="/deploy" element={<Deploy />} />
         <Route path="/governance" element={<Governance />} />
         <Route path="/neutrality" element={<Neutrality />} />
@@ -41,6 +50,7 @@ export default function AppRouter() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/security" element={<Security />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

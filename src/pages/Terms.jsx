@@ -82,7 +82,9 @@ export default function Terms() {
 
         <Motion>
           <div className="mb-12">
-            <div className="text-[10px] text-white/40 tracking-[0.2em] mb-4">LEGAL</div>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.15] bg-white/[0.05] text-white/60 text-xs tracking-[0.18em] mb-6">
+              LEGAL
+            </div>
             <h1 className="text-[40px] font-semibold mb-4">Terms of Use</h1>
             <p className="text-white/45 text-sm">
               Effective date: 1 January 2026 · Governed by the laws of India

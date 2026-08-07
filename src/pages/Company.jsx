@@ -288,15 +288,15 @@ function ComplianceCatch() {
 const PILLARS = [
   {
     label:  "Infrastructure, not software",
-    detail: "No customer UI required. No system replacement. Sits beneath the application layer — a governed layer between signals and execution."
+    detail: "No customer UI. No system replacement. A governed layer beneath your application layer."
   },
   {
     label:  "Decisions, not triggers",
-    detail: "Context, risk, compliance, and channel — evaluated before any action fires. Explainable outcomes, not rule-based triggers."
+    detail: "Context, risk, and compliance evaluated before any action fires — not a rule-based trigger."
   },
   {
     label:  "Compliance as a gate, not a report",
-    detail: "Violations blocked before execution. Not flagged after. Regulatory enforcement at the infrastructure level."
+    detail: "Violations blocked before execution, not flagged after."
   },
 ];
 
@@ -317,8 +317,7 @@ function CategoryDeclaration() {
               Real-Time Decisioning<br />Infrastructure
             </h2>
             <p className="text-white/66 leading-relaxed max-w-md text-[15px]">
-              A layer in the financial technology stack — between systems of record and channels
-              of execution. Not a replacement of any existing system. The decisioning layer
+              Not a replacement for any system you already run — the layer that was missing
               between them.
             </p>
 
@@ -412,19 +411,19 @@ function CategoryDeclaration() {
 const BELIEFS = [
   {
     text: "Decisions should be computed, not triggered.",
-    sub:  "Rule-based triggers produce inconsistent, unauditable outcomes. Computed decisions produce explainable, governed ones — every time.",
+    sub:  "Triggers produce inconsistent outcomes. Computed decisions are explainable and governed.",
   },
   {
     text: "Compliance belongs inside execution, not beside it.",
-    sub:  "Post-execution compliance checks are reports of what went wrong. Pre-execution compliance gates are what prevent it.",
+    sub:  "Post-execution checks report what went wrong. Pre-execution gates prevent it.",
   },
   {
     text: "Every credit conversation should be intentional.",
-    sub:  "Accidental outreach — wrong channel, wrong time, no consent — isn't just ineffective. In a regulated environment, it's a liability event.",
+    sub:  "Wrong channel, wrong time, no consent — in a regulated environment, that's a liability event.",
   },
   {
     text: "Execution without governance is liability.",
-    sub:  "When systems fire without a decision layer between them, every ungoverned outcome is a regulatory exposure waiting to be discovered.",
+    sub:  "Fire without a decision layer in between, and every ungoverned outcome is exposure waiting to surface.",
   },
 ];
 
@@ -445,11 +444,11 @@ function Beliefs() {
           key={i}
           onMouseEnter={() => { setActive(i); setPaused(true); }}
           onMouseLeave={() => setPaused(false)}
-          className={`py-9 flex items-start gap-10 cursor-default select-none transition-all duration-400 ${
+          className={`py-5 flex items-start gap-10 cursor-default select-none transition-all duration-400 ${
             i === active ? "opacity-100" : "opacity-60"
           }`}
         >
-          <div className={`text-[11px] font-mono pt-2.5 w-7 shrink-0 transition-colors duration-300 ${
+          <div className={`text-[11px] font-mono pt-1.5 w-7 shrink-0 transition-colors duration-300 ${
             i === active ? "text-blue-400" : "text-white/20"
           }`}>
             {String(i + 1).padStart(2, "0")}
@@ -457,7 +456,7 @@ function Beliefs() {
           <div className="flex-1 border-l-2 pl-7 transition-all duration-400"
             style={{borderColor: i === active ? "rgba(96,165,250,0.50)" : "transparent"}}>
             <div
-              className="text-[18px] md:text-[26px] leading-snug mb-0 transition-all duration-400"
+              className="text-[15px] md:text-[19px] leading-snug mb-0 transition-all duration-400"
               style={{
                 color: i === active ? "white" : "rgba(255,255,255,0.62)",
                 textShadow: i === active ? "0 0 40px rgba(59,130,246,0.25)" : "none",
@@ -476,6 +475,62 @@ function Beliefs() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ━━━ MOAT LOOP — decide / converse / learn, closing the loop ━━━ */
+const LOOP_NODES = [
+  { label: "Decide", color: "#60a5fa", x: 75, y: 16 },
+  { label: "Converse", color: "#34d399", x: 129, y: 112 },
+  { label: "Learn", color: "#a78bfa", x: 21, y: 112 },
+];
+
+const LOOP_EDGES = [
+  { label: "treatment", x1: 75, y1: 16, x2: 129, y2: 112, lx: 108, ly: 58, anchor: "start" },
+  { label: "call recorded", x1: 129, y1: 112, x2: 21, y2: 112, lx: 75, ly: 130, anchor: "middle" },
+  { label: "applied", x1: 21, y1: 112, x2: 75, y2: 16, lx: 42, ly: 58, anchor: "end" },
+];
+
+function MoatLoop() {
+  return (
+    <div className="rounded-2xl border border-white/[0.10] bg-white/[0.02] p-7 flex flex-col items-center justify-center h-full">
+      <svg viewBox="0 0 150 145" width="160" height="155">
+        <defs>
+          <marker id="loopArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="rgba(255,255,255,0.4)" />
+          </marker>
+        </defs>
+        {LOOP_EDGES.map(e => (
+          <g key={e.label}>
+            <line x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+              stroke="rgba(255,255,255,0.16)" strokeWidth="1.3" markerEnd="url(#loopArrow)" />
+            <text x={e.lx} y={e.ly} textAnchor={e.anchor}
+              fill="rgba(255,255,255,0.38)" fontSize="7" letterSpacing="0.02em">
+              {e.label}
+            </text>
+          </g>
+        ))}
+        <motion.circle r="3.5" fill="white"
+          animate={{ cx: [75, 129, 21, 75], cy: [16, 112, 112, 16] }}
+          transition={{ duration: 3.6, repeat: Infinity, ease: "linear", times: [0, 0.333, 0.667, 1] }}
+          style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.85))" }}
+        />
+        {LOOP_NODES.map(n => (
+          <circle key={n.label} cx={n.x} cy={n.y} r="7" fill={n.color} fillOpacity="0.18" stroke={n.color} strokeWidth="1.4" />
+        ))}
+      </svg>
+      <div className="flex gap-4 mt-3">
+        {LOOP_NODES.map(n => (
+          <div key={n.label} className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: n.color }} />
+            <span className="text-[10.5px] text-white/55">{n.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="text-white/35 text-[10px] mt-3 text-center leading-relaxed max-w-[180px]">
+        Every conversation closes the loop back into the next decision.
+      </div>
     </div>
   );
 }
@@ -570,7 +625,7 @@ export default function Company() {
               is uncontrolled, ungoverned, and unauditable.
             </p>
             <p className="text-[19px] font-semibold text-white" style={{textShadow:"0 0 28px rgba(52,211,153,0.50)"}}>
-              ShieldX closes that gap.
+              ShieldX is the decisioning infrastructure that closes that gap.
             </p>
           </Motion>
         </div>
@@ -594,61 +649,25 @@ export default function Company() {
           <Motion>
             <div className="flex items-center gap-2.5 mb-5">
               <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
-              <span className="text-[11px] text-white/55 tracking-[0.2em]">WHAT SHIELDX IS</span>
+              <span className="text-[11px] text-white/55 tracking-[0.2em]">HOW IT WORKS</span>
             </div>
             <h2 className="text-[26px] md:text-[36px] font-semibold leading-tight mb-5">
-              The decisioning and<br />governance layer.
+              Decide. Execute.<br />Learn. Repeat.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
-              Quelo Technologies is a Mumbai-based fintech infrastructure company. Its
-              platform, ShieldX, is the decisioning and governance layer for collections
-              in Indian BFSI — sitting above a lender's communication stack and below its
+              Quelo Technologies is a Mumbai-based, DPIIT-recognized fintech infrastructure
+              company. ShieldX sits above a lender's communication stack and below its
               credit policy.
             </p>
             <p className="text-white/68 leading-relaxed mb-4">
-              ShieldX decides how every delinquent account should be worked — who, when,
-              through which channel, with what treatment — executes those decisions across
-              calls, messages, and agency networks, and learns from what was actually said
-              in every conversation. Every decision is logged, versioned, and auditable,
-              bringing collections under the model risk management discipline Indian
-              regulation now expects.
-            </p>
-            <p className="text-[20px] md:text-[24px] font-semibold" style={{color:"#4ade80", textShadow:"0 0 32px rgba(74,222,128,0.55)"}}>
-              ShieldX is that layer.
+              Decides who to contact, when, and how — executes across calls, messages,
+              and agency networks — and logs every decision for RBI's model risk
+              management discipline.
             </p>
           </Motion>
         </div>
 
       </section>
-
-      {/* ═══ PRODUCT VIDEO ═══ */}
-      <div className="bg-white/[0.04] border-y border-white/[0.09]">
-      <section className="max-w-5xl mx-auto px-8 py-20">
-        <Motion>
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-6 bg-white/20" />
-              <span className="text-[11px] text-white/55 tracking-[0.22em]">IN ACTION</span>
-              <div className="h-px w-6 bg-white/20" />
-            </div>
-            <h2 className="text-[30px] font-semibold mb-3">Watch ShieldX run a live decision.</h2>
-            <p className="text-white/58 text-sm max-w-md mx-auto leading-relaxed">
-              Signal in. Compliance checked. Governed action out. End to end.
-            </p>
-          </div>
-          <div className="relative w-full rounded-2xl overflow-hidden border border-white/[0.10]"
-            style={{ paddingBottom: "56.25%", background: "rgba(0,0,0,0.5)" }}>
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src="https://www.youtube-nocookie.com/embed/sjl9hKDv_3o?controls=1&rel=0&modestbranding=1&color=white"
-              title="ShieldX — Live Decision Demo"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </Motion>
-      </section>
-      </div>
 
       {/* ═══ CATEGORY DECLARATION ═══ */}
       <div className="bg-white/[0.04] border-y border-white/[0.09]">
@@ -666,8 +685,47 @@ export default function Company() {
       </section>
       </div>
 
-      {/* ═══ BELIEFS ═══ */}
+      {/* ═══ WHY IT WINS ═══ */}
       <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
+        <div className="grid md:grid-cols-[1fr_220px] gap-10 md:gap-14 items-center">
+          <div>
+            <Motion>
+              <div className="flex items-center gap-2.5 mb-5">
+                <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
+                <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY IT WINS</span>
+              </div>
+              <h2 className="text-[26px] md:text-[34px] font-semibold mb-6 max-w-2xl">
+                Models are commoditized; the moat is the loop.
+              </h2>
+              <p className="text-white/62 max-w-2xl leading-relaxed mb-10">
+                ShieldX is the only architecture that owns both the decision layer and the
+                conversation layer of collections — so it is the only one where what a
+                borrower says in a call systematically changes the next decision on that
+                account. Every decision is logged, explainable, and auditable by design,
+                aligned with RBI's emerging model risk management framework.
+              </p>
+            </Motion>
+            <Motion delay={0.08}>
+              <div className="flex items-center gap-3 p-6 rounded-xl border border-white/[0.10] bg-white/[0.03] max-w-2xl">
+                <div className="w-8 h-8 rounded-lg border border-emerald-400/25 bg-emerald-500/[0.08] flex items-center justify-center flex-shrink-0">
+                  <span className="text-emerald-400 text-xs">✓</span>
+                </div>
+                <p className="text-white/70 text-sm leading-relaxed">
+                  Live with <span className="text-white">a leading private-sector bank</span>, with
+                  active engagements across ARCs and collection agencies. Quelo is DPIIT-recognized.
+                </p>
+              </div>
+            </Motion>
+          </div>
+          <Motion delay={0.12}>
+            <MoatLoop />
+          </Motion>
+        </div>
+      </section>
+
+      {/* ═══ BELIEFS ═══ */}
+      <div className="bg-white/[0.04] border-y border-white/[0.09]">
+      <section className="max-w-6xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-3 mb-12">
             <div className="h-px w-6 bg-white/20" />
@@ -676,38 +734,6 @@ export default function Company() {
           </div>
         </Motion>
         <Beliefs />
-      </section>
-
-      {/* ═══ WHY IT WINS ═══ */}
-      <div className="bg-white/[0.04] border-y border-white/[0.09]">
-      <section className="max-w-6xl mx-auto px-8 py-24">
-        <Motion>
-          <div className="flex items-center gap-2.5 mb-5">
-            <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
-            <span className="text-[11px] text-white/55 tracking-[0.2em]">WHY IT WINS</span>
-          </div>
-          <h2 className="text-[26px] md:text-[34px] font-semibold mb-6 max-w-2xl">
-            Models are commoditized; the moat is the loop.
-          </h2>
-          <p className="text-white/62 max-w-2xl leading-relaxed mb-10">
-            ShieldX is the only architecture that owns both the decision layer and the
-            conversation layer of collections — so it is the only one where what a
-            borrower says in a call systematically changes the next decision on that
-            account. Every decision is logged, explainable, and auditable by design,
-            aligned with RBI's emerging model risk management framework.
-          </p>
-        </Motion>
-        <Motion delay={0.08}>
-          <div className="flex items-center gap-3 p-6 rounded-xl border border-white/[0.10] bg-white/[0.03] max-w-2xl">
-            <div className="w-8 h-8 rounded-lg border border-emerald-400/25 bg-emerald-500/[0.08] flex items-center justify-center flex-shrink-0">
-              <span className="text-emerald-400 text-xs">✓</span>
-            </div>
-            <p className="text-white/70 text-sm leading-relaxed">
-              Live with <span className="text-white">a leading private-sector bank</span>, with
-              active engagements across ARCs and collection agencies. Quelo is DPIIT-recognized.
-            </p>
-          </div>
-        </Motion>
       </section>
       </div>
 
@@ -735,7 +761,7 @@ export default function Company() {
                 <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
                 <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-sm">
                   18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
-                  and Yubi. Quelo Technologies Pvt. Ltd. is Mumbai-based and DPIIT-recognized.
+                  and Yubi. Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
                 </p>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import Navbar from "../layouts/Navbar";
+import Layout from "../layouts/Layout";
 import { useState } from "react";
 
 export default function Demo() {
@@ -59,17 +59,8 @@ export default function Demo() {
   };
 
   return (
-    <div className="bg-[#050507] text-white min-h-screen relative">
-
-      <Navbar />
-
-      {/* GLOBAL GLOW */}
-      <div className="
-        absolute inset-0 pointer-events-none
-        bg-[radial-gradient(circle_at_50%_20%,rgba(59,130,246,0.12),transparent_60%)]
-      " />
-
-      <div className="pt-32 px-8 max-w-xl mx-auto text-center">
+    <Layout>
+      <div className="pt-32 px-8 max-w-xl mx-auto text-center relative z-10">
 
         {!submitted ? (
           <>
@@ -205,7 +196,7 @@ export default function Demo() {
       </div>
 
       {/* INPUT STYLE */}
-      <style jsx>{`
+      <style>{`
         .input {
           width: 100%;
           padding: 12px 16px;
@@ -227,6 +218,6 @@ export default function Demo() {
         }
       `}</style>
 
-    </div>
+    </Layout>
   );
 }
