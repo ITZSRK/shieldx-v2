@@ -20,12 +20,12 @@ function Motion({ children, delay = 0 }) {
 /* ─── HERO RIGHT: LIVE DECISION TRACE ────────────────── */
 function LiveDecisionTrace() {
   const stages = [
-    { ms:"0ms",  label:"Signal received",     sub:"event ingested · payload normalised",         highlight:false },
-    { ms:"4ms",  label:"Decision computed",   sub:"risk tier assigned · eligibility evaluated",   highlight:false },
-    { ms:"11ms", label:"Compliance validated", sub:"contact rules re-checked at dispatch",                highlight:true  },
-    { ms:"18ms", label:"Orchestrated",        sub:"channel and time window confirmed",            highlight:false },
-    { ms:"24ms", label:"Handed off",          sub:"dispatched via adapter · outcome captured",    highlight:false },
-    { ms:"24ms", label:"Audit written",       sub:"hash-chained log written · AUD-20260614-48321",   highlight:false },
+    { ms:"in",   label:"Signal received",     sub:"event ingested · payload normalised",         highlight:false },
+    { ms:"·",    label:"Decision computed",   sub:"risk tier assigned · eligibility evaluated",   highlight:false },
+    { ms:"·",    label:"Compliance validated", sub:"contact rules re-checked at dispatch",        highlight:true  },
+    { ms:"·",    label:"Orchestrated",        sub:"channel and time window confirmed",            highlight:false },
+    { ms:"·",    label:"Handed off",          sub:"dispatched via adapter · outcome captured",    highlight:false },
+    { ms:"~1s",  label:"Audit written",       sub:"hash-chained log written · AUD-20260614-48321",   highlight:false },
   ];
   const [active, setActive] = useState(0);
 
@@ -222,13 +222,13 @@ const CONNECTS = [
   {
     n:"02", label:"DEPLOYMENT", color:"#fbbf24",
     title:"On-prem, cloud, or hybrid",
-    detail:"Adapts to your infrastructure policy — including air-gapped Tier-1 and DPDP data residency requirements.",
+    detail:"Adapts to your infrastructure policy — including on-premise deployment inside your own boundary, and DPDP data residency requirements.",
     proof:"Existing infrastructure preserved",
   },
   {
     n:"03", label:"TIME TO VALUE", color:"#4ade80",
-    title:"3–6 weeks to first decision",
-    detail:"From agreement to your first governed, compliant, auditable decision. Phased rollout available.",
+    title:"3–6 weeks from data access",
+    detail:"From first data access to your first governed, compliant, auditable decision — depending on how ready your extract is. Phased rollout available.",
     proof:"Live on one portfolio first — expand from there",
   },
 ];
@@ -340,7 +340,7 @@ function ObservabilitySection() {
           <div className="grid grid-cols-2 gap-2 content-start">
             {[
               { label:"Compliance",      val:"Tracked",  sub:"Per campaign, per channel",  color:"#4ade80" },
-              { label:"Decision latency",val:"Real-time",sub:"Signal to decision",          color:"#60a5fa" },
+              { label:"Decision latency",val:"~1 second",sub:"Signal to governed decision",  color:"#60a5fa" },
               { label:"Audit coverage",  val:"100%",     sub:"Every interaction logged, by design", color:"#4ade80" },
               { label:"Traceability",    val:"Decision-level", sub:"Not just channel-level", color:"#a78bfa" },
             ].map((k, i) => (
