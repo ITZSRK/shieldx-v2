@@ -767,8 +767,8 @@ export default function Company() {
                 <img
                   src={founder}
                   alt="Sudarson Radhakrishnan, Founder & CEO of ShieldX"
-                  className="w-[76px] h-[76px] rounded-full object-cover shrink-0 border border-white/[0.14]"
-                  style={{ boxShadow: "0 0 22px rgba(59,130,246,0.12)" }}
+                  className="w-[120px] h-[120px] md:w-[136px] md:h-[136px] rounded-full object-cover shrink-0 border border-white/[0.14]"
+                  style={{ boxShadow: "0 0 30px rgba(59,130,246,0.14)" }}
                   loading="lazy"
                   decoding="async"
                 />
