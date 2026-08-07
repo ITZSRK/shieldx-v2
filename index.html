@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Search Console ownership verification. Must stay in place —
+         removing it un-verifies the property. Lives here rather than in
+         SEO.jsx so it's present on every prerendered page's <head>. -->
+    <meta name="google-site-verification" content="xvednFTPNqq2FUr8ETWf1ByrroUcjEIMLPBziumggrM" />
+
     <!-- Title/description are rendered per-page by each route via
          src/components/SEO.jsx (React 19 hoists <title>/<meta> to <head>),
          then baked into static HTML by scripts/prerender.js. No default here
