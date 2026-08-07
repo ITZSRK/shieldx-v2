@@ -157,6 +157,19 @@ async function main() {
   } finally {
     server.kill();
   }
+
+  // npx spawns vite preview as a process tree (npx -> sh -> vite), and
+  // server.kill() above only signals the immediate npx process — it doesn't
+  // reliably reach that whole tree. On GitHub Actions specifically, an
+  // orphaned vite-preview process was staying alive with its stdio pipes
+  // still open, which kept Node's event loop alive indefinitely even
+  // though every await in this function had already resolved: the CI job
+  // sat on this step for 34 minutes after printing "Done." above, with
+  // GitHub Actions later force-killing leftover sh/node processes when the
+  // run was cancelled. Didn't reproduce locally on macOS. Forcing exit here
+  // sidesteps the question of why entirely — once our own work is done,
+  // stop, regardless of what child processes may still be lingering.
+  process.exit(0);
 }
 
 // Hard ceiling so a future hang (this exact class of bug already happened
