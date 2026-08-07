@@ -23,7 +23,7 @@ function Motion({ children, delay = 0 }) {
 const STAGES = ["Signal", "Decide", "Govern", "Execute", "Learn"];
 
 const LOOP_CAPABILITIES = [
-  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Builds the customer footprint, then computes the treatment.", stages: [1, 2] },
+  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Scores, rules, and cohort strategy — computes the treatment for every account.", stages: [1, 2] },
   { letter: "E", name: "Engage",       to: "/platform/engage",       color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes.", stages: [3] },
   { letter: "A", name: "Assist",       to: "/platform/assist",       color: "#4ade80", line: "The human channel's adapter, before and during the call.", stages: [3] },
   { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was actually said.",                     stages: [4] },
@@ -184,6 +184,75 @@ function GovernedDecisionView() {
   );
 }
 
+/* ================= THE STACK — 5-layer control plane ================= */
+const STACK_LAYERS = [
+  { n: "01", name: "System of record",   color: "#93c5fd", line: "Decision log, outcome log, and conversation-derived features — the permanent asset." },
+  { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, champion/challenger. Mandatory in every deployment." },
+  { n: "03", name: "Orchestrate",        color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. An internal module of Decision." },
+  { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, Diya — theirs or ours, one treatment-in / outcome-out contract." },
+  { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
+];
+
+function TheStack() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const i = setInterval(() => setActive(a => (a + 1) % STACK_LAYERS.length), 2600);
+    return () => clearInterval(i);
+  }, [paused]);
+
+  return (
+    <div className="max-w-2xl mx-auto rounded-2xl border border-white/[0.10] bg-black/30 p-7 md:p-10"
+      onMouseLeave={() => setPaused(false)}>
+      {STACK_LAYERS.map((l, i) => {
+        const isActive = active === i;
+        return (
+          <div key={l.name}
+            onMouseEnter={() => { setActive(i); setPaused(true); }}
+            className="flex gap-5 rounded-xl px-3 py-2.5 -mx-3 transition-all duration-300 cursor-default"
+            style={{ background: isActive ? `${l.color}0d` : "transparent" }}>
+            <div className="flex flex-col items-center">
+              <div className="w-9 h-9 rounded-lg border flex items-center justify-center font-mono text-[11px] shrink-0 transition-all duration-300"
+                style={{
+                  borderColor: isActive ? `${l.color}80` : `${l.color}30`,
+                  color: l.color,
+                  background: isActive ? `${l.color}22` : `${l.color}0a`,
+                  boxShadow: isActive ? `0 0 16px ${l.color}45` : "none",
+                  transform: isActive ? "scale(1.08)" : "scale(1)",
+                }}>
+                {l.n}
+              </div>
+              {i < STACK_LAYERS.length - 1 && (
+                <div className="w-px flex-1 my-1 transition-all duration-300"
+                  style={{ background: isActive ? `${l.color}70` : `linear-gradient(${l.color}25, ${STACK_LAYERS[i+1].color}25)` }} />
+              )}
+            </div>
+            <div className={i < STACK_LAYERS.length - 1 ? "pb-6" : ""}>
+              <div className="text-[15px] font-medium mb-1.5 transition-colors duration-300" style={{ color: isActive ? l.color : "rgba(255,255,255,0.85)" }}>{l.name}</div>
+              <div className="text-white/58 text-sm leading-relaxed">{l.line}</div>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* loop-back connector */}
+      <div className="flex items-center gap-3 mt-3 pt-5 border-t border-white/[0.08] text-[11px] text-white/38">
+        <motion.span
+          className="text-base leading-none inline-block"
+          style={{ color: STACK_LAYERS[4].color }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        >
+          ↻
+        </motion.span>
+        <span>Sensing feeds back into System of record — the loop closes on every account.</span>
+      </div>
+    </div>
+  );
+}
+
 /* ================= PROBLEM CARDS ================= */
 const PROBLEMS = [
   {
@@ -235,13 +304,21 @@ export default function Home() {
             REAL-TIME DECISIONING INFRASTRUCTURE
           </div>
           <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
-            Every credit decision<br />your bank makes, ungoverned.
+            The layer between your systems<br />and your borrowers.
           </h1>
 
-          <p className="text-[18px] text-white/62 mb-16 max-w-lg mx-auto leading-relaxed">
-            ShieldX closes that gap — deciding, executing, and learning from every
-            credit conversation, governed end to end.
+          <p className="text-[18px] text-white/62 mb-8 max-w-lg mx-auto leading-relaxed">
+            ShieldX decides how every credit conversation should happen, dispatches it
+            across every channel, and learns from what was said — governed
+            and auditable throughout.
           </p>
+
+          <Link to="/demo"
+            className="inline-block bg-white text-black px-10 py-3.5 rounded-lg text-sm font-semibold
+              hover:opacity-90 hover:scale-[1.02] transition-all duration-200
+              shadow-[0_0_30px_rgba(255,255,255,0.12)] mb-16">
+            Request a walkthrough
+          </Link>
         </Motion>
 
         <Motion delay={0.15}>
@@ -294,32 +371,6 @@ export default function Home() {
       </Motion>
       </div>{/* ── close THE GAP band ── */}
 
-      {/* ── VIDEO ── */}
-      <div className="bg-white/[0.05] border-y border-white/[0.09]">
-      <Motion>
-      <section className="px-8 py-24 max-w-6xl mx-auto">
-        <div className="mb-12 text-center">
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">SEE IT IN 90 SECONDS</span>
-            <div className="h-px w-6 bg-white/20" />
-          </div>
-          <h2 className="text-[26px] md:text-[36px] font-semibold">Watch ShieldX run a live decision.</h2>
-        </div>
-        <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/[0.10]"
-          style={{ paddingBottom: "42%", background: "rgba(0,0,0,0.5)" }}>
-          <iframe
-            className="absolute inset-0 w-full h-full"
-            src="https://www.youtube-nocookie.com/embed/sjl9hKDv_3o?controls=1&rel=0&modestbranding=1&color=white"
-            title="ShieldX — Live Decision Demo"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-      </section>
-      </Motion>
-      </div>{/* ── close VIDEO band ── */}
-
       {/* ── ONE DECISION SPINE (capabilities + the stages they drive, merged) ── */}
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
@@ -336,6 +387,25 @@ export default function Home() {
           </p>
         </div>
         <SystemLoop />
+      </section>
+      </Motion>
+
+      {/* ── THE STACK ── */}
+      <Motion>
+      <section className="px-8 py-24 max-w-6xl mx-auto">
+        <div className="mb-16 text-center">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE CONTROL PLANE</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">One stack, five layers.</h2>
+          <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
+            Same taxonomy, same record — every layer speaks one contract, regardless
+            of whose pipes execute it.
+          </p>
+        </div>
+        <TheStack />
       </section>
       </Motion>
 

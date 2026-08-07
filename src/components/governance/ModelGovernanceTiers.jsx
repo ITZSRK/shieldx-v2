@@ -135,11 +135,12 @@ export default function ModelGovernanceTiers() {
   const Visual = t.Visual;
 
   return (
-    <div className="rounded-2xl border border-blue-400/[0.18] overflow-hidden"
+    <div className="relative rounded-2xl border border-blue-400/[0.18] overflow-hidden"
       style={{
         background: "linear-gradient(170deg, rgba(96,165,250,0.05), rgba(0,0,0,0.6) 45%)",
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 80px rgba(0,0,0,0.5)",
       }}>
+      <span className="absolute top-3 right-4 text-[8px] text-white/25 tracking-widest border border-white/[0.12] rounded-full px-2 py-0.5 z-10">ILLUSTRATIVE</span>
       <div className="flex border-b border-white/[0.08]">
         {TIERS.map((tier, i) => {
           const isActive = active === i;

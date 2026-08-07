@@ -477,10 +477,10 @@ function ObservabilitySection() {
 
 /* ─── FOUR CAPABILITIES — teasers linking to their own pages ─── */
 const CAPABILITY_TEASERS = [
-  { id: "decision",     name: "Decision",     tag: "THE BRAIN",                       color: "#60a5fa", line: "Builds the customer footprint, then computes the treatment." },
+  { id: "decision",     name: "Decision",     tag: "THE BRAIN",                       color: "#60a5fa", line: "Scores, rules, and cohort strategy — computes the treatment for every account." },
   { id: "engage",       name: "Engage",       tag: "REFERENCE EXECUTION CHANNEL",     color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes." },
-  { id: "assist",       name: "Assist",       tag: "THE HUMAN CHANNEL'S ADAPTER",     color: "#4ade80", line: "Two tiers, one graceful fallback." },
-  { id: "intelligence", name: "Intelligence", tag: "THE SENSORY SYSTEM",              color: "#a78bfa", line: "Post-call, not in-call." },
+  { id: "assist",       name: "Assist",       tag: "THE HUMAN CHANNEL'S ADAPTER",     color: "#4ade80", line: "Briefs the agent before the call. Guides them live during it." },
+  { id: "intelligence", name: "Intelligence", tag: "THE SENSORY SYSTEM",              color: "#a78bfa", line: "Post-call, not in-call — Assist covers the call itself." },
 ];
 
 function CapabilityTeasers() {
