@@ -81,6 +81,18 @@ async function main() {
       if (msg.type() === "error") console.error(`  [console.error] ${msg.text()}`);
     });
 
+    // Block everything off-localhost (Google Tag Manager, fonts, etc.) during
+    // the crawl. We only need our own rendered markup, not third-party
+    // analytics — and a slow/hanging external request (GA/GTM's beacon
+    // connections in particular don't reliably go idle) was the likely cause
+    // of a real CI hang: "npm run build" sat stuck on this step for 10+
+    // minutes on GitHub Actions with no error, blocking a deploy.
+    await page.setRequestInterception(true);
+    page.on("request", (req) => {
+      if (new URL(req.url()).hostname === "localhost") req.continue();
+      else req.abort();
+    });
+
     // Several components (SystemLoop, GovernedDecisionView, DeploymentSwitchboard,
     // LiveDecisionTrace, EngineArchitecture, ObservabilitySection,
     // ModelGovernanceTiers, ChannelSwitchboard, MoatLoop...) auto-advance their
@@ -115,7 +127,13 @@ async function main() {
     const captured = [];
     for (const route of ROUTES) {
       const url = `${BASE}${route}`;
-      await page.goto(url, { waitUntil: "networkidle0", timeout: 30000 });
+      // domcontentloaded, not networkidle0: with all cross-origin requests
+      // now blocked above there's minimal network activity either way, but
+      // networkidle0 waits for zero in-flight connections for 500ms
+      // straight — one lingering/retrying connection is enough to make it
+      // never resolve. waitForSelector("footer") below is the real "app has
+      // rendered" signal regardless of which load event we wait for first.
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
       // Layout's <Footer/> is present on every real page once React has
       // fully mounted and rendered — a reliable "the app is done" signal
       // that doesn't depend on any single page's specific content.
@@ -141,7 +159,20 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
+// Hard ceiling so a future hang (this exact class of bug already happened
+// once in CI — see the request-interception comment above) fails the build
+// loudly within minutes instead of leaving a GitHub Actions job stuck
+// indefinitely with no error and no deploy going out.
+const WATCHDOG_MS = 5 * 60 * 1000;
+const watchdog = setTimeout(() => {
+  console.error(`Prerender watchdog: exceeded ${WATCHDOG_MS / 1000}s, aborting.`);
   process.exit(1);
-});
+}, WATCHDOG_MS);
+watchdog.unref();
+
+main()
+  .then(() => clearTimeout(watchdog))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
