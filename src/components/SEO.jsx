@@ -6,6 +6,11 @@
 export default function SEO({ title, description, path = "/" }) {
   const fullTitle = `${title} — ShieldX`;
   const url = `https://queloshieldx.in${path}`;
+  // Deliberately a stable /og-image.png in public/, not the fingerprinted
+  // build asset (whose hashed filename changes every deploy) — social
+  // platforms cache link previews by image URL, so a stable path avoids
+  // ever pointing a cached preview at a filename that no longer exists.
+  const image = "https://queloshieldx.in/og-image.png";
 
   return (
     <>
@@ -17,9 +22,13 @@ export default function SEO({ title, description, path = "/" }) {
       <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="ShieldX" />
-      <meta name="twitter:card" content="summary" />
+      <meta property="og:image" content={image} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
     </>
   );
 }
