@@ -1,6 +1,7 @@
 import Layout from "../layouts/Layout";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -144,6 +145,11 @@ function CommitmentIndex() {
 export default function Neutrality() {
   return (
     <Layout>
+      <SEO
+        title="The Neutrality Charter"
+        description="Our commitments as decisioning infrastructure for collections — structurally neutral, not neutral by promise. ShieldX will never operate human collections."
+        path="/neutrality"
+      />
       <section className="max-w-3xl mx-auto px-8 pt-[120px] pb-32">
 
         <Motion>

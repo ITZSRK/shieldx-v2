@@ -1,5 +1,6 @@
 import Layout from "../layouts/Layout";
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -105,6 +106,11 @@ We will acknowledge your request within 48 hours and respond within the timeline
 export default function Privacy() {
   return (
     <Layout>
+      <SEO
+        title="Privacy Policy"
+        description="How ShieldX collects, uses, and protects personal data under the Digital Personal Data Protection Act, 2023."
+        path="/privacy"
+      />
       <section className="max-w-3xl mx-auto px-8 pt-[120px] pb-32">
 
         <Motion>

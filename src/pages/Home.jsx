@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import dashboard from "../assets/dashboard.png";
 import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
+import SEO from "../components/SEO";
 import { motion } from "framer-motion";
 
 /* ================= MOTION ================= */
@@ -285,6 +286,11 @@ const PROBLEMS = [
 export default function Home() {
   return (
     <div className="bg-[#050507] text-white overflow-hidden relative">
+      <SEO
+        title="Real-Time Decisioning Infrastructure"
+        description="ShieldX is the real-time decisioning infrastructure for collections in Indian BFSI — deciding, executing, and learning from every credit conversation, governed end to end."
+        path="/"
+      />
 
       <Navbar />
 

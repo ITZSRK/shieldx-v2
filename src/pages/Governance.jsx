@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import ComplianceGate from "../components/governance/ComplianceGate";
 import ModelGovernanceTiers from "../components/governance/ModelGovernanceTiers";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -20,6 +21,11 @@ function Motion({ children, delay = 0 }) {
 export default function Governance() {
   return (
     <Layout>
+      <SEO
+        title="Governance"
+        description="Every decision is validated against applicable regulation before it fires — and every model behind that decision is inventoried, monitored, and explainable on demand."
+        path="/governance"
+      />
       <section className="max-w-5xl mx-auto px-8 pt-[120px] pb-16 text-center">
         <Motion>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-400/20 bg-emerald-500/10 text-emerald-300 text-xs tracking-[0.18em] mb-8"

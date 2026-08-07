@@ -1,5 +1,6 @@
 import Layout from "../layouts/Layout";
 import { useState } from "react";
+import SEO from "../components/SEO";
 
 export default function Demo() {
   const [form, setForm] = useState({
@@ -60,6 +61,11 @@ export default function Demo() {
 
   return (
     <Layout>
+      <SEO
+        title="Request a Walkthrough"
+        description="20 minutes. Your portfolio, your channels — every decision and every compliance check, live."
+        path="/demo"
+      />
       <div className="pt-32 px-8 max-w-xl mx-auto text-center relative z-10">
 
         {!submitted ? (

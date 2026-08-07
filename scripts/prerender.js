@@ -1,0 +1,140 @@
+// Post-build step: serves the freshly-built dist/ folder, visits every real
+// route with a headless browser, and overwrites each route's output with the
+// fully-rendered HTML (React content included) instead of the bare SPA
+// shell. main.jsx detects this pre-rendered markup at runtime and hydrates
+// onto it rather than re-rendering from scratch.
+//
+// This does NOT make the site server-rendered — it's a build-time snapshot.
+// Pages with real per-visit state (none currently) would need SSR/Next.js
+// instead; this app is pure static content, so a snapshot is the right tool.
+import { spawn } from "node:child_process";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+import puppeteer from "puppeteer";
+
+const PORT = 4173;
+const BASE = `http://localhost:${PORT}`;
+const DIST = path.resolve(import.meta.dirname, "..", "dist");
+
+// Keep in sync with src/router/AppRouter.jsx's real routes (the "*" 404
+// catch-all is intentionally excluded — it has no fixed URL to prerender).
+const ROUTES = [
+  "/",
+  "/platform",
+  "/platform/decision",
+  "/platform/engage",
+  "/platform/assist",
+  "/platform/intelligence",
+  "/deploy",
+  "/governance",
+  "/neutrality",
+  "/company",
+  "/demo",
+  "/privacy",
+  "/terms",
+  "/security",
+];
+
+function outputPathFor(route) {
+  if (route === "/") return path.join(DIST, "index.html");
+  return path.join(DIST, route.slice(1), "index.html");
+}
+
+function waitForServer(url, timeoutMs = 15000) {
+  const deadline = Date.now() + timeoutMs;
+  return new Promise((resolve, reject) => {
+    (async function poll() {
+      try {
+        const res = await fetch(url);
+        if (res.ok) return resolve();
+      } catch {
+        // server not up yet
+      }
+      if (Date.now() > deadline) return reject(new Error(`Timed out waiting for ${url}`));
+      setTimeout(poll, 300);
+    })();
+  });
+}
+
+async function main() {
+  console.log("Starting vite preview server...");
+  const server = spawn("npx", ["vite", "preview", "--port", String(PORT), "--strictPort"], {
+    stdio: "pipe",
+  });
+  server.stderr.on("data", (d) => process.stderr.write(d));
+
+  try {
+    await waitForServer(BASE);
+    console.log("Preview server ready. Launching browser...");
+
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    page.on("pageerror", (err) => console.error(`  [page error] ${err.message}`));
+    page.on("console", (msg) => {
+      if (msg.type() === "error") console.error(`  [console.error] ${msg.text()}`);
+    });
+
+    // Several components (SystemLoop, GovernedDecisionView, DeploymentSwitchboard,
+    // LiveDecisionTrace, EngineArchitecture, ObservabilitySection,
+    // ModelGovernanceTiers, ChannelSwitchboard, MoatLoop...) auto-advance their
+    // displayed state via setInterval. Left alone, whatever moment the crawl
+    // happens to capture would get baked into the static HTML, and hydration
+    // would then find that baked-in state doesn't match a real client's true
+    // first render (which always starts from each component's initial
+    // useState value, before any interval has fired) — a real, reproducible
+    // hydration mismatch. Disabling setInterval before the app boots forces
+    // every capture to reflect true initial-mount state, which is exactly
+    // what hydration expects, for every current and future component that
+    // follows this pattern — no per-component patching required.
+    await page.evaluateOnNewDocument(() => {
+      window.setInterval = () => 0;
+    });
+    // Deliberately NOT stubbing IntersectionObserver: Framer Motion's
+    // whileInView checks real viewport intersection synchronously on mount,
+    // so a section already in the viewport (the hero, above the fold) at
+    // capture time animates in during the crawl exactly like it would on a
+    // real page load for a real visitor scrolled to the top — and a real
+    // hydration pass makes that same "already in view" determination
+    // independently and renders the same animated state. Forcing every
+    // section to its pre-animation `initial` style during capture (an
+    // earlier version of this script did that) fought against this and
+    // produced a genuine style mismatch on every above-the-fold section.
+
+    // Capture everything in memory first, write to disk only after the whole
+    // crawl finishes. Writing per-route as we go would let an earlier route's
+    // output (e.g. "/" -> dist/index.html) get served as the SPA fallback for
+    // a *later* route that has no file yet — the browser would then hydrate
+    // route B's URL on top of route A's markup and throw a real mismatch.
+    const captured = [];
+    for (const route of ROUTES) {
+      const url = `${BASE}${route}`;
+      await page.goto(url, { waitUntil: "networkidle0", timeout: 30000 });
+      // Layout's <Footer/> is present on every real page once React has
+      // fully mounted and rendered — a reliable "the app is done" signal
+      // that doesn't depend on any single page's specific content.
+      await page.waitForSelector("footer", { timeout: 10000 });
+
+      const html = await page.content();
+      captured.push({ route, html });
+      console.log(`Captured ${route}`);
+    }
+
+    await browser.close();
+
+    for (const { route, html } of captured) {
+      const outPath = outputPathFor(route);
+      await mkdir(path.dirname(outPath), { recursive: true });
+      await writeFile(outPath, html, "utf-8");
+      console.log(`Wrote ${route} -> ${path.relative(DIST, outPath)}`);
+    }
+
+    console.log(`Done. Prerendered ${ROUTES.length} routes.`);
+  } finally {
+    server.kill();
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

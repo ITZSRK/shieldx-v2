@@ -1,5 +1,6 @@
 import Layout from "../layouts/Layout";
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -78,6 +79,11 @@ Email: legal@queloai.online`,
 export default function Terms() {
   return (
     <Layout>
+      <SEO
+        title="Terms of Use"
+        description="Terms governing access to and use of the ShieldX website and product demonstrations, provided by Quelo Technologies Private Limited."
+        path="/terms"
+      />
       <section className="max-w-3xl mx-auto px-8 pt-[120px] pb-32">
 
         <Motion>

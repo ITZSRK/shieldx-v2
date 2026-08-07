@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import DeploymentSwitchboard from "../components/deploy/DeploymentSwitchboard";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -19,6 +20,11 @@ function Motion({ children, delay = 0 }) {
 export default function Deploy() {
   return (
     <Layout>
+      <SEO
+        title="How We Deploy"
+        description="Same platform, same taxonomy, same record — only the adapter mix varies. Three deployment patterns cover how institutions actually run collections today."
+        path="/deploy"
+      />
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 z-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse 55% 50% at 50% 0%, rgba(96,165,250,0.14), transparent 65%)" }} />

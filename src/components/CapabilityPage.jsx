@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Layout from "../layouts/Layout";
+import SEO from "./SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -37,6 +38,7 @@ function CrossLinkCard({ crossLink, color }) {
 export default function CapabilityPage({ id, name, tag, color, line, body, visual, visualLabel, video, videoLabel, videoTitle, crossLink }) {
   return (
     <Layout>
+      <SEO title={`${name} — Platform`} description={body || line} path={`/platform/${id}`} />
       <section className="max-w-4xl mx-auto px-8 pt-[120px] pb-8">
         <Motion>
           <Link to="/platform" className="inline-flex items-center gap-2 text-white/35 text-xs hover:text-white/65 transition-colors">

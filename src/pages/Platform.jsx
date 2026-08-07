@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "../layouts/Layout";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -538,6 +539,11 @@ function CTASection() {
 export default function Platform() {
   return (
     <Layout>
+      <SEO
+        title="Platform"
+        description="One decision engine, not four separate products. Signal in, governed decision out — computed, validated, executed, and learned from across every channel."
+        path="/platform"
+      />
       <section className="max-w-6xl mx-auto px-8 pt-[100px] pb-24 grid md:grid-cols-[3fr_2fr] gap-12 items-center">
         <Motion>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"

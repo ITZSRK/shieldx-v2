@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import { useEffect, useState } from "react";
+import SEO from "../components/SEO";
 
 /* ━━━ MOTION ━━━ */
 function Motion({ children, delay = 0 }) {
@@ -601,6 +602,11 @@ function FoundingCred() {
 export default function Company() {
   return (
     <Layout>
+      <SEO
+        title="Company"
+        description="ShieldX is the decisioning infrastructure that closes the gap between signal and action in Indian BFSI collections — built by Quelo Technologies, Mumbai."
+        path="/company"
+      />
 
       {/* ═══ HERO ═══ */}
       <section className="max-w-6xl mx-auto px-8 pt-[120px] pb-24 grid md:grid-cols-2 gap-16 items-center">

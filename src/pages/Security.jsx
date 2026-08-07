@@ -1,5 +1,6 @@
 import Layout from "../layouts/Layout";
 import { motion } from "framer-motion";
+import SEO from "../components/SEO";
 
 function Motion({ children, delay = 0 }) {
   return (
@@ -61,6 +62,11 @@ const PRACTICES = [
 export default function Security() {
   return (
     <Layout>
+      <SEO
+        title="Security"
+        description="ShieldX processes decision-critical data for financial institutions. Security is infrastructure — not a feature."
+        path="/security"
+      />
       <section className="max-w-4xl mx-auto px-8 pt-[120px] pb-32">
 
         {/* HEADER */}
