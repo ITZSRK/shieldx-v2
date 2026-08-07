@@ -72,6 +72,10 @@ const PRACTICES = [
 // touch client data.
 const SUBPROCESSORS = [
   { name: "Amazon Web Services",   role: "Infrastructure, storage, key management",   region: "India (ap-south-1)" },
+  { name: "Fonada",                role: "SMS, IVR and voice telephony delivery",      region: "India" },
+  { name: "SendGrid",              role: "Email delivery",                              region: "United States" },
+  { name: "Meta (WhatsApp Cloud)", role: "WhatsApp message delivery",                   region: "United States" },
+  { name: "Ola Maps",              role: "Address geocoding",                           region: "India" },
   { name: "LiveKit",               role: "Real-time voice session transport",          region: "Configurable" },
   { name: "Deepgram",              role: "Speech recognition",                          region: "Configurable" },
   { name: "Sarvam AI",             role: "Indic speech and language models",            region: "India" },
@@ -182,9 +186,11 @@ export default function Security() {
               </table>
             </div>
             <p className="text-white/32 text-[12.5px] leading-relaxed mt-5 max-w-2xl">
-              Voice-layer processors apply only where the institution uses ShieldX
-              voice channels. Brain-only deployments, where execution runs entirely
-              on the institution's own rails, engage infrastructure processors alone.
+              Which processors are engaged depends on the deployment. Messaging and
+              telephony processors apply where ShieldX dispatches those channels;
+              speech and language processors apply only to ShieldX voice. Where
+              execution runs entirely on the institution's own rails, neither set
+              is engaged.
             </p>
           </div>
         </Motion>

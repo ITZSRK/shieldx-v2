@@ -54,7 +54,7 @@ const POSITIONS = [
   {
     n: "07",
     title: "Incident reporting",
-    body: `Security incidents are reported to the institution without undue delay and within the timelines its own obligations require — including the six-hour reporting window under the CERT-In Directions, 2022, where applicable. ICT logs are retained for 180 days within India.`,
+    body: `Security incidents are reported to the institution without undue delay and within the timelines its own obligations require — including the six-hour reporting window under the CERT-In Directions, 2022, where applicable. ICT log retention is configured to the institution's requirement, including the 180-day CERT-In window, and logs are held in India.`,
   },
   {
     n: "08",

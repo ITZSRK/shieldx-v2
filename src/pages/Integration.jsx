@@ -26,7 +26,7 @@ const STAGES = [
     title: "Accounts in",
     lede: "Your extract, on your schedule, through an endpoint your InfoSec team whitelists.",
     rows: [
-      ["Transport", "SFTP to a whitelisted endpoint, or S3 with cross-account access"],
+      ["Transport", "SFTP drop into a dedicated inbox on a whitelisted endpoint, stood up per engagement against your InfoSec requirements"],
       ["Format", "Delimited file, one row per account, encrypted in transit and at rest"],
       ["Cadence", "Daily is typical; intra-day supported where the portfolio warrants it"],
       ["Mapping", "Your column names map once to ShieldX's canonical schema — you don't rename anything on your side"],
@@ -57,7 +57,7 @@ const STAGES = [
 
 const BANK_WORK = [
   "A scheduled extract from your CBS or collections module, in any column layout you already produce",
-  "An SFTP account or S3 path on a whitelisted endpoint, with key exchange",
+  "An SFTP account on a whitelisted endpoint, with key exchange",
   "A one-time mapping session — your fields to the canonical schema",
   "A return path for the decision file, or UI access for the teams who will work it",
   "An outcome extract, usually from the same system as the first",
