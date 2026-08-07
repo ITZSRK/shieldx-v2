@@ -30,11 +30,15 @@ import Privacy from "../pages/Privacy";
 import Terms from "../pages/Terms";
 import Security from "../pages/Security";
 import NotFound from "../pages/NotFound";
+import CookieConsent from "../components/CookieConsent";
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {/* Sits outside <Routes> so it covers every page, including Home,
+          which builds its own chrome instead of using Layout. */}
+      <CookieConsent />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/platform" element={<Platform />} />

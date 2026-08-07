@@ -89,8 +89,12 @@ To exercise any of these rights, contact our Data Protection Officer at the deta
 Contact and communication data is retained for up to 3 years from the date of last interaction, unless a longer retention period is required by law. Audit logs are retained as required under applicable financial sector regulations.`,
   },
   {
-    title: "Cookies",
-    body: `Our website uses minimal cookies necessary for the site to function. We do not use advertising or tracking cookies. You can manage cookie preferences through your browser settings.`,
+    title: "Cookies and analytics",
+    body: `Our website uses a small number of cookies necessary for the site to function. These are set without consent because the site cannot operate without them.
+
+We also use Google Analytics to understand aggregate usage patterns — which pages are read, and how visitors move between them. Google Analytics sets non-essential cookies, so it is loaded only after you accept analytics in the banner shown on your first visit. If you decline, or ignore the banner, no analytics cookie is set and no analytics data is collected.
+
+You can change your mind at any time by clearing this site's data in your browser, which will present the banner again on your next visit. We do not use advertising cookies, and we do not use cookies to track you across other websites.`,
   },
   {
     title: "Contact and grievance redressal",

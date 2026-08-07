@@ -155,6 +155,16 @@ async function main() {
           el.style.opacity = "1";
           el.style.transform = "none";
         });
+
+        // The cookie banner's visibility depends on the visitor's own stored
+        // preference, which can't exist at build time — the crawler always
+        // looks like a first-time visitor, so it renders here. Baking it into
+        // the static HTML would both flash it at people who already answered
+        // and mismatch the first hydration frame (which renders nothing until
+        // localStorage has been read). It belongs to the client only.
+        document
+          .querySelectorAll('[aria-label="Cookie preferences"]')
+          .forEach((el) => el.remove());
       });
 
       const html = await page.content();

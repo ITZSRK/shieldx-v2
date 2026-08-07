@@ -15,14 +15,11 @@
          then baked into static HTML by scripts/prerender.js. No default here
          to avoid a duplicate tag once a page's own SEO component mounts. -->
 
-    <!-- Google tag (gtag.js) — replace GT-NBPN8RJL with your Measurement ID -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-NBPN8RJL"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GT-NBPN8RJL');
-    </script>
+    <!-- Google Analytics is deliberately NOT loaded here. It is injected by
+         src/components/CookieConsent.jsx only after the visitor accepts, so no
+         non-essential cookie is set before consent — see the Cookies section of
+         /privacy. Re-adding a gtag snippet here would silently reintroduce
+         pre-consent tracking. -->
   </head>
   <body>
     <div id="root"></div>

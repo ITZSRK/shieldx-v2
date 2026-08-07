@@ -57,7 +57,9 @@ Nothing on this website constitutes legal, regulatory, or compliance advice. Fin
     title: "Limitation of liability",
     body: `To the fullest extent permitted by applicable Indian law, Quelo Technologies Private Limited shall not be liable for any indirect, incidental, or consequential loss arising from your use of this website.
 
-Our total liability for any direct claims arising from use of this website shall not exceed INR 1,000.`,
+Nothing in these Terms limits or excludes any liability that cannot be limited or excluded under applicable law.
+
+These Terms govern use of this website only. Any commercial relationship between your institution and Quelo Technologies Private Limited — including all liability, indemnity, and service commitments — is governed exclusively by the separate Master Services Agreement executed between us.`,
   },
   {
     title: "Governing law and jurisdiction",
