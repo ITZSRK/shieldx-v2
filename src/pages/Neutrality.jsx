@@ -27,14 +27,14 @@ const SECTIONS = [
     id: "same-rules",
     short: "Every channel is scored the same — including ours",
     title: "2. Every channel is measured by the same rules — including ours.",
-    body: `Where ShieldX offers its own execution channels, they are scored by the identical analysis pipeline, outcome definitions, and metrics applied to every third-party channel. There is no separate methodology for our own products. Client-facing performance dashboards include ShieldX-owned channels alongside all others, and underperformance is displayed with the same prominence as anyone else's.`,
+    body: `Where ShieldX offers its own execution channels, they are scored by the identical analysis pipeline, outcome definitions, and metrics applied to every third-party channel. There is no separate methodology and no separate code path for our own products: they sit in the same channel and vendor performance tables as every third party, measured by the same response and cost definitions. Where an institution reviews channel performance, ours appears in it on the same terms.`,
     seeLink: { to: "/deploy", label: "See the identical scorecard" },
   },
   {
     id: "institution-owns",
     short: "You own the objective function",
     title: "3. The institution owns the objective function.",
-    body: `ShieldX does not decide what "good" means. Each institution sets its own allocation policy — the weights it places on resolution rates, cost, compliance conduct, and customer experience. Our engine computes recommendations against the institution's stated objectives, and material changes to allocation follow the institution's approval process. We recommend; the institution decides.`,
+    body: `ShieldX does not decide what "good" means, and does not move volume on its own. Allocation is the institution's decision, made through its own approval process. ShieldX reports partner and channel performance on the measures the institution cares about, and recommends against the objectives it states. We recommend; the institution decides.`,
   },
   {
     id: "on-the-record",

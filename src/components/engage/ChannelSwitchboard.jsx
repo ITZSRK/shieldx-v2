@@ -41,7 +41,7 @@ function AgencyMock() {
   return (
     <div className="max-w-md mx-auto rounded-xl border border-white/[0.12] bg-black/40 overflow-hidden">
       <div className="px-4 py-2.5 border-b border-white/[0.08] text-[10px] text-white/55 tracking-wide flex justify-between">
-        <span>WORK-LIST — SFTP PUSH</span>
+        <span>WORK-LIST — ALLOCATION</span>
         <span className="text-[#fbbf24]/85">3 accounts</span>
       </div>
       {rows.map((r, i) => (

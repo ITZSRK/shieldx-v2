@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const ACCOUNTS = [
   {
     id: "CUST-48321",
-    cohort: "P1 · LIVE BOOK",
+    cohort: "P0 · HIGH RECOVER / HIGH CONTACT",
     cohortColor: "#4ade80",
     fields: [
       { tag: "CBS",    color: "#60a5fa", label: "Core Banking",       value: "Outstanding ₹24,000 · DPD 42" },
@@ -20,7 +20,7 @@ const ACCOUNTS = [
   },
   {
     id: "CUST-51907",
-    cohort: "P3 · WRITE-OFF BOOK",
+    cohort: "P3 · LOW RECOVER / LOW CONTACT",
     cohortColor: "#f87171",
     fields: [
       { tag: "CBS",    color: "#60a5fa", label: "Core Banking",       value: "Outstanding ₹68,000 · DPD 145" },

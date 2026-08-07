@@ -37,10 +37,10 @@ const STAGES = [
     title: "Decisions out",
     lede: "Every account gets a treatment, a cohort, a channel, and a reason code.",
     rows: [
-      ["Return file", "Decision per account — treatment, cohort, channel, send-window, reason codes"],
+      ["Return file", "Decision per account — treatment, cohort, channel, recommended contact window, the rule that fired, and a reason"],
       ["Operational UI", "The same decisions, worked directly by your collections and compliance teams"],
       ["Dispatch", "Where you want ShieldX to execute, decisions route through your own CPaaS, dialer, or agency work-lists"],
-      ["Record", "Full decision log retained and exportable for audit — inputs, rules fired, outcome"],
+      ["Record", "Every decision retained with the rule waterfall evaluated, the rule that fired, and its reason — browsable per account and period, and produced for an auditor on request"],
     ],
   },
   {
@@ -170,12 +170,18 @@ export default function Integration() {
         {/* ROADMAP — labelled as such */}
         <Motion>
           <div className="border-t border-white/[0.08] mt-14 pt-12">
-            <div className="text-[10px] text-white/35 tracking-[0.2em] mb-4">ON THE ROADMAP</div>
+            <div className="text-[10px] text-white/35 tracking-[0.2em] mb-4">REAL-TIME SCORING</div>
             <p className="text-white/50 text-[14.5px] leading-relaxed max-w-2xl">
-              Programmatic decisioning APIs — real-time signal ingest and an outbound
-              decision webhook, on the same treatment-in / outcome-out contract every
-              execution adapter already speaks. Batch remains supported regardless;
-              for most institutions it is the preferred path, not a fallback.
+              Where an institution can integrate in real time, the decision engine
+              exposes synchronous scoring over an authenticated API — a decision
+              returned in the request, rather than waiting for the next batch. Most
+              institutions still prefer file exchange for the volume, and run the API
+              only for the accounts where latency matters.
+            </p>
+            <p className="text-white/38 text-[13.5px] leading-relaxed max-w-2xl mt-4">
+              Outbound decision and outcome webhooks — ShieldX pushing to your systems
+              rather than your systems calling ShieldX — are on the roadmap for the
+              decisioning platform. They already run on the voice channel.
             </p>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-8 text-[13px]">
               <Link to="/deploy" className="text-blue-300/75 hover:text-blue-300 transition-colors">
