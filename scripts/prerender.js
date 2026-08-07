@@ -139,6 +139,24 @@ async function main() {
       // that doesn't depend on any single page's specific content.
       await page.waitForSelector("footer", { timeout: 10000 });
 
+      // Below-the-fold Motion sections are still genuinely at their
+      // pre-animation opacity:0/translated state at this point (correct —
+      // they haven't scrolled into view during the crawl). Left as-is,
+      // that's a large fraction of every page's real copy sitting in the
+      // static HTML at opacity:0, which is exactly what hidden-text/cloaking
+      // detection looks for, even though the actual intent is just a scroll
+      // reveal. Force everything to its fully-visible end state in *this
+      // captured snapshot only* — a real browser's live hydration pass reads
+      // viewport position fresh on its own and animates normally regardless
+      // of what was baked into the static file, so this only affects what
+      // crawlers/curl see, not what real visitors experience.
+      await page.evaluate(() => {
+        document.querySelectorAll('[style*="opacity"]').forEach((el) => {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+        });
+      });
+
       const html = await page.content();
       captured.push({ route, html });
       console.log(`Captured ${route}`);
