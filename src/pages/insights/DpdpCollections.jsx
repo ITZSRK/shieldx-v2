@@ -16,9 +16,28 @@ import InsightLayout from "../../components/InsightLayout";
 // PDFs linked at the top were opened and confirmed to be the gazette originals
 // — a 200 on the URL is not verification, only evidence that something is there.
 //
+// Aug 2026, second pass: re-verified claim-by-claim against the gazette texts
+// themselves (both PDFs extracted and read), not secondary coverage. That pass
+// caught a MATERIAL error and is why this rule exists. The piece had said
+// recovery "may sometimes be justified" under Section 7 as "servicing, debt
+// recovery, enforcement of legal claims" — those are GDPR legitimate-interest
+// examples, not DPDP categories. Section 7 enumerates (a) to (i) and contains
+// no debt-recovery use. Only 7(a) (voluntarily provided, specified purpose) and
+// 7(e) (compliance with a judgment/decree/order, incl. contractual or civil
+// claims) touch collections, and 7(e) only bites post-decree. The error was
+// self-undermining: it appeared in the very section arguing against reasoning
+// from GDPR.
+//
+// Also corrected against primary text: Rule 6(e) retains logs AND personal data
+// for one year (not "at least one year"); Rule 6(f) requires the safeguards
+// clause to be IN the processor contract; Rule 7(1) requires affected data
+// principals to be told "without delay", not "as soon as practicable"; Rule 1
+// phases by rule number. PIB PR 2190014 confirms the 18-month timeline but
+// names no date, so "May 2027" stays un-pinned to a day.
+//
 // NOT PUBLISHED: absent from the sitemap and the Insights index pending a
-// lawyer's read of the rights section. Statutory claims under a named byline
-// get legal review before they ship.
+// lawyer's read of the rights and Section 7 sections. Statutory claims under a
+// named byline get legal review before they ship.
 export default function DpdpCollections() {
   return (
     <InsightLayout
@@ -64,12 +83,12 @@ export default function DpdpCollections() {
       <p>
         The Digital Personal Data Protection Rules were notified on 13 November
         2025, and unlike most of what lands on a compliance function's desk, they
-        arrived with a clock. The rollout is phased: institutional provisions and
-        the Data Protection Board took effect immediately, consent manager
-        registration follows at roughly the twelve-month mark, and the substantive
-        obligations — notice and consent, legitimate uses, data fiduciary duties,
-        data principal rights, cross-border transfer — commence at eighteen months,
-        in <strong>May 2027</strong>.
+        arrived with a clock. Rule 1 phases them explicitly: the institutional
+        provisions took effect on publication, consent manager registration
+        (Rule 4) follows one year later, and the substantive obligations —
+        Rules 3 and 5 to 16, covering notice, security safeguards, breach
+        reporting, retention, and the machinery for exercising borrower rights —
+        commence <strong>eighteen months after publication</strong>, in May 2027.
       </p>
 
       <p>
@@ -82,33 +101,50 @@ export default function DpdpCollections() {
 
       <p>
         Anyone reasoning from GDPR will look for a legitimate-interests basis and
-        not find one. DPDP offers consent, or one of nine specified{" "}
-        <em>legitimate uses</em> under Section 7. There is no general balancing
-        test to fall back on.
+        not find one. DPDP offers consent, or one of the nine{" "}
+        <em>legitimate uses</em> enumerated at Section 7(a) to (i). There is no
+        general balancing test to fall back on.
       </p>
 
       <p>
-        Recovery activity may sometimes be justified under that heading — servicing,
-        debt recovery, enforcement of legal claims. But the basis is narrow,
-        fact-specific and, on most readings, litigation-prone. It weakens precisely
-        where collections gets uncomfortable: intrusive contact patterns, and broad
-        disclosure of borrower data to third parties. Proportionality, purpose
-        limitation and necessity continue to apply regardless of which Section 7
-        category is invoked.
+        It is worth reading that list rather than assuming what is on it, because
+        debt recovery is not. The nine cover personal data the individual
+        voluntarily provided for a specified purpose; the State providing
+        subsidies, benefits, licences and permits; State functions and the security
+        of the State; disclosure obligations imposed by law; compliance with a
+        judgment, decree or order; medical emergencies; epidemics and threats to
+        public health; disasters and breakdowns of public order; and employment
+        purposes. Anyone trained on GDPR will recognise "debt recovery" and
+        "enforcement of legal claims" as familiar legitimate-interest examples.
+        They are not Section 7 categories.
+      </p>
+
+      <p>
+        Two of the nine touch collections at all. <strong>Section 7(a)</strong>{" "}
+        covers personal data the borrower voluntarily provided for the specified
+        purpose she provided it for — which simply returns the question to what
+        purpose was specified, and where. <strong>Section 7(e)</strong> covers
+        compliance with a judgment, decree or order, including orders relating to
+        claims of a contractual or civil nature. That one is real, but it arrives
+        only once you hold a decree. It does nothing for the ordinary
+        pre-litigation contact that is almost the entirety of collections activity.
       </p>
 
       <blockquote>
-        The more aggressive the collections practice, the weaker the legitimate-use
-        argument supporting it.
+        There is no legitimate use called debt recovery. For routine collections
+        contact, the lawful basis is consent — or it is an argument.
       </blockquote>
 
       <h2>Which is why this is an origination problem</h2>
 
       <p>
-        The strongest position available to a lender is not a clever reading of
+        The position available to a lender is therefore not a clever reading of
         Section 7. It is a Rule 3 notice, given at origination, that specifies
         recovery as a purpose in clear language with an itemised description of the
-        data involved.
+        data involved. Rule 3 also requires that notice to be presented and
+        understandable <em>independently of any other information</em> the
+        institution provides — which is a problem for the common practice of
+        burying data-processing language inside the loan agreement.
       </p>
 
       <p>
@@ -146,11 +182,33 @@ export default function DpdpCollections() {
       <p>Rule 6 asks processors for real controls, not assurances:</p>
 
       <ul>
-        <li>Encryption, tokenisation or masking of personal data</li>
-        <li>Least-privilege access control</li>
-        <li>Logs retained for at least one year, subject to other law</li>
-        <li>Breach detection, response and remediation, with incident SLAs</li>
+        <li>
+          Encryption, obfuscation, masking, or virtual tokens mapped to the
+          personal data
+        </li>
+        <li>Controls on access to the computer resources involved</li>
+        <li>
+          Visibility on access through logs, monitoring and review, to enable
+          detection, investigation and remediation
+        </li>
+        <li>
+          Logs <em>and the personal data</em> retained for one year, unless another
+          law requires otherwise
+        </li>
+        <li>Measures for continued processing after a compromise, such as backups</li>
+        <li>
+          And — the one that matters most here —{" "}
+          <strong>
+            a provision in the contract with the processor requiring it to take
+            reasonable security safeguards
+          </strong>
+        </li>
       </ul>
+
+      <p>
+        That last item is not an implied obligation a lender can argue it has met
+        in substance. Rule 6 asks for the clause to be in the contract.
+      </p>
 
       <p>
         Most agency contracts written before November 2025 contain none of this.
@@ -203,14 +261,22 @@ export default function DpdpCollections() {
       <h2>Breach obligations are tighter than most collections stacks assume</h2>
 
       <p>
-        Rule 7 sets a two-stage process. The Board receives an initial intimation
-        without delay, describing the nature, extent, timing, location and likely
-        impact of the breach. A fuller report follows{" "}
+        Rule 7 sets a two-stage process for the Board. It receives an initial
+        intimation without delay, describing the nature, extent, timing, location
+        and likely impact of the breach. A fuller report follows{" "}
         <strong>within 72 hours</strong> of becoming aware — covering root cause,
         containment, prevention, and a summary of what affected individuals were
-        told. Affected data principals are notified as soon as practicable, in plain
-        language, including what happened, what data was involved, likely
-        consequences, and what they can do about it.
+        told.
+      </p>
+
+      <p>
+        The borrower notification is easier to underestimate. Affected data
+        principals must also be told <strong>without delay</strong> — not as soon
+        as practicable, and not after the investigation concludes — in concise,
+        clear and plain language, covering the nature, extent and timing of the
+        breach, the consequences likely to arise for them, what is being done to
+        mitigate it, what they can do to protect themselves, and the business
+        contact details of someone who can actually answer their questions.
       </p>
 
       <p>
