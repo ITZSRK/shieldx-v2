@@ -8,7 +8,8 @@
     "build": "vite build && node scripts/prerender.js",
     "build:vite-only": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "og": "node scripts/og-image.js"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

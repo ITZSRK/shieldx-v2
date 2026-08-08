@@ -3,14 +3,22 @@
 // page renders this once near the top so prerendered HTML carries distinct
 // per-route title/description/OG tags instead of every route sharing
 // index.html's generic defaults.
-export default function SEO({ title, description, path = "/", type = "website" }) {
+export default function SEO({
+  title,
+  description,
+  path = "/",
+  type = "website",
+  // Per-page card, e.g. "/og/rbi-model-risk-management.png". Insight pieces
+  // pass their own; everything else falls back to the site card.
+  ogImage = "/og-image.png",
+}) {
   const fullTitle = `${title} — ShieldX`;
   const url = `https://queloshieldx.in${path}`;
-  // Deliberately a stable /og-image.png in public/, not the fingerprinted
-  // build asset (whose hashed filename changes every deploy) — social
-  // platforms cache link previews by image URL, so a stable path avoids
-  // ever pointing a cached preview at a filename that no longer exists.
-  const image = "https://queloshieldx.in/og-image.png";
+  // Deliberately a stable path in public/, not the fingerprinted build asset
+  // (whose hashed filename changes every deploy) — social platforms cache link
+  // previews by image URL, so a stable path avoids ever pointing a cached
+  // preview at a filename that no longer exists.
+  const image = `https://queloshieldx.in${ogImage}`;
 
   return (
     <>

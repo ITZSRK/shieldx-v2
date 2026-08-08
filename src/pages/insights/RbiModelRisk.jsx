@@ -194,8 +194,10 @@ export default function RbiModelRisk() {
 
       <p>
         Third-party models are in scope, and the draft is direct about where
-        responsibility sits. The principle, as the commentary puts it: outsourcing
-        the model does not outsource the risk.
+        responsibility sits. Para 45 states that an institution acquiring, using or
+        relying upon a third-party model, at any stage of its lifecycle, is
+        accountable for its outcomes. The principle underneath that is simple:
+        outsourcing the model does not outsource the risk.
       </p>
 
       <p>Concretely, a regulated entity is expected to:</p>
@@ -220,6 +222,12 @@ export default function RbiModelRisk() {
           Contract for <strong>audit rights for the institution and its supervisory
           authority</strong>, directly or through external experts, together with{" "}
           <strong>continuity and exit arrangements</strong> (para 48).
+        </li>
+        <li>
+          Put the model under <strong>enhanced oversight by the Risk Management
+          Committee of the Board</strong>, irrespective of its risk tier
+          (para 46(ii)) — a vendor model does not get to be low-risk enough to
+          escape board-committee attention.
         </li>
       </ul>
 
