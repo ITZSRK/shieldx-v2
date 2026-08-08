@@ -35,9 +35,21 @@ import InsightLayout from "../../components/InsightLayout";
 // phases by rule number. PIB PR 2190014 confirms the 18-month timeline but
 // names no date, so "May 2027" stays un-pinned to a day.
 //
-// NOT PUBLISHED: absent from the sitemap and the Insights index pending a
-// lawyer's read of the rights and Section 7 sections. Statutory claims under a
-// named byline get legal review before they ship.
+// PUBLISHED 2026-08-08 on SRK's explicit call, ahead of the legal review that
+// the brief (§12) otherwise requires. Every factual claim is verified verbatim
+// against the gazette texts; what did NOT get a lawyer's read is the
+// interpretation layered on top. Four items are the ones to revisit if this is
+// ever challenged:
+//   1. that S.7(e) only bites post-decree and S.7(a) is narrow, so routine
+//      recovery contact has effectively no legitimate use — the piece's spine;
+//   2. what the S.11/12 consent condition implies for live recovery;
+//   3. agency-as-processor, which turns on who determines purposes and means —
+//      an agency setting its own contact strategy may be a controller, which
+//      would move who owes the notice. This is the weakest link;
+//   4. whether two Schedule entries can arise from one incident.
+// If legal later objects, this is a two-line revert: drop it from the sitemap
+// and from PIECES in insights/Index.jsx, and unlink the cross-reference in
+// RbiModelRisk.jsx.
 export default function DpdpCollections() {
   return (
     <InsightLayout

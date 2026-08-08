@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import InsightLayout from "../../components/InsightLayout";
 
 // Every factual claim here was verified against multiple independent
@@ -23,8 +24,8 @@ import InsightLayout from "../../components/InsightLayout";
 // plainly that the final Guidance ... would supersede" is firm about the source
 // and honest about the conditionality. Do not flatten this to "replaces".
 //
-// The DPDP cross-reference near para 25 is deliberately NOT a hyperlink: the
-// DPDP piece is unpublished pending legal review. Link it once that ships.
+// The DPDP cross-reference near para 25 is now a live link — that piece
+// published 2026-08-08. If it is ever pulled, unlink this too.
 export default function RbiModelRisk() {
   return (
     <InsightLayout
@@ -282,11 +283,14 @@ export default function RbiModelRisk() {
       </p>
 
       <p>
-        Worth noting that the DPDP Rules land on the same requirement from the other
-        direction: grievance redressal has to work even where the interaction was
-        conducted by an agency rather than the lender. Two regimes, arriving
-        separately, both asking an institution to trace a borrower complaint back to
-        the decision and the channel that produced it.
+        Worth noting that{" "}
+        <Link to="/insights/dpdp-collections">
+          the DPDP Rules land on the same requirement from the other direction
+        </Link>
+        : grievance redressal has to work even where the interaction was conducted
+        by an agency rather than the lender. Two regimes, arriving separately, both
+        asking an institution to trace a borrower complaint back to the decision
+        and the channel that produced it.
       </p>
 
       <h2>What is reasonable to do while it is still draft</h2>

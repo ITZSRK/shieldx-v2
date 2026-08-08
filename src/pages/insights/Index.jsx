@@ -21,6 +21,13 @@ function Motion({ children, delay = 0 }) {
 // than six announced ones.
 const PIECES = [
   {
+    to: "/insights/dpdp-collections",
+    kicker: "REGULATION",
+    title: "Collections inherits its consent",
+    dek: "Under DPDP, what a recovery team is permitted to do was largely decided by the notice given at origination — often years earlier, by a different department, in a form nobody wrote with collections in mind.",
+    date: "August 2026",
+  },
+  {
     to: "/insights/rbi-model-risk-management",
     kicker: "REGULATION",
     title: "Your rules engine is a model now",
