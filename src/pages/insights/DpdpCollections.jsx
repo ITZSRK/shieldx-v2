@@ -7,6 +7,18 @@ import InsightLayout from "../../components/InsightLayout";
 // notification (without delay, then 72 hours); Schedule penalties of ₹250cr
 // and ₹200cr. Sources disagreed on 12 vs 13 May 2027, so the piece says
 // "May 2027" rather than picking a day it can't support.
+//
+// The rights section (S.11/12 vs S.13/14) was corrected after reading the
+// gazette text directly, rather than working from the GDPR-shaped instinct that
+// data-subject rights apply universally. S.11(1) and S.12(1) both read
+// "previously given consent, including consent as referred to in clause (a) of
+// section 7"; S.13(1) and S.14(1) carry no equivalent condition. Both source
+// PDFs linked at the top were opened and confirmed to be the gazette originals
+// — a 200 on the URL is not verification, only evidence that something is there.
+//
+// NOT PUBLISHED: absent from the sitemap and the Insights index pending a
+// lawyer's read of the rights section. Statutory claims under a named byline
+// get legal review before they ship.
 export default function DpdpCollections() {
   return (
     <InsightLayout
@@ -17,7 +29,38 @@ export default function DpdpCollections() {
       path="/insights/dpdp-collections"
       date="August 2026"
       datePublished="2026-08-08"
+      closing={
+        <>
+          ShieldX is decisioning infrastructure for collections — consent basis,
+          version, and withdrawal are recorded at account level on every decision,
+          and every agency and channel interaction flows through one auditable
+          record, so the evidence this regime demands exists by design rather than
+          reconstruction. Our standing commitments are published as the Neutrality
+          Charter.
+        </>
+      }
     >
+      <p className="insight-note">
+        Sources:{" "}
+        <a
+          href="https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          the Digital Personal Data Protection Act, 2023
+        </a>{" "}
+        (No. 22 of 2023), and{" "}
+        <a
+          href="https://www.meity.gov.in/static/uploads/2025/11/53450e6e5dc0bfa85ebd78686cadad39.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          the Digital Personal Data Protection Rules, 2025
+        </a>{" "}
+        (G.S.R. 846(E), notified 13 November 2025), both as published in the
+        Gazette of India.
+      </p>
+
       <p>
         The Digital Personal Data Protection Rules were notified on 13 November
         2025, and unlike most of what lands on a compliance function's desk, they
@@ -119,22 +162,39 @@ export default function DpdpCollections() {
       <h2>Borrower rights land differently in recovery</h2>
 
       <p>
-        Data principals hold rights of access, correction, grievance redressal and
-        nomination. Access and grievance are broadly familiar. Two are worth
-        thinking about specifically in a recovery context.
+        Data principals hold rights of access, correction and erasure, grievance
+        redressal, and nomination. The first two carry a condition that matters a
+        great deal here. Sections 11 and 12 attach in respect of a data fiduciary
+        to whom the borrower has <em>previously given consent</em> — including
+        data she voluntarily provided under Section 7(a). They do not
+        straightforwardly follow where the lender is relying on one of the other
+        Section 7 legitimate uses. Grievance redressal under Section 13 and
+        nomination under Section 14 carry no such condition.
       </p>
 
       <p>
-        <strong>Correction</strong> gives a borrower a formal route to challenge the
-        accuracy of the record being used to pursue them — DPD, outstanding amount,
-        contact history. That request has to be handled operationally while
-        collection activity is live, across whichever agencies and channels hold
-        that data.
+        That gap is not a loophole worth planning around, because it points
+        straight back at the origination notice. A lender on a consent footing
+        takes on access and correction obligations and gets a defensible lawful
+        basis for the whole recovery operation. A lender leaning on Section 7 to
+        avoid those obligations services fewer requests and holds a narrower, more
+        contestable basis for everything it does. In a book that generates
+        complaints at the rate collections does, that is the wrong side of the
+        trade.
       </p>
 
       <p>
-        <strong>Grievance redressal</strong> has to function even where the
-        borrower's contact came from an agency rather than the lender. The
+        Assume, then, that both apply. <strong>Correction</strong> gives a borrower
+        a formal route to challenge the accuracy of the record being used to pursue
+        them — DPD, outstanding amount, contact history. That request has to be
+        handled operationally while collection activity is live, across whichever
+        agencies and channels hold that data.
+      </p>
+
+      <p>
+        <strong>Grievance redressal</strong> applies whatever the lawful basis, and
+        has to function even where the borrower's contact came from an agency
+        rather than the lender. The
         institution has to be able to receive, trace and answer a complaint about an
         interaction it did not itself conduct — which requires the agency's contact
         record to be available to it in the first place.

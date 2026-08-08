@@ -131,3 +131,37 @@ Render NEUTRALITY_CHARTER.md verbatim in the legal-page layout (same as Privacy/
 
 ## Phase 2 (separate task — do not start now)
 Migrate to Next.js static generation. Port page components, add schema.org Organization markup, per-page meta, sitemap.xml, 301s from retired routes. SEO phrase everywhere: "Quelo ShieldX" (the bare "ShieldX" namespace is not winnable).
+
+## 12. Insights: publishing rules for long-form pieces
+
+Added Aug 2026, when the first regulatory pieces were written. These sit
+alongside the standing constraints in §0 and apply to anything under
+`/insights`.
+
+1. **Statutory or regulatory claims get a lawyer's read before publish.**
+   These pieces carry a named byline on regulatory analysis. The cost of a
+   review pass is trivial next to the authority being built, and a single
+   wrong reading of a section is the kind of error this audience catches.
+   A piece may be written, committed and prerendered while it waits — keep it
+   out of `public/sitemap.xml` and `src/pages/insights/Index.jsx` until cleared.
+
+2. **Cite the primary source, and link it only if the link resolves to the
+   source.** Verify by opening the document and reading its title, not by
+   checking for a 200 — a status code only proves something is served. Where
+   no verifiable deep link exists (RBI's press-release URLs are a live
+   example), cite precisely in text instead. A dead link on a piece arguing
+   for evidence over assurance does more damage than no link.
+
+3. **Do not reason from GDPR instincts about Indian statute.** DPDP has no
+   legitimate-interests basis, and its access/correction rights (Ss. 11–12)
+   are conditioned on consent in a way GDPR's are not. Check the gazette text.
+
+4. **Every piece ends on its own argument.** `InsightLayout` takes a `closing`
+   prop; the default text is the Neutrality Charter framing, which suits only
+   the neutrality piece. A templated ending that does not follow from the
+   article reads as a non-sequitur — set `closing` per article.
+
+5. **Plumbing checklist per piece:** route in `src/router/AppRouter.jsx`, slug
+   in the `ROUTES` list in `scripts/prerender.js`, `datePublished` passed for
+   the Article schema, and — only once cleared to publish — an entry in
+   `public/sitemap.xml` and in the `PIECES` list on the Insights index.
