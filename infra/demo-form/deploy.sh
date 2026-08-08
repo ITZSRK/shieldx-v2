@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Deploys the demo-request handler: Lambda + Function URL + SES, all ap-south-1.
+# Deploys the demo-request handler: Lambda + API Gateway HTTP API + SES,
+# all in ap-south-1.
 # Idempotent — safe to re-run to ship a code change.
 #
 # Prerequisites (see README.md): the vi-terraform-deploy user needs the
@@ -10,6 +11,7 @@ set -euo pipefail
 REGION=ap-south-1
 ACCOUNT=971422673619
 FN=shieldx-demo-form
+ALLOWED_ORIGIN=https://queloshieldx.in
 ROLE=shieldx-demo-form-lambda-role
 RECIPIENT=${LEAD_RECIPIENT:-sudarson.krishnan@queloai.online}
 SENDER=${LEAD_SENDER:-$RECIPIENT}
@@ -56,7 +58,7 @@ cp "$HERE/index.mjs" "$BUILD/"
 
 ENVVARS="Variables={LEAD_RECIPIENT=$RECIPIENT,LEAD_SENDER=$SENDER}"
 
-say "Function"
+say "Lambda function"
 if aws lambda get-function --function-name "$FN" --region "$REGION" >/dev/null 2>&1; then
   aws lambda update-function-code --function-name "$FN" --region "$REGION" \
     --zip-file "fileb://$BUILD/function.zip" >/dev/null
@@ -75,22 +77,42 @@ else
   echo "  created"
 fi
 
-say "Function URL"
-if ! aws lambda get-function-url-config --function-name "$FN" --region "$REGION" >/dev/null 2>&1; then
-  aws lambda create-function-url-config --function-name "$FN" --region "$REGION" \
-    --auth-type NONE \
-    --cors 'AllowOrigins=["https://queloshieldx.in"],AllowMethods=["POST"],AllowHeaders=["content-type"],MaxAge=86400' >/dev/null
-  # Function URLs still need an explicit resource policy for public invoke.
-  aws lambda add-permission --function-name "$FN" --region "$REGION" \
-    --statement-id FunctionURLAllowPublicAccess \
-    --action lambda:InvokeFunctionUrl --principal "*" \
-    --function-url-auth-type NONE >/dev/null 2>&1 || true
+say "API Gateway HTTP API"
+# API Gateway rather than a Lambda Function URL: this account blocks anonymous
+# invocation of function URLs (a SigV4-signed request to the same URL returns
+# 200, so it is an account control, not a policy gap), and fronting the URL with
+# CloudFront + OAC never reached the function at all. Do not reintroduce either.
+API=$(aws apigatewayv2 get-apis --region "$REGION" \
+  --query "Items[?Name=='$FN'].ApiId | [0]" --output text)
+
+if [ "$API" = "None" ] || [ -z "$API" ]; then
+  API=$(aws apigatewayv2 create-api --region "$REGION" --name "$FN" --protocol-type HTTP \
+    --description "ShieldX website demo-request form -> SES ($REGION)" \
+    --target "arn:aws:lambda:$REGION:$ACCOUNT:function:$FN" \
+    --cors-configuration "AllowOrigins=$ALLOWED_ORIGIN,AllowMethods=POST,OPTIONS,AllowHeaders=content-type,MaxAge=86400" \
+    --query ApiId --output text)
+  echo "  created $API"
+else
+  echo "  exists $API"
 fi
-URL=$(aws lambda get-function-url-config --function-name "$FN" --region "$REGION" \
-  --query FunctionUrl --output text)
+
+# Idempotent: add-permission fails with ResourceConflictException if the
+# statement is already there, which is fine. Every other failure must surface —
+# an earlier version of this script swallowed all of them with `|| true`, so a
+# missing invoke permission showed up later as an unexplained 403.
+if ! aws lambda get-policy --function-name "$FN" --region "$REGION" \
+      --query Policy --output text 2>/dev/null | grep -q AllowApiGatewayInvoke; then
+  aws lambda add-permission --function-name "$FN" --region "$REGION" \
+    --statement-id AllowApiGatewayInvoke --action lambda:InvokeFunction \
+    --principal apigateway.amazonaws.com \
+    --source-arn "arn:aws:execute-api:$REGION:$ACCOUNT:$API/*/*" >/dev/null
+  echo "  invoke permission added"
+fi
+
+URL=$(aws apigatewayv2 get-api --api-id "$API" --region "$REGION" --query ApiEndpoint --output text)
 
 rm -rf "$BUILD"
 
 say "Done"
 echo "  Endpoint: $URL"
-echo "  Put this in src/pages/Demo.jsx, replacing the Make.com URL."
+echo "  Set this in src/pages/Demo.jsx if it has changed."

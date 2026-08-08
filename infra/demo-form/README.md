@@ -52,6 +52,16 @@ Name it `shieldx-demo-form`. It is scoped to one function; nothing wider.
 }
 ```
 
+Plus API Gateway, which the first version of this did not need:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": ["apigateway:GET","apigateway:POST","apigateway:PATCH","apigateway:PUT","apigateway:DELETE"],
+  "Resource": ["arn:aws:apigateway:ap-south-1::/apis","arn:aws:apigateway:ap-south-1::/apis/*"]
+}
+```
+
 **2. Run the deploy.**
 
 ```bash
@@ -71,6 +81,27 @@ The account starts in the SES sandbox, which only permits sending to verified
 addresses. That is fine here: the only recipient is our own inbox. Production
 access is only needed if we ever mail the lead directly (an autoresponder, for
 example) — that would be a support request to AWS.
+
+## Why API Gateway and not a Lambda Function URL
+
+Both dead ends are recorded here so nobody spends an afternoon rediscovering
+them:
+
+1. **A public Lambda Function URL does not work in this account.** With
+   `AuthType: NONE` and a correct `Principal: "*"` resource policy, anonymous
+   requests return `403 AccessDeniedException` and never invoke the function. A
+   SigV4-signed request to the same URL returns `200`. It is an account-level
+   control, not a permissions gap, so no policy fixes it.
+2. **CloudFront + Origin Access Control in front of that URL also failed.** The
+   origin, OAC (`lambda` type), `AllViewerExceptHostHeader` origin request
+   policy and the `cloudfront.amazonaws.com` resource policy were all in place,
+   across two path-pattern variants, and the function logged **zero
+   invocations**. The site's SPA fallback (`403 -> /index.html` as `200`) masks
+   the real status, so every failure looks like a cheerful 200 — check
+   CloudWatch invocation counts, not HTTP status, when debugging this.
+
+API Gateway avoids both. It is a normal regional HTTPS endpoint in
+`ap-south-1`, so the residency property is unchanged.
 
 ## Notes
 
