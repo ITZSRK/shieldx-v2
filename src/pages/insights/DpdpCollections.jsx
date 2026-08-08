@@ -284,8 +284,24 @@ export default function DpdpCollections() {
         is no size threshold below which the obligation lapses. The penalty ceilings
         behind this are substantial — up to ₹250 crore for failing to implement
         reasonable security safeguards where a breach follows, and up to ₹200 crore
-        for failing to notify. They are ceilings set per instance, with the Board
-        determining the actual figure, and they can apply to the same incident.
+        for failing to notify — two distinct entries in the Schedule, capable of
+        arising from a single incident.
+      </p>
+
+      <p>
+        Those are ceilings, not tariffs. The Board imposes a penalty only where it
+        determines the breach is <em>significant</em>, and Section 33(2) directs it
+        to weigh the gravity and duration of the breach, the type of data involved,
+        whether the conduct was repetitive, whether the institution gained or
+        avoided loss, and — the operative one — whether it acted to mitigate the
+        effects, and how promptly and effectively.
+      </p>
+
+      <p>
+        That last factor converts good record-keeping into money. An institution
+        that can show, on the day, exactly whose data was in the affected system,
+        on what basis it was held, and who was notified when, is arguing about a
+        different number than one reconstructing it months later.
       </p>
 
       <p>
