@@ -15,6 +15,7 @@ export default function WhoScoresTheAgencies() {
       description="Cross-agency allocation is a role almost nobody occupies in Indian collections today. Why the gap exists, and why whoever fills it cannot also be competing to receive allocation."
       path="/insights/who-scores-the-agencies"
       date="August 2026"
+      datePublished="2026-08-07"
     >
       <p>
         Ask a lender how it decides which accounts go to which agency, and the

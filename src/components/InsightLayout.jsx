@@ -8,10 +8,52 @@ import founder from "../assets/founder.png";
 // narrower than the product pages (~66ch) and the type larger — these are
 // read start to finish rather than scanned, which is the opposite of how
 // everything else on this site is used.
-export default function InsightLayout({ title, description, path, kicker, dek, date, children }) {
+export default function InsightLayout({
+  title,
+  description,
+  path,
+  kicker,
+  dek,
+  date,
+  datePublished,
+  closing,
+  children,
+}) {
+  const url = `https://queloshieldx.in${path}`;
+
+  // Article schema, not the site-wide Organization schema — these are the only
+  // pages with a named author and a publication date, which is what lets a
+  // search engine treat them as authored writing rather than product copy.
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    datePublished,
+    dateModified: datePublished,
+    author: {
+      "@type": "Person",
+      name: "Sudarson Radhakrishnan",
+      jobTitle: "Founder & CEO",
+      worksFor: { "@type": "Organization", name: "ShieldX" },
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "ShieldX",
+      url: "https://queloshieldx.in",
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    image: "https://queloshieldx.in/og-image.png",
+  };
+
   return (
     <Layout>
-      <SEO title={title} description={description} path={path} />
+      <SEO title={title} description={description} path={path} type="article" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
 
       <article className="max-w-[680px] mx-auto px-8 pt-[120px] pb-32">
 
@@ -50,8 +92,13 @@ export default function InsightLayout({ title, description, path, kicker, dek, d
 
         <div className="border-t border-white/[0.09] mt-16 pt-9">
           <p className="text-white/45 text-[14px] leading-relaxed mb-6">
-            ShieldX is decisioning infrastructure for collections. The commitments
-            described here are published in full as the Neutrality Charter.
+            {closing || (
+              <>
+                ShieldX is decisioning infrastructure for collections. The
+                commitments described here are published in full as the
+                Neutrality Charter.
+              </>
+            )}
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[13px]">
             <Link to="/neutrality" className="text-emerald-400/75 hover:text-emerald-400 transition-colors">
@@ -80,6 +127,28 @@ export default function InsightLayout({ title, description, path, kicker, dek, d
           text-wrap: balance;
         }
         .insight-body strong { color: rgba(255,255,255,0.92); font-weight: 600; }
+        .insight-body a {
+          color: rgba(52,211,153,0.85);
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          text-decoration-color: rgba(52,211,153,0.35);
+          transition: color 0.2s, text-decoration-color 0.2s;
+        }
+        .insight-body a:hover {
+          color: rgb(52,211,153);
+          text-decoration-color: rgba(52,211,153,0.7);
+        }
+        /* Standing note that the piece tracks a moving document. Set apart from
+           body copy so a returning reader can see the currency claim without
+           re-reading the opening. */
+        .insight-body p.insight-note {
+          font-size: 13.5px;
+          line-height: 1.65;
+          color: rgba(255,255,255,0.42);
+          border-left: 2px solid rgba(255,255,255,0.12);
+          padding-left: 1.1em;
+          margin-bottom: 2.4em;
+        }
         .insight-body em { color: rgba(255,255,255,0.78); }
         .insight-body ul { margin: 0 0 1.55em; padding-left: 0; list-style: none; }
         .insight-body li {

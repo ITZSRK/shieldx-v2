@@ -37,6 +37,8 @@ const ROUTES = [
   "/integration",
   "/insights",
   "/insights/who-scores-the-agencies",
+  "/insights/rbi-model-risk-management",
+  "/insights/dpdp-collections",
 ];
 
 function outputPathFor(route) {

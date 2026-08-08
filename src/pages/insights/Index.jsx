@@ -21,6 +21,13 @@ function Motion({ children, delay = 0 }) {
 // than six announced ones.
 const PIECES = [
   {
+    to: "/insights/rbi-model-risk-management",
+    kicker: "REGULATION",
+    title: "Your rules engine is a model now",
+    dek: "RBI's draft model risk guidance defines a model by what it does, not what it's called. On that definition, the spreadsheet your collections team scores on is in scope — and so is every vendor system making decisions on your book.",
+    date: "August 2026",
+  },
+  {
     to: "/insights/who-scores-the-agencies",
     kicker: "NEUTRALITY",
     title: "Who scores the agencies?",

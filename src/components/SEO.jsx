@@ -3,7 +3,7 @@
 // page renders this once near the top so prerendered HTML carries distinct
 // per-route title/description/OG tags instead of every route sharing
 // index.html's generic defaults.
-export default function SEO({ title, description, path = "/" }) {
+export default function SEO({ title, description, path = "/", type = "website" }) {
   const fullTitle = `${title} — ShieldX`;
   const url = `https://queloshieldx.in${path}`;
   // Deliberately a stable /og-image.png in public/, not the fingerprinted
@@ -20,7 +20,7 @@ export default function SEO({ title, description, path = "/" }) {
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={type} />
       <meta property="og:site_name" content="ShieldX" />
       <meta property="og:image" content={image} />
       <meta property="og:image:width" content="1200" />

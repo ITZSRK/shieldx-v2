@@ -33,6 +33,8 @@ import Outsourcing from "../pages/Outsourcing";
 import Integration from "../pages/Integration";
 import InsightsIndex from "../pages/insights/Index";
 import WhoScoresTheAgencies from "../pages/insights/WhoScoresTheAgencies";
+import RbiModelRisk from "../pages/insights/RbiModelRisk";
+import DpdpCollections from "../pages/insights/DpdpCollections";
 import NotFound from "../pages/NotFound";
 import CookieConsent from "../components/CookieConsent";
 
@@ -62,6 +64,8 @@ export default function AppRouter() {
         <Route path="/integration" element={<Integration />} />
         <Route path="/insights" element={<InsightsIndex />} />
         <Route path="/insights/who-scores-the-agencies" element={<WhoScoresTheAgencies />} />
+        <Route path="/insights/rbi-model-risk-management" element={<RbiModelRisk />} />
+        <Route path="/insights/dpdp-collections" element={<DpdpCollections />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
