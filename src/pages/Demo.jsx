@@ -8,7 +8,8 @@ export default function Demo() {
     company: "",
     email: "",
     role: "",
-    useCase: ""
+    useCase: "",
+    website: ""   // honeypot, see the hidden field below
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -32,28 +33,36 @@ export default function Demo() {
     setLoading(true);
 
     try {
-      await fetch("https://hook.eu1.make.com/jht5ea6j4ei340baklxwylydcpk87uu9", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          name: form.name,
-          company: form.company,
-          email: form.email,
-          role: form.role,
-          useCase: form.useCase,
-          source: "Website",
-          status: "New"
-        })
-      });
+      // ap-south-1 endpoint. This used to post to a Make.com webhook in Make's
+      // EU region, which contradicted the privacy policy's commitment not to
+      // transfer personal data outside India. Handler source and infrastructure
+      // live in infra/demo-form/.
+      const res = await fetch(
+        "https://1jjqjcdbnf.execute-api.ap-south-1.amazonaws.com/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: form.name,
+            company: form.company,
+            email: form.email,
+            role: form.role,
+            useCase: form.useCase,
+            website: form.website, // honeypot — real users leave this empty
+          })
+        }
+      );
+
+      // The old code awaited fetch and then declared success regardless, so a
+      // rejected submission still showed the thank-you screen and the lead was
+      // lost silently.
+      if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
 
       setSubmitted(true);
 
     } catch (err) {
       console.error(err);
-      alert("Something went wrong. Please try again.");
+      alert("Something went wrong. Please try again, or email us directly.");
     }
 
     setLoading(false);
@@ -91,6 +100,15 @@ export default function Demo() {
             ">
 
               <form onSubmit={handleSubmit} className="space-y-4 text-left">
+                {/* Honeypot. Hidden from people and from screen readers, but a
+                    form-filling bot sees an input and completes it — the server
+                    silently discards any submission where this is non-empty. */}
+                <input
+                  type="text" name="website" value={form.website}
+                  onChange={handleChange} tabIndex={-1} autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position:"absolute", left:"-9999px", width:1, height:1, opacity:0 }}
+                />
 
                 <input name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required className="input" />
 
