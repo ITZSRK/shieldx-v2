@@ -35,11 +35,11 @@ import InsightLayout from "../../components/InsightLayout";
 // phases by rule number. PIB PR 2190014 confirms the 18-month timeline but
 // names no date, so "May 2027" stays un-pinned to a day.
 //
-// PUBLISHED 2026-08-08 on SRK's explicit call, ahead of the legal review that
-// the brief (§12) otherwise requires. Every factual claim is verified verbatim
-// against the gazette texts; what did NOT get a lawyer's read is the
-// interpretation layered on top. Four items are the ones to revisit if this is
-// ever challenged:
+// PUBLISHED 2026-08-08. SRK's decision, 2026-08-08: no legal review will be
+// commissioned — verification against the primary text is treated as
+// sufficient. So the four items below are ACCEPTED RISK, not pending work.
+// They are recorded because they are the interpretation, not the text, and
+// they are what a challenge would land on:
 //   1. that S.7(e) only bites post-decree and S.7(a) is narrow, so routine
 //      recovery contact has effectively no legitimate use — the piece's spine;
 //   2. what the S.11/12 consent condition implies for live recovery;

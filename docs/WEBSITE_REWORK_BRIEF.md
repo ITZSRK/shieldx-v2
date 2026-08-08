@@ -138,12 +138,16 @@ Added Aug 2026, when the first regulatory pieces were written. These sit
 alongside the standing constraints in §0 and apply to anything under
 `/insights`.
 
-1. **Statutory or regulatory claims get a lawyer's read before publish.**
-   These pieces carry a named byline on regulatory analysis. The cost of a
-   review pass is trivial next to the authority being built, and a single
-   wrong reading of a section is the kind of error this audience catches.
-   A piece may be written, committed and prerendered while it waits — keep it
-   out of `public/sitemap.xml` and `src/pages/insights/Index.jsx` until cleared.
+1. **Statutory claims are verified against the primary text before publish —
+   that is the gate.** Amended 2026-08-08 (SRK): legal review is *not* required
+   and will not be commissioned; reading the gazette or the regulator's own
+   document is treated as sufficient. What that makes non-negotiable is the
+   verification itself. Secondary coverage does not count and has already
+   agreed with a wrong claim once: the DPDP piece asserted a Section 7
+   legitimate use for debt recovery that does not exist, and two review passes
+   cleared it before the statute was read. Read the section. Quote it.
+   Where the piece moves from the text to interpretation, say so in the file
+   header so the accepted risk is findable later.
 
 2. **Cite the primary source, and link it only if the link resolves to the
    source.** Verify by opening the document and reading its title, not by

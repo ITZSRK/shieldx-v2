@@ -177,14 +177,17 @@ function HeroVisual() {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    COMPLIANCE ENFORCEMENT VISUAL
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+// Sequence, not timing — see the note on Home's SCENARIO. The point of this
+// trace is that the violation is caught and the decision revised before
+// anything is dispatched, which is an ordering claim, not a speed claim.
 const TRACE = [
-  { ms: "0ms",  text: "Signal received",                    kind: "step",    note: "payment_missed · Priya S. · ₹24,000 · DPD-7"     },
-  { ms: "11ms", text: "Decision: Call customer at 7:30 AM", kind: "step",    note: null                                               },
-  { ms: "14ms", text: "TRAI Window Violation",              kind: "blocked", note: "Outreach at 7:30 AM — before TRAI window (8 AM IST)" },
-  { ms: "15ms", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
-  { ms: "19ms", text: "Compliance Cleared",                 kind: "passed",  note: "Window ✓  Day rule ✓  Frequency ✓  Suppression ✓"               },
-  { ms: "28ms", text: "Agent call triggered",                kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
-  { ms: "29ms", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Hash-chained"                   },
+  { seq: "01", text: "Signal received",                    kind: "step",    note: "payment_missed · Priya S. · ₹24,000 · DPD-7"     },
+  { seq: "02", text: "Decision: Call customer at 7:30 AM", kind: "step",    note: null                                               },
+  { seq: "03", text: "TRAI Window Violation",              kind: "blocked", note: "Outreach at 7:30 AM — before TRAI window (8 AM IST)" },
+  { seq: "04", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
+  { seq: "05", text: "Compliance Cleared",                 kind: "passed",  note: "Window ✓  Day rule ✓  Frequency ✓  Suppression ✓"               },
+  { seq: "06", text: "Agent call triggered",                kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
+  { seq: "07", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Hash-chained"                   },
 ];
 
 const TRACE_DELAYS = [400, 650, 700, 1700, 700, 1400, 700, 3500];
@@ -228,7 +231,7 @@ function ComplianceCatch() {
                 <div className="border border-red-400/40 bg-red-400/[0.07] rounded-lg px-4 py-2.5">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-red-400 text-[10px] font-semibold tracking-wide">✗ BLOCKED</span>
-                    <span className="text-white/22 text-[10px]">[{s.ms}]</span>
+                    <span className="text-white/22 text-[10px] tabular-nums">{s.seq}</span>
                   </div>
                   <div className="text-white/65 text-[11px]">{s.text}</div>
                   {isLatest && <div className="text-red-400/55 text-[10px] mt-1">{s.note}</div>}
@@ -243,7 +246,7 @@ function ComplianceCatch() {
                 <div className="border border-emerald-400/40 bg-emerald-400/[0.06] rounded-lg px-4 py-2.5">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-emerald-400 text-[10px] font-semibold tracking-wide">✓ CLEARED</span>
-                    <span className="text-white/22 text-[10px]">[{s.ms}]</span>
+                    <span className="text-white/22 text-[10px] tabular-nums">{s.seq}</span>
                   </div>
                   <div className="text-white/65 text-[11px]">{s.text}</div>
                   {isLatest && <div className="text-emerald-400/55 text-[10px] mt-1">{s.note}</div>}
@@ -260,7 +263,7 @@ function ComplianceCatch() {
               transition={{ duration: 0.3 }}
               className="flex items-start gap-3 text-[11px] pl-1"
             >
-              <span className="text-white/22 w-[44px] shrink-0 pt-px">[{s.ms}]</span>
+              <span className="text-white/22 w-[22px] shrink-0 pt-px tabular-nums">{s.seq}</span>
               <div className="flex-1 min-w-0">
                 <span className="text-white/62">{s.text}</span>
                 {isLatest && s.note && (

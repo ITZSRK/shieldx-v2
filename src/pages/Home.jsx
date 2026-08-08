@@ -99,16 +99,20 @@ const SCENARIO = {
   event: "payment_missed",
   customer: "CUST-48321 · DPD 30–60 · ₹24,000",
   steps: [
-    { ms:"0ms",  text:"Signal received",                 note:"CBS payment_missed event ingested",             color:"white" },
-    { ms:"8ms",  text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
-    { ms:"12ms", text:"Eligible channels: agent call, WhatsApp, SMS", note:"Voice AI eligible, not selected",   color:"white" },
-    { ms:"14ms", text:"TRAI window — COMPLIANT",          note:"2:00 PM IST — within 8 AM–7 PM window",         color:"green" },
-    { ms:"16ms", text:"Suppression list — CLEAR",         note:"No do-not-contact entry for this account",      color:"green" },
-    { ms:"17ms", text:"Frequency cap — WITHIN LIMIT",      note:"Under the daily contact limit for this product", color:"green" },
-    { ms:"18ms", text:"Day rule — COMPLIANT",              note:"Not a Sunday or national holiday (IST)",        color:"green" },
-    { ms:"19ms", text:"Handoff: agent call · Assist context", note:"Governed decision handed off through adapter", color:"blue" },
-    { ms:"19ms", text:"Audit record written",              note:"AUD-20260614-48321 · Hash-chained",                color:"dim"   },
-    { ms:"—",    text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
+    // Sequence, not timing. Millisecond figures used to sit here; no benchmark
+    // exists to defend them, and /platform states the real end-to-end figure
+    // (~1 second) in the one place it belongs. The order is what this trace is
+    // demonstrating — the compliance checks run before the handoff, not after.
+    { seq:"01", text:"Signal received",                 note:"CBS payment_missed event ingested",             color:"white" },
+    { seq:"02", text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
+    { seq:"03", text:"Eligible channels: agent call, WhatsApp, SMS", note:"Voice AI eligible, not selected",   color:"white" },
+    { seq:"04", text:"TRAI window — COMPLIANT",          note:"2:00 PM IST — within 8 AM–7 PM window",         color:"green" },
+    { seq:"05", text:"Suppression list — CLEAR",         note:"No do-not-contact entry for this account",      color:"green" },
+    { seq:"06", text:"Frequency cap — WITHIN LIMIT",      note:"Under the daily contact limit for this product", color:"green" },
+    { seq:"07", text:"Day rule — COMPLIANT",              note:"Not a Sunday or national holiday (IST)",        color:"green" },
+    { seq:"08", text:"Handoff: agent call · Assist context", note:"Governed decision handed off through adapter", color:"blue" },
+    { seq:"09", text:"Audit record written",              note:"AUD-20260614-48321 · Hash-chained",                color:"dim"   },
+    { seq:"↻",  text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
   ],
 };
 
@@ -158,7 +162,7 @@ function GovernedDecisionView() {
               transition={{duration:.22}}
               className="flex items-start gap-3"
             >
-              <span className="text-white/22 w-[42px] shrink-0 pt-px text-[10px]">[{step.ms}]</span>
+              <span className="text-white/22 w-[22px] shrink-0 pt-px text-[10px] tabular-nums">{step.seq}</span>
               <div className="flex items-center gap-2 flex-1">
                 <div className="w-[5px] h-[5px] rounded-full flex-shrink-0 mt-px transition-all duration-200"
                   style={{
