@@ -91,11 +91,29 @@ line — `LEAD_STORE_FAILURE`, `LEAD_MAIL_FAILURE`, `LEAD_LOST` — and a
 CloudWatch metric filter turns those into the `shieldx-demo-form-lead-failure`
 alarm, which notifies the `shieldx-demo-form-alerts` SNS topic.
 
-The topic goes to **two** addresses, deliberately: the lead inbox, and a
-separate one (`ALERT_RECIPIENT`, a Gmail address). Leads and
-lead-pipeline alarms must not share a single mailbox — if delivery to the lead
-domain breaks, the alert telling you so would break with it. Note that AWS
-notification mail lands in spam by default; whitelist `sns.amazonaws.com`.
+### Alerts are delivered by Lambda + SES, not by an SNS email subscription
+
+**Do not subscribe an email address to the topic.** Every SNS email carries an
+unsubscribe URL, and following it is a plain GET that deactivates the
+subscription with no confirmation step. Mail security scanners and link
+prefetchers follow URLs in messages as a matter of course, so the subscription
+silently unsubscribes itself. This is not theoretical: the Gmail address was
+auto-deactivated **twice within an hour** of being confirmed.
+
+The failure mode is the worst kind — alerting disables itself, and you find out
+the next time something breaks and nobody is told.
+
+So `shieldx-alert-notifier` (see `infra/alert-notifier/`) subscribes to the
+topic and mails through SES instead. Mail we compose has no unsubscribe link,
+so there is nothing for a scanner to click. Recipients come from
+`ALERT_RECIPIENT`.
+
+Alerts deliberately go to a **different mailbox from the leads**: if delivery to
+the lead domain breaks, the alert telling you so must not break with it.
+
+Note that SES runs in the sandbox, so every alert recipient must itself be a
+verified SES identity. AWS notification mail also lands in spam by default —
+whitelist the sender or the alerting is decorative.
 
 Alarm on the log lines, not on Lambda's error metric: a partial failure still
 returns `200`, so the error metric stays flat and would never fire.

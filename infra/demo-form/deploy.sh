@@ -20,6 +20,8 @@ SENDER=${LEAD_SENDER:-$RECIPIENT}
 # Alerts deliberately go somewhere other than the lead inbox: if mail to the
 # lead domain breaks, the alarm warning you about it must not break with it.
 ALERT_RECIPIENT=${ALERT_RECIPIENT:-sudarson.krishnan@gmail.com}
+NOTIFIER=shieldx-alert-notifier
+NOTIFIER_ROLE=shieldx-alert-notifier-role
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export AWS_PAGER=""
 
@@ -139,15 +141,60 @@ say "Failure alerting"
 # The handler returns 200 when either the store or the mail succeeds, so Lambda
 # error metrics stay flat on a partial failure. Alarm on the log lines instead.
 TOPIC=$(aws sns create-topic --name "$FN-alerts" --region "$REGION" --query TopicArn --output text)
-SUBS=$(aws sns list-subscriptions-by-topic --topic-arn "$TOPIC" --region "$REGION" \
-        --query 'Subscriptions[].Endpoint' --output text 2>/dev/null || true)
-for who in "$ALERT_RECIPIENT" "$RECIPIENT"; do
-  if ! printf '%s' "$SUBS" | grep -q "$who"; then
-    aws sns subscribe --topic-arn "$TOPIC" --protocol email \
-      --notification-endpoint "$who" --region "$REGION" >/dev/null
-    echo "  subscription sent to $who — confirm it from the email (check spam)"
-  fi
-done
+# Alerts are delivered by a Lambda that mails through SES, NOT by subscribing an
+# address to the topic. SNS emails carry an unsubscribe URL, and mail security
+# scanners follow links as a matter of course — the Gmail subscription here was
+# auto-deactivated minutes after being confirmed. Alerting that silently
+# disables itself is worse than none.
+if ! aws iam get-role --role-name "$NOTIFIER_ROLE" >/dev/null 2>&1; then
+  aws iam create-role --role-name "$NOTIFIER_ROLE" \
+    --description "Execution role for the ShieldX alert notifier" \
+    --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}' >/dev/null
+  aws iam attach-role-policy --role-name "$NOTIFIER_ROLE" \
+    --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  aws iam put-role-policy --role-name "$NOTIFIER_ROLE" --policy-name send-email \
+    --policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["ses:SendEmail","ses:SendRawEmail"],"Resource":"*"}]}'
+  echo "  notifier role created — waiting for IAM propagation"
+  sleep 12
+fi
+
+NBUILD="$(mktemp -d)"
+cp "$HERE/../alert-notifier/index.mjs" "$NBUILD/"
+(cd "$NBUILD" && zip -q -r function.zip index.mjs)
+NENV="Variables={ALERT_SENDER=$SENDER,ALERT_RECIPIENTS=$ALERT_RECIPIENT}"
+
+if aws lambda get-function --function-name "$NOTIFIER" --region "$REGION" >/dev/null 2>&1; then
+  aws lambda update-function-code --function-name "$NOTIFIER" --region "$REGION" \
+    --zip-file "fileb://$NBUILD/function.zip" >/dev/null
+  aws lambda wait function-updated --function-name "$NOTIFIER" --region "$REGION"
+  aws lambda update-function-configuration --function-name "$NOTIFIER" --region "$REGION" \
+    --environment "$NENV" --timeout 10 >/dev/null
+  echo "  notifier updated"
+else
+  aws lambda create-function --function-name "$NOTIFIER" --region "$REGION" \
+    --runtime nodejs22.x --handler index.handler \
+    --role "arn:aws:iam::$ACCOUNT:role/$NOTIFIER_ROLE" \
+    --zip-file "fileb://$NBUILD/function.zip" --environment "$NENV" --timeout 10 \
+    --description "Delivers CloudWatch alarms by SES — no unsubscribe link to auto-click" >/dev/null
+  aws lambda wait function-active --function-name "$NOTIFIER" --region "$REGION"
+  echo "  notifier created"
+fi
+rm -rf "$NBUILD"
+
+if ! aws lambda get-policy --function-name "$NOTIFIER" --region "$REGION" \
+      --query Policy --output text 2>/dev/null | grep -q AllowSNSInvoke; then
+  aws lambda add-permission --function-name "$NOTIFIER" --region "$REGION" \
+    --statement-id AllowSNSInvoke --action lambda:InvokeFunction \
+    --principal sns.amazonaws.com --source-arn "$TOPIC" >/dev/null
+fi
+
+if ! aws sns list-subscriptions-by-topic --topic-arn "$TOPIC" --region "$REGION" \
+      --query 'Subscriptions[].Protocol' --output text 2>/dev/null | grep -q lambda; then
+  aws sns subscribe --topic-arn "$TOPIC" --protocol lambda \
+    --notification-endpoint "arn:aws:lambda:$REGION:$ACCOUNT:function:$NOTIFIER" \
+    --region "$REGION" >/dev/null
+  echo "  notifier subscribed to the topic"
+fi
 
 aws logs put-metric-filter --region "$REGION" \
   --log-group-name "/aws/lambda/$FN" --filter-name lead-delivery-failures \
