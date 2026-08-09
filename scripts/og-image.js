@@ -10,7 +10,7 @@
 // Adding an article: add an entry to CARDS, run `npm run og`, commit the PNG.
 
 import puppeteer from "puppeteer";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -18,6 +18,15 @@ const OUT_DIR = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../public/og"
 );
+
+// The real mark, inlined as a data URI. page.setContent() runs with no server
+// and no base URL, so a file path or /src reference silently renders nothing —
+// which is how the first version of these cards shipped with a typed-out
+// "ShieldX" wordmark instead of the logo.
+const LOGO = await readFile(
+  path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../src/assets/shieldx-logo.png")
+);
+const LOGO_URI = `data:image/png;base64,${LOGO.toString("base64")}`;
 
 const CARDS = [
   {
@@ -75,8 +84,7 @@ const html = ({ kicker, title }) => `
     display: flex; align-items: center; justify-content: space-between;
     position: relative;
   }
-  .brand { font-size: 25px; font-weight: 600; letter-spacing: -0.01em; }
-  .brand span { color: rgba(52,211,153,0.9); }
+  .brand img { height: 30px; width: auto; display: block; }
   .role { font-size: 16px; color: rgba(255,255,255,0.38); }
 </style></head>
 <body>
@@ -88,7 +96,7 @@ const html = ({ kicker, title }) => `
   </div>
   <div class="mid"><h1>${title}</h1></div>
   <div class="bot">
-    <div class="brand">Shield<span>X</span></div>
+    <div class="brand"><img src="${LOGO_URI}" alt=""></div>
     <div class="role">Sudarson Radhakrishnan · Founder &amp; CEO</div>
   </div>
 </body>
