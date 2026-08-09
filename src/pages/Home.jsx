@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import SEO from "../components/SEO";
 import { motion } from "framer-motion";
+import GenerativeMark from "../components/GenerativeMark";
 
 /* ================= MOTION ================= */
 function Motion({ children, delay = 0 }) {
@@ -209,8 +210,10 @@ function TheStack() {
   }, [paused]);
 
   return (
-    <div className="max-w-2xl mx-auto rounded-2xl border border-white/[0.10] bg-black/30 p-7 md:p-10"
+    <div className="max-w-2xl lg:max-w-4xl mx-auto rounded-2xl border border-white/[0.10] bg-black/30 p-7 md:p-10"
       onMouseLeave={() => setPaused(false)}>
+      <div className="lg:grid lg:grid-cols-[1fr_300px] lg:gap-10 lg:items-center">
+      <div>
       {STACK_LAYERS.map((l, i) => {
         const isActive = active === i;
         return (
@@ -241,6 +244,27 @@ function TheStack() {
           </div>
         );
       })}
+
+      </div>
+
+      {/* The figure belongs to the active layer, so it needs to be seen whole —
+          bled off a corner it read as scattered noise rather than a mark. Given
+          its own column it becomes the one piece of imagery on the site, and it
+          is drawn from the subject rather than sourced. Large screens only:
+          below that the column would squeeze the text it exists to support. */}
+      <div className="hidden lg:flex flex-col items-center justify-center select-none">
+        <div className="relative">
+          <GenerativeMark color={STACK_LAYERS[active].color} size={280} />
+        </div>
+        <div className="mt-4 text-center transition-colors duration-300">
+          <div className="font-mono text-[10px] tracking-[0.22em] mb-1"
+            style={{ color: `${STACK_LAYERS[active].color}99` }}>
+            LAYER {STACK_LAYERS[active].n}
+          </div>
+          <div className="text-[13px] text-white/55">{STACK_LAYERS[active].name}</div>
+        </div>
+      </div>
+      </div>
 
       {/* loop-back connector */}
       <div className="flex items-center gap-3 mt-3 pt-5 border-t border-white/[0.08] text-[11px] text-white/38">
