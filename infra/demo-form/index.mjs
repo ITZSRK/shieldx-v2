@@ -3,16 +3,28 @@
 // transfer of personal data outside India. This runs in ap-south-1 and mails
 // through SES in the same region, so the lead never leaves the country.
 //
-// Deployed as a Lambda Function URL (no API Gateway — nothing here needs it).
+// Fronted by an API Gateway HTTP API in the same region — see README.md for
+// why not a Lambda Function URL.
 
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
+// Base client with hand-built AttributeValues rather than lib-dynamodb: only
+// @aws-sdk/client-* is guaranteed present in the Lambda runtime image, and
+// nothing here is complex enough to justify bundling the document client.
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { randomUUID } from "node:crypto";
 
 const REGION = process.env.AWS_REGION || "ap-south-1";
 const TO = process.env.LEAD_RECIPIENT;
 const FROM = process.env.LEAD_SENDER;
 const ALLOWED_ORIGIN = "https://queloshieldx.in";
 
+const TABLE = process.env.LEAD_TABLE;
+// Personal data, so it does not sit here forever. DynamoDB deletes the row
+// once expiresAt passes; change LEAD_RETENTION_DAYS to change the policy.
+const RETENTION_DAYS = Number(process.env.LEAD_RETENTION_DAYS || 1095);
+
 const ses = new SESv2Client({ region: REGION });
+const ddb = new DynamoDBClient({ region: REGION });
 
 const FIELDS = ["name", "company", "email", "role", "useCase"];
 const MAX = { name: 120, company: 160, email: 200, role: 120, useCase: 4000 };
@@ -98,6 +110,37 @@ export const handler = async (event) => {
     `Name: ${clean.name}\nCompany: ${clean.company}\nEmail: ${clean.email}\n` +
     `Role: ${clean.role}\nReceived: ${received}\n\nUse case:\n${clean.useCase}\n`;
 
+  // Store first, then mail. If SES is down, the lead still exists; if the
+  // store is down, the mail still goes. Only losing both is a real failure,
+  // and the log lines below are what the CloudWatch alarm watches for.
+  let stored = false;
+  if (TABLE) {
+    try {
+      await ddb.send(
+        new PutItemCommand({
+          TableName: TABLE,
+          Item: {
+            id: { S: randomUUID() },
+            receivedAt: { S: received },
+            name: { S: clean.name },
+            company: { S: clean.company },
+            email: { S: clean.email },
+            role: { S: clean.role },
+            useCase: { S: clean.useCase },
+            source: { S: "website" },
+            expiresAt: {
+              N: String(Math.floor(Date.now() / 1000) + RETENTION_DAYS * 86400),
+            },
+          },
+        })
+      );
+      stored = true;
+    } catch (err) {
+      console.error("LEAD_STORE_FAILURE:", err.name, err.message);
+    }
+  }
+
+  let mailed = false;
   try {
     await ses.send(
       new SendEmailCommand({
@@ -119,9 +162,14 @@ export const handler = async (event) => {
         },
       })
     );
+    mailed = true;
   } catch (err) {
     // Log the failure reason, never the lead's data.
-    console.error("SES send failed:", err.name, err.message);
+    console.error("LEAD_MAIL_FAILURE:", err.name, err.message);
+  }
+
+  if (!stored && !mailed) {
+    console.error("LEAD_LOST: neither store nor mail succeeded");
     return reply(502, { error: "Could not send" });
   }
 

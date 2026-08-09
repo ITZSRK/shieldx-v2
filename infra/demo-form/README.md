@@ -75,6 +75,31 @@ prints the endpoint URL.
 **3. Put the printed URL into `src/pages/Demo.jsx`**, replacing the Make.com
 one, then commit — GitHub Actions deploys the site.
 
+## Lead store and alerting
+
+Leads are written to the **`shieldx-demo-leads`** DynamoDB table in `ap-south-1`
+*before* the email is sent. Email alone was not a record — deleting the mail
+meant losing the lead, and an SES outage meant never knowing one arrived.
+
+```bash
+aws dynamodb scan --table-name shieldx-demo-leads --region ap-south-1
+```
+
+The handler stores first, mails second, and returns `200` if **either**
+succeeds. It only returns `502` when both fail. Each path logs a distinct
+line — `LEAD_STORE_FAILURE`, `LEAD_MAIL_FAILURE`, `LEAD_LOST` — and a
+CloudWatch metric filter turns those into the `shieldx-demo-form-lead-failure`
+alarm, which notifies the `shieldx-demo-form-alerts` SNS topic.
+
+Alarm on the log lines, not on Lambda's error metric: a partial failure still
+returns `200`, so the error metric stays flat and would never fire.
+
+**Retention.** Rows carry an `expiresAt` TTL, default **1095 days (3 years)**.
+DynamoDB deletes them automatically. This is personal data under the DPDP Act,
+so the retention period is a deliberate decision — change it with
+`LEAD_RETENTION_DAYS` and re-run the deploy. Existing rows keep the TTL they
+were written with.
+
 ## SES sandbox
 
 The account starts in the SES sandbox, which only permits sending to verified

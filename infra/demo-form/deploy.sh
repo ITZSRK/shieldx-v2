@@ -12,6 +12,8 @@ REGION=ap-south-1
 ACCOUNT=971422673619
 FN=shieldx-demo-form
 ALLOWED_ORIGIN=https://queloshieldx.in
+TABLE=shieldx-demo-leads
+RETENTION_DAYS=${LEAD_RETENTION_DAYS:-1095}
 ROLE=shieldx-demo-form-lambda-role
 RECIPIENT=${LEAD_RECIPIENT:-sudarson.krishnan@queloai.online}
 SENDER=${LEAD_SENDER:-$RECIPIENT}
@@ -49,6 +51,25 @@ else
   exit 1
 fi
 
+say "Lead store"
+# Personal data, so the table carries a TTL and the row deletes itself. Email
+# alone is not a record: a deleted mail used to mean a lost lead.
+if aws dynamodb describe-table --table-name "$TABLE" --region "$REGION" >/dev/null 2>&1; then
+  echo "  exists"
+else
+  aws dynamodb create-table --region "$REGION" --table-name "$TABLE" \
+    --attribute-definitions AttributeName=id,AttributeType=S \
+    --key-schema AttributeName=id,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST >/dev/null
+  aws dynamodb wait table-exists --table-name "$TABLE" --region "$REGION"
+  aws dynamodb update-time-to-live --region "$REGION" --table-name "$TABLE" \
+    --time-to-live-specification "Enabled=true,AttributeName=expiresAt" >/dev/null
+  echo "  created with TTL on expiresAt"
+fi
+
+aws iam put-role-policy --role-name "$ROLE" --policy-name store-lead \
+  --policy-document "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"dynamodb:PutItem\",\"Resource\":\"arn:aws:dynamodb:$REGION:$ACCOUNT:table/$TABLE\"}]}"
+
 say "Packaging"
 BUILD="$(mktemp -d)"
 cp "$HERE/index.mjs" "$BUILD/"
@@ -56,7 +77,7 @@ cp "$HERE/index.mjs" "$BUILD/"
 # nothing is bundled — the zip stays a couple of KB and deploys in seconds.
 (cd "$BUILD" && zip -q -r function.zip index.mjs)
 
-ENVVARS="Variables={LEAD_RECIPIENT=$RECIPIENT,LEAD_SENDER=$SENDER}"
+ENVVARS="Variables={LEAD_RECIPIENT=$RECIPIENT,LEAD_SENDER=$SENDER,LEAD_TABLE=$TABLE,LEAD_RETENTION_DAYS=$RETENTION_DAYS}"
 
 say "Lambda function"
 if aws lambda get-function --function-name "$FN" --region "$REGION" >/dev/null 2>&1; then
@@ -111,8 +132,34 @@ fi
 
 URL=$(aws apigatewayv2 get-api --api-id "$API" --region "$REGION" --query ApiEndpoint --output text)
 
+say "Failure alerting"
+# The handler returns 200 when either the store or the mail succeeds, so Lambda
+# error metrics stay flat on a partial failure. Alarm on the log lines instead.
+TOPIC=$(aws sns create-topic --name "$FN-alerts" --region "$REGION" --query TopicArn --output text)
+if ! aws sns list-subscriptions-by-topic --topic-arn "$TOPIC" --region "$REGION" \
+      --query 'Subscriptions[].Endpoint' --output text 2>/dev/null | grep -q "$RECIPIENT"; then
+  aws sns subscribe --topic-arn "$TOPIC" --protocol email \
+    --notification-endpoint "$RECIPIENT" --region "$REGION" >/dev/null
+  echo "  subscription sent to $RECIPIENT — confirm it from the email"
+fi
+
+aws logs put-metric-filter --region "$REGION" \
+  --log-group-name "/aws/lambda/$FN" --filter-name lead-delivery-failures \
+  --filter-pattern '?LEAD_STORE_FAILURE ?LEAD_MAIL_FAILURE ?LEAD_LOST' \
+  --metric-transformations metricName=LeadDeliveryFailures,metricNamespace=ShieldX/DemoForm,metricValue=1,defaultValue=0
+
+aws cloudwatch put-metric-alarm --region "$REGION" \
+  --alarm-name "$FN-lead-failure" \
+  --alarm-description "A demo-request submission failed to store or mail. Check /aws/lambda/$FN." \
+  --namespace ShieldX/DemoForm --metric-name LeadDeliveryFailures \
+  --statistic Sum --period 300 --evaluation-periods 1 --threshold 1 \
+  --comparison-operator GreaterThanOrEqualToThreshold \
+  --treat-missing-data notBreaching --alarm-actions "$TOPIC"
+echo "  alarm configured"
+
 rm -rf "$BUILD"
 
 say "Done"
 echo "  Endpoint: $URL"
 echo "  Set this in src/pages/Demo.jsx if it has changed."
+echo "  Leads: aws dynamodb scan --table-name $TABLE --region $REGION"
