@@ -91,6 +91,12 @@ line — `LEAD_STORE_FAILURE`, `LEAD_MAIL_FAILURE`, `LEAD_LOST` — and a
 CloudWatch metric filter turns those into the `shieldx-demo-form-lead-failure`
 alarm, which notifies the `shieldx-demo-form-alerts` SNS topic.
 
+The topic goes to **two** addresses, deliberately: the lead inbox, and a
+separate one (`ALERT_RECIPIENT`, a Gmail address). Leads and
+lead-pipeline alarms must not share a single mailbox — if delivery to the lead
+domain breaks, the alert telling you so would break with it. Note that AWS
+notification mail lands in spam by default; whitelist `sns.amazonaws.com`.
+
 Alarm on the log lines, not on Lambda's error metric: a partial failure still
 returns `200`, so the error metric stays flat and would never fire.
 

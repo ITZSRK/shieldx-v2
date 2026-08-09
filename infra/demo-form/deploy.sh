@@ -17,6 +17,9 @@ RETENTION_DAYS=${LEAD_RETENTION_DAYS:-1095}
 ROLE=shieldx-demo-form-lambda-role
 RECIPIENT=${LEAD_RECIPIENT:-sudarson.krishnan@queloai.online}
 SENDER=${LEAD_SENDER:-$RECIPIENT}
+# Alerts deliberately go somewhere other than the lead inbox: if mail to the
+# lead domain breaks, the alarm warning you about it must not break with it.
+ALERT_RECIPIENT=${ALERT_RECIPIENT:-sudarson.krishnan@gmail.com}
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export AWS_PAGER=""
 
@@ -136,12 +139,15 @@ say "Failure alerting"
 # The handler returns 200 when either the store or the mail succeeds, so Lambda
 # error metrics stay flat on a partial failure. Alarm on the log lines instead.
 TOPIC=$(aws sns create-topic --name "$FN-alerts" --region "$REGION" --query TopicArn --output text)
-if ! aws sns list-subscriptions-by-topic --topic-arn "$TOPIC" --region "$REGION" \
-      --query 'Subscriptions[].Endpoint' --output text 2>/dev/null | grep -q "$RECIPIENT"; then
-  aws sns subscribe --topic-arn "$TOPIC" --protocol email \
-    --notification-endpoint "$RECIPIENT" --region "$REGION" >/dev/null
-  echo "  subscription sent to $RECIPIENT — confirm it from the email"
-fi
+SUBS=$(aws sns list-subscriptions-by-topic --topic-arn "$TOPIC" --region "$REGION" \
+        --query 'Subscriptions[].Endpoint' --output text 2>/dev/null || true)
+for who in "$ALERT_RECIPIENT" "$RECIPIENT"; do
+  if ! printf '%s' "$SUBS" | grep -q "$who"; then
+    aws sns subscribe --topic-arn "$TOPIC" --protocol email \
+      --notification-endpoint "$who" --region "$REGION" >/dev/null
+    echo "  subscription sent to $who — confirm it from the email (check spam)"
+  fi
+done
 
 aws logs put-metric-filter --region "$REGION" \
   --log-group-name "/aws/lambda/$FN" --filter-name lead-delivery-failures \
