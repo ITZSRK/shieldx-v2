@@ -26,7 +26,7 @@ export default function Navbar() {
   const isPlatform = location.pathname === "/platform" || location.pathname.startsWith("/platform/");
 
   return (
-    <div className="fixed top-0 w-full z-[100] backdrop-blur-md bg-black/30 border-b border-white/10 shadow-[0_0_40px_rgba(59,130,246,0.08)]">
+    <div className="site-nav fixed top-0 w-full z-[100] backdrop-blur-md bg-black/30 border-b border-white/10 shadow-[0_0_40px_rgba(59,130,246,0.08)]">
       <div className="max-w-7xl mx-auto px-5 md:px-8 h-[68px] md:h-[80px] flex justify-between items-center">
 
         {/* LOGO */}

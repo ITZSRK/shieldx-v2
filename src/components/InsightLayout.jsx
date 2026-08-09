@@ -63,6 +63,12 @@ export default function InsightLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
+      {/* Long-form pieces render on a light ground while the nav and footer stay
+          dark. These are read start to finish rather than scanned, and the shift
+          marks a real distinction: product pages are product, insight pieces are
+          documents. `main` sits above Layout's fixed glow layers, so this band
+          paints over them cleanly. */}
+      <div className="insight-surface">
       <article className="max-w-[680px] mx-auto px-8 pt-[120px] pb-32">
 
         <motion.div
@@ -70,36 +76,36 @@ export default function InsightLayout({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <Link to="/insights" className="inline-flex items-center gap-2 text-white/35 text-xs hover:text-white/65 transition-colors mb-9">
+          <Link to="/insights" className="insight-back inline-flex items-center gap-2 text-xs mb-9">
             ← Insights
           </Link>
 
-          <div className="text-[11px] text-emerald-400/60 tracking-[0.2em] mb-5">{kicker}</div>
+          <div className="insight-kicker text-[11px] tracking-[0.2em] mb-5">{kicker}</div>
 
-          <h1 className="text-[32px] md:text-[42px] font-semibold leading-[1.15] tracking-tight mb-6"
+          <h1 className="insight-title text-[32px] md:text-[42px] font-semibold leading-[1.15] tracking-tight mb-6"
             style={{ textWrap: "balance" }}>
             {title}
           </h1>
 
           {dek && (
-            <p className="text-white/60 text-[18px] leading-relaxed mb-9">{dek}</p>
+            <p className="insight-dek text-[18px] leading-relaxed mb-9">{dek}</p>
           )}
 
-          <div className="flex items-center gap-3.5 pb-9 mb-11 border-b border-white/[0.09]">
+          <div className="insight-byline flex items-center gap-3.5 pb-9 mb-11">
             <img src={founder} alt="" aria-hidden="true"
-              className="w-9 h-9 rounded-full object-cover border border-white/[0.12]" />
+              className="w-9 h-9 rounded-full object-cover" />
             <div className="text-[13px]">
-              <span className="text-white/70">Sudarson Radhakrishnan</span>
-              <span className="text-white/30"> · Founder &amp; CEO</span>
-              {date && <span className="text-white/25"> · {date}</span>}
+              <strong>Sudarson Radhakrishnan</strong>
+              <span> · Founder &amp; CEO</span>
+              {date && <span> · {date}</span>}
             </div>
           </div>
         </motion.div>
 
         <div className="insight-body">{children}</div>
 
-        <div className="border-t border-white/[0.09] mt-16 pt-9">
-          <p className="text-white/45 text-[14px] leading-relaxed mb-6">
+        <div className="insight-close mt-16 pt-9">
+          <p className="text-[14px] leading-relaxed mb-6">
             {closing || (
               <>
                 ShieldX is decisioning infrastructure for collections. The
@@ -109,61 +115,94 @@ export default function InsightLayout({
             )}
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[13px]">
-            <Link to="/neutrality" className="text-emerald-400/75 hover:text-emerald-400 transition-colors">
+            <Link to="/neutrality" className="insight-cta">
               Read the Neutrality Charter →
             </Link>
-            <Link to="/demo" className="text-white/45 hover:text-white/75 transition-colors">
+            <Link to="/demo" className="insight-cta muted">
               Request a walkthrough →
             </Link>
           </div>
         </div>
       </article>
+      </div>
 
       <style>{`
+        /* ---------- light document surface ----------
+           Accents are darkened from the site's neon values because emerald
+           #4ade80 and blue #60a5fa fail contrast on a light ground. Glows are
+           replaced by hairline rules for the same reason. */
+        .insight-surface {
+          --doc-bg: #fbfaf8;
+          --doc-ink: #0b0f14;
+          --doc-body: #39434b;
+          --doc-muted: #6f7982;
+          --doc-faint: #98a1a8;
+          --doc-rule: rgba(13,17,23,0.11);
+          --doc-accent: #047857;
+          /* Kept faint on purpose. Enough tint to echo the dark site's violet
+             and blue casts, not enough to colour the paper — these pages are
+             read for eight minutes and a tinted ground fatigues. */
+          background:
+            radial-gradient(circle at 14% 6%, rgba(167,139,250,0.055), transparent 44%),
+            radial-gradient(circle at 88% 18%, rgba(96,165,250,0.045), transparent 48%),
+            var(--doc-bg);
+          color: var(--doc-body);
+        }
+        .insight-back { color: var(--doc-muted); transition: color .2s; text-decoration: none; }
+        .insight-back:hover { color: var(--doc-ink); }
+        .insight-kicker { color: var(--doc-accent); font-weight: 500; }
+        .insight-title { color: var(--doc-ink); }
+        .insight-dek { color: var(--doc-muted); }
+        .insight-byline { border-bottom: 1px solid var(--doc-rule); color: var(--doc-faint); }
+        .insight-byline img { border: 1px solid var(--doc-rule); }
+        .insight-byline strong { color: var(--doc-ink); font-weight: 600; }
+        .insight-close { border-top: 1px solid var(--doc-rule); color: var(--doc-muted); }
+        .insight-cta { color: var(--doc-accent); text-decoration: none; transition: opacity .2s; }
+        .insight-cta:hover { opacity: .72; }
+        .insight-cta.muted { color: var(--doc-muted); }
+        .insight-cta.muted:hover { color: var(--doc-ink); opacity: 1; }
+
+        /* The nav is bg-black/30 by default, which over a light ground reads as
+           washed-out grey and drops the white nav text below usable contrast.
+           On document pages it goes solid, which is also what makes the
+           dark-nav / light-document boundary look deliberate. */
+        body:has(.insight-surface) .site-nav {
+          background: #050507;
+          box-shadow: none;
+        }
+
+        /* ---------- body copy ---------- */
         .insight-body p {
-          color: rgba(255,255,255,0.66);
-          font-size: 16.5px;
-          line-height: 1.85;
-          margin-bottom: 1.55em;
+          color: var(--doc-body);
+          font-size: 17px;
+          line-height: 1.78;
+          margin-bottom: 1.5em;
         }
         .insight-body h2 {
-          color: #fff;
-          font-size: 21px;
-          font-weight: 600;
-          line-height: 1.35;
-          margin: 2.6em 0 0.9em;
+          color: var(--doc-ink);
+          font-size: 22px;
+          font-weight: 640;
+          line-height: 1.3;
+          letter-spacing: -0.012em;
+          margin: 2.5em 0 0.85em;
           text-wrap: balance;
         }
-        .insight-body strong { color: rgba(255,255,255,0.92); font-weight: 600; }
+        .insight-body strong { color: var(--doc-ink); font-weight: 620; }
+        .insight-body em { color: var(--doc-ink); }
         .insight-body a {
-          color: rgba(52,211,153,0.85);
+          color: var(--doc-accent);
           text-decoration: underline;
           text-underline-offset: 3px;
-          text-decoration-color: rgba(52,211,153,0.35);
-          transition: color 0.2s, text-decoration-color 0.2s;
+          text-decoration-color: rgba(4,120,87,0.35);
+          transition: text-decoration-color .2s;
         }
-        .insight-body a:hover {
-          color: rgb(52,211,153);
-          text-decoration-color: rgba(52,211,153,0.7);
-        }
-        /* Standing note that the piece tracks a moving document. Set apart from
-           body copy so a returning reader can see the currency claim without
-           re-reading the opening. */
-        .insight-body p.insight-note {
-          font-size: 13.5px;
-          line-height: 1.65;
-          color: rgba(255,255,255,0.42);
-          border-left: 2px solid rgba(255,255,255,0.12);
-          padding-left: 1.1em;
-          margin-bottom: 2.4em;
-        }
-        .insight-body em { color: rgba(255,255,255,0.78); }
-        .insight-body ul { margin: 0 0 1.55em; padding-left: 0; list-style: none; }
+        .insight-body a:hover { text-decoration-color: rgba(4,120,87,0.85); }
+        .insight-body ul { margin: 0 0 1.5em; padding-left: 0; list-style: none; }
         .insight-body li {
-          color: rgba(255,255,255,0.66);
-          font-size: 16.5px;
-          line-height: 1.8;
-          margin-bottom: 0.75em;
+          color: var(--doc-body);
+          font-size: 17px;
+          line-height: 1.74;
+          margin-bottom: 0.7em;
           padding-left: 1.5em;
           position: relative;
         }
@@ -171,15 +210,27 @@ export default function InsightLayout({
           content: "—";
           position: absolute;
           left: 0;
-          color: rgba(52,211,153,0.5);
+          color: rgba(4,120,87,0.55);
         }
         .insight-body blockquote {
-          margin: 2.2em 0;
-          padding-left: 1.5em;
-          border-left: 2px solid rgba(52,211,153,0.4);
-          color: rgba(255,255,255,0.8);
-          font-size: 19px;
-          line-height: 1.65;
+          margin: 2.1em 0;
+          padding-left: 1.4em;
+          border-left: 2px solid var(--doc-accent);
+          color: var(--doc-ink);
+          font-size: 19.5px;
+          line-height: 1.55;
+          font-weight: 500;
+        }
+        /* Standing note that the piece tracks a moving document. Set apart from
+           body copy so a returning reader can see the currency claim without
+           re-reading the opening. */
+        .insight-body p.insight-note {
+          font-size: 14px;
+          line-height: 1.62;
+          color: var(--doc-muted);
+          border-left: 2px solid var(--doc-rule);
+          padding-left: 1.1em;
+          margin-bottom: 2.3em;
         }
       `}</style>
     </Layout>
