@@ -52,17 +52,22 @@ export default function InsightsIndex() {
         path="/insights"
       />
 
+      {/* Same light document surface as the articles — see .insight-surface in
+          index.css. The listing and the pieces it lists should not feel like two
+          different places. */}
+      <div className="insight-surface">
       <section className="max-w-3xl mx-auto px-8 pt-[120px] pb-32">
         <Motion>
           <div className="mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-400/20 bg-emerald-500/10 text-emerald-300 text-xs tracking-[0.18em] mb-7"
-              style={{ boxShadow: "0 0 18px rgba(52,211,153,0.22)" }}>
+            {/* The dark site's badge carries a glow; on light that reads as a
+                smudge, so it becomes a flat tinted chip. */}
+            <div className="insight-chip inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs tracking-[0.18em] mb-7">
               INSIGHTS
             </div>
-            <h1 className="text-[32px] md:text-[44px] font-semibold leading-tight mb-6">
+            <h1 className="insight-title text-[32px] md:text-[44px] font-semibold leading-tight mb-6">
               Arguments, not announcements.
             </h1>
-            <p className="text-white/60 text-[17px] leading-relaxed max-w-xl">
+            <p className="insight-dek text-[17px] leading-relaxed max-w-xl">
               Pieces on how credit conversations get decided, governed, and
               measured in India — written for the people who have to answer for
               them.
@@ -70,27 +75,26 @@ export default function InsightsIndex() {
           </div>
         </Motion>
 
-        <div className="border-t border-white/[0.09]">
+        <div className="insight-list">
           {PIECES.map((p, i) => (
             <Motion key={p.to} delay={i * 0.05}>
-              <Link to={p.to} className="group block border-b border-white/[0.09] py-9 no-underline">
+              <Link to={p.to} className="insight-row group block py-9 no-underline">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-[10px] text-emerald-400/55 tracking-[0.2em]">{p.kicker}</span>
-                  <span className="text-white/15">·</span>
-                  <span className="text-[11px] text-white/30">{p.date}</span>
+                  <span className="insight-kicker text-[10px] tracking-[0.2em]">{p.kicker}</span>
+                  <span className="insight-sep">·</span>
+                  <span className="insight-date text-[11px]">{p.date}</span>
                 </div>
-                <h2 className="text-[22px] md:text-[25px] font-semibold mb-3 leading-snug text-white group-hover:text-emerald-300/90 transition-colors">
+                <h2 className="insight-row-title text-[22px] md:text-[25px] font-semibold mb-3 leading-snug">
                   {p.title}
                 </h2>
-                <p className="text-white/50 text-[15px] leading-relaxed max-w-2xl mb-4">{p.dek}</p>
-                <span className="text-[13px] text-emerald-400/60 group-hover:text-emerald-400 transition-colors">
-                  Read →
-                </span>
+                <p className="insight-dek text-[15px] leading-relaxed max-w-2xl mb-4">{p.dek}</p>
+                <span className="insight-read text-[13px]">Read →</span>
               </Link>
             </Motion>
           ))}
         </div>
       </section>
+      </div>
     </Layout>
   );
 }
