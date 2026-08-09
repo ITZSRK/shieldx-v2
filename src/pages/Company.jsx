@@ -670,9 +670,9 @@ export default function Company() {
               credit policy.
             </p>
             <p className="text-white/68 leading-relaxed mb-4">
-              Decides who to contact, when, and how — executes across calls, messages,
-              and agency networks — and logs every decision for RBI's model risk
-              management discipline.
+              Decides who to contact, when, and how — dispatches through calls,
+              messages, and agency networks — and logs every decision for RBI's
+              model risk management discipline.
             </p>
           </Motion>
         </div>

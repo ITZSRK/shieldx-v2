@@ -378,7 +378,7 @@ export default function Home() {
     <div className="bg-[#050507] text-white overflow-hidden relative">
       <SEO
         title="Real-Time Decisioning Infrastructure"
-        description="ShieldX is the real-time decisioning infrastructure for collections in Indian BFSI — deciding, executing, and learning from every credit conversation, governed end to end."
+        description="ShieldX is the real-time decisioning infrastructure for collections in Indian BFSI — deciding, dispatching, and learning from every credit conversation, governed end to end."
         path="/"
       />
 
