@@ -28,7 +28,18 @@ const LOGO = await readFile(
 );
 const LOGO_URI = `data:image/png;base64,${LOGO.toString("base64")}`;
 
+// The site-wide card, used for every non-insight page. It previously was a
+// screenshot of the product dashboard: no wordmark anywhere, and an internal
+// admin email plus a portfolio figure legible in it — shown on every link
+// preview of the home page.
 const CARDS = [
+  {
+    out: "../public/og-image.png",
+    kicker: "DECISIONING INFRASTRUCTURE",
+    title: "The layer between your systems and your borrowers.",
+    footer: "queloshieldx.in",
+    date: null,
+  },
   {
     slug: "who-scores-the-agencies",
     kicker: "NEUTRALITY",
@@ -48,7 +59,7 @@ const CARDS = [
 
 // Mirrors the site: near-black ground, emerald accent, generous left rule.
 // Title sizing steps down for longer headlines so nothing wraps to four lines.
-const html = ({ kicker, title }) => `
+const html = ({ kicker, title, footer, date = "August 2026" }) => `
 <!doctype html>
 <html>
 <head><meta charset="utf-8"><style>
@@ -91,13 +102,12 @@ const html = ({ kicker, title }) => `
   <div class="glow"></div>
   <div class="top">
     <div class="kicker">${kicker}</div>
-    <div class="dot"></div>
-    <div class="date">August 2026</div>
+    ${date ? `<div class="dot"></div><div class="date">${date}</div>` : ""}
   </div>
   <div class="mid"><h1>${title}</h1></div>
   <div class="bot">
     <div class="brand"><img src="${LOGO_URI}" alt=""></div>
-    <div class="role">Sudarson Radhakrishnan · Founder &amp; CEO</div>
+    <div class="role">${footer || "Sudarson Radhakrishnan · Founder &amp; CEO"}</div>
   </div>
 </body>
 </html>`;
@@ -113,9 +123,11 @@ await mkdir(OUT_DIR, { recursive: true });
 for (const card of CARDS) {
   await page.setContent(html(card), { waitUntil: "domcontentloaded" });
   await page.evaluate(() => document.fonts.ready);
-  const out = path.join(OUT_DIR, `${card.slug}.png`);
+  const out = card.out
+    ? path.resolve(path.dirname(fileURLToPath(import.meta.url)), card.out)
+    : path.join(OUT_DIR, `${card.slug}.png`);
   await page.screenshot({ path: out });
-  console.log(`Wrote og/${card.slug}.png — ${card.title}`);
+  console.log(`Wrote ${path.basename(out)} — ${card.title}`);
 }
 
 await browser.close();
