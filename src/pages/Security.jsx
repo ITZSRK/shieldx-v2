@@ -65,24 +65,6 @@ const PRACTICES = [
   "Sensitive credentials managed through secrets management tooling — never hardcoded",
 ];
 
-// Platform subprocessors — third parties that may process client or borrower
-// data in the course of delivering the service. Deliberately scoped to the
-// platform: vendors that only handle website enquiry data (analytics, the
-// contact form) are covered in the Privacy Policy instead, since they never
-// touch client data.
-const SUBPROCESSORS = [
-  { name: "Amazon Web Services",   role: "Infrastructure, storage, key management",   region: "India (ap-south-1)" },
-  { name: "Fonada",                role: "SMS, IVR and voice telephony delivery",      region: "India" },
-  { name: "SendGrid",              role: "Email delivery",                              region: "United States" },
-  { name: "Meta (WhatsApp Cloud)", role: "WhatsApp message delivery",                   region: "United States" },
-  { name: "Ola Maps",              role: "Address geocoding",                           region: "India" },
-  { name: "LiveKit",               role: "Real-time voice session transport",          region: "Configurable" },
-  { name: "Deepgram",              role: "Speech recognition",                          region: "Configurable" },
-  { name: "Sarvam AI",             role: "Indic speech and language models",            region: "India" },
-  { name: "OpenAI",                role: "Language model inference",                     region: "United States" },
-  { name: "Cartesia / ElevenLabs", role: "Speech synthesis",                             region: "United States" },
-];
-
 export default function Security() {
   return (
     <Layout>
@@ -141,57 +123,6 @@ export default function Security() {
                 </div>
               ))}
             </div>
-          </div>
-        </Motion>
-
-        {/* DATA RESIDENCY & PROCESSING */}
-        <Motion>
-          <div className="border-t border-white/[0.08] pt-12 mt-16">
-            <div className="text-[10px] text-white/40 tracking-[0.2em] mb-6">DATA RESIDENCY &amp; PROCESSING</div>
-            <h2 className="text-2xl font-semibold mb-5">Where your data sits, and who touches it.</h2>
-            <p className="text-white/50 text-sm leading-relaxed max-w-2xl mb-4">
-              Client and borrower data is hosted in India, in AWS's Mumbai region
-              (ap-south-1). Deployment can be cloud, hybrid, or on-premise within
-              the institution's own boundary where infrastructure policy requires it.
-            </p>
-            <p className="text-white/50 text-sm leading-relaxed max-w-2xl mb-10">
-              Data processing agreements are in place with each processor listed
-              below. Processors are engaged only for the function described, and
-              record-level data is never used for any cross-client purpose — see
-              the{" "}
-              <a href="/neutrality" className="text-blue-300/80 hover:text-blue-300 underline underline-offset-2 transition-colors">
-                Neutrality Charter
-              </a>.
-            </p>
-
-            <div className="text-[10px] text-white/40 tracking-[0.2em] mb-4">PLATFORM SUBPROCESSORS</div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm border-collapse min-w-[520px]">
-                <thead>
-                  <tr className="text-[10px] text-white/35 tracking-[0.14em] text-left">
-                    <th className="font-normal pb-3 pr-6">PROCESSOR</th>
-                    <th className="font-normal pb-3 pr-6">PURPOSE</th>
-                    <th className="font-normal pb-3">PROCESSING REGION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {SUBPROCESSORS.map((s, i) => (
-                    <tr key={i} className="border-t border-white/[0.06]">
-                      <td className="py-3 pr-6 text-white/75 whitespace-nowrap">{s.name}</td>
-                      <td className="py-3 pr-6 text-white/45">{s.role}</td>
-                      <td className="py-3 text-white/45 whitespace-nowrap">{s.region}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-white/32 text-[12.5px] leading-relaxed mt-5 max-w-2xl">
-              Which processors are engaged depends on the deployment. Messaging and
-              telephony processors apply where ShieldX dispatches those channels;
-              speech and language processors apply only to ShieldX voice. Where
-              execution runs entirely on the institution's own rails, neither set
-              is engaged.
-            </p>
           </div>
         </Motion>
 
