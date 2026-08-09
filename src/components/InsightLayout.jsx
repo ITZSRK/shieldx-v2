@@ -56,6 +56,9 @@ export default function InsightLayout({
         path={path}
         type="article"
         ogImage={ogImage}
+        author="Sudarson Radhakrishnan"
+        publishedTime={datePublished}
+        section={kicker}
       />
 
       <script

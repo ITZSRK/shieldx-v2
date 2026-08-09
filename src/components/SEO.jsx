@@ -11,6 +11,13 @@ export default function SEO({
   // Per-page card, e.g. "/og/rbi-model-risk-management.png". Insight pieces
   // pass their own; everything else falls back to the site card.
   ogImage = "/og-image.png",
+  // Only meaningful when type="article". Open Graph's article:* properties are
+  // separate from the JSON-LD Article schema — the schema is what Google reads
+  // for authorship, these are what the social scrapers look for, and LinkedIn's
+  // inspector reports "no author found" without them.
+  author,
+  publishedTime,
+  section,
 }) {
   const fullTitle = `${title} — ShieldX`;
   const url = `https://queloshieldx.in${path}`;
@@ -37,6 +44,15 @@ export default function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+      {type === "article" && author && (
+        <meta property="article:author" content={author} />
+      )}
+      {type === "article" && publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )}
+      {type === "article" && section && (
+        <meta property="article:section" content={section} />
+      )}
     </>
   );
 }
