@@ -243,3 +243,6 @@ html, body, #root {
   padding-left: 1.1em;
   border-left: 2px solid var(--doc-rule);
 }
+.insight-surface .insight-diagram .d-item {
+  font-size: 12px; fill: var(--doc-body);
+}
