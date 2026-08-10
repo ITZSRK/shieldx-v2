@@ -212,3 +212,34 @@ html, body, #root {
   border-radius: 6px;
   border: 1px solid var(--doc-rule);
 }
+
+/* ---------- Insights argument diagrams ----------
+   Built in SVG rather than generated, so labels are real and the type matches
+   the page. Colours come from the document tokens so a diagram cannot drift
+   from the surface it sits on. */
+.insight-surface .insight-diagram { margin: 0 0 2.4em; }
+.insight-surface .insight-diagram-scroll { overflow-x: auto; }
+.insight-surface .insight-diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 580px;
+  height: auto;
+}
+.insight-surface .insight-diagram .d-title {
+  font-size: 13px; font-weight: 560; fill: var(--doc-ink);
+}
+.insight-surface .insight-diagram .d-sub {
+  font-size: 10.5px; fill: var(--doc-muted);
+}
+.insight-surface .insight-diagram .accent { fill: var(--doc-accent); }
+.insight-surface .insight-diagram .d-vacant {
+  font-size: 10px; fill: var(--doc-faint); font-style: italic;
+}
+.insight-surface .insight-diagram figcaption {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--doc-muted);
+  margin-top: 14px;
+  padding-left: 1.1em;
+  border-left: 2px solid var(--doc-rule);
+}
