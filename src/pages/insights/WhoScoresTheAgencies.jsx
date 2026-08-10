@@ -1,5 +1,5 @@
 import InsightLayout from "../../components/InsightLayout";
-import hero from "../../assets/insights/who-scores-the-agencies.png";
+import hero from "../../assets/insights/who-scores-the-agencies.webp";
 
 // Framing matters here. The argument is NOT "incumbent vendors are conflicted"
 // — they aren't, structurally: they optimise inside the slice they're given and

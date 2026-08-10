@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import InsightLayout from "../../components/InsightLayout";
+import hero from "../../assets/insights/rbi-model-risk-management.webp";
 
 // Every factual claim here was verified against multiple independent
 // summaries in Aug 2026 before drafting: title, issue date (24 Jun 2026),
@@ -36,6 +37,8 @@ export default function RbiModelRisk() {
       path="/insights/rbi-model-risk-management"
       date="August 2026"
       datePublished="2026-08-08"
+      hero={hero}
+      heroAlt="A regular grid of identical squares, one of them enclosed by a hand-drawn outline that does not follow the grid."
       closing={
         <>
           ShieldX is decisioning infrastructure for collections, built so every

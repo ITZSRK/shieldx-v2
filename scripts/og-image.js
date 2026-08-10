@@ -33,9 +33,9 @@ const LOGO_URI = `data:image/png;base64,${LOGO.toString("base64")}`;
 async function artFor(slug) {
   try {
     const f = await readFile(
-      path.resolve(path.dirname(fileURLToPath(import.meta.url)), `../src/assets/insights/${slug}.png`)
+      path.resolve(path.dirname(fileURLToPath(import.meta.url)), `../src/assets/insights/${slug}.webp`)
     );
-    return `data:image/png;base64,${f.toString("base64")}`;
+    return `data:image/webp;base64,${f.toString("base64")}`;
   } catch { return null; }
 }
 

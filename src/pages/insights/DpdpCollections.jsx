@@ -1,4 +1,5 @@
 import InsightLayout from "../../components/InsightLayout";
+import hero from "../../assets/insights/dpdp-collections.webp";
 
 // Verified across multiple independent sources in Aug 2026 before drafting:
 // Rules notified 13 Nov 2025 (G.S.R. 846(E)); three-phase rollout with
@@ -60,6 +61,8 @@ export default function DpdpCollections() {
       path="/insights/dpdp-collections"
       date="August 2026"
       datePublished="2026-08-08"
+      hero={hero}
+      heroAlt="A broad band entering from the left, narrowing as it passes through a series of gaps until it is a thin line."
       closing={
         <>
           ShieldX is decisioning infrastructure for collections — consent basis,
