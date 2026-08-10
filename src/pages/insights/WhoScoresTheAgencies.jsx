@@ -1,4 +1,5 @@
 import InsightLayout from "../../components/InsightLayout";
+import hero from "../../assets/insights/who-scores-the-agencies.png";
 
 // Framing matters here. The argument is NOT "incumbent vendors are conflicted"
 // — they aren't, structurally: they optimise inside the slice they're given and
@@ -16,6 +17,8 @@ export default function WhoScoresTheAgencies() {
       path="/insights/who-scores-the-agencies"
       date="August 2026"
       datePublished="2026-08-07"
+      hero={hero}
+      heroAlt="A sparse field of small marks with one dense concentrated column, crossed by a single line running the full width."
     >
       <p>
         Ask a lender how it decides which accounts go to which agency, and the

@@ -28,6 +28,17 @@ const LOGO = await readFile(
 );
 const LOGO_URI = `data:image/png;base64,${LOGO.toString("base64")}`;
 
+// Article artwork, when a piece has one. Inlined for the same reason as the
+// logo: setContent has no base URL.
+async function artFor(slug) {
+  try {
+    const f = await readFile(
+      path.resolve(path.dirname(fileURLToPath(import.meta.url)), `../src/assets/insights/${slug}.png`)
+    );
+    return `data:image/png;base64,${f.toString("base64")}`;
+  } catch { return null; }
+}
+
 // The site-wide card, used for every non-insight page. It previously was a
 // screenshot of the product dashboard: no wordmark anywhere, and an internal
 // admin email plus a portfolio figure legible in it — shown on every link
@@ -59,7 +70,7 @@ const CARDS = [
 
 // Mirrors the site: near-black ground, emerald accent, generous left rule.
 // Title sizing steps down for longer headlines so nothing wraps to four lines.
-const html = ({ kicker, title, footer, date = "August 2026" }) => `
+const html = ({ kicker, title, footer, date = "August 2026", art = null }) => `
 <!doctype html>
 <html>
 <head><meta charset="utf-8"><style>
@@ -73,6 +84,15 @@ const html = ({ kicker, title, footer, date = "August 2026" }) => `
     padding: 78px 86px;
     position: relative; overflow: hidden;
   }
+  .art {
+    position:absolute; inset:0; background-size:cover; background-position:center;
+    /* The plate sits behind the type, dimmed and desaturated so the headline
+       stays the loudest thing on the card. At full strength the ink column
+       fought the title. */
+    opacity:.30; filter:grayscale(.15);
+  }
+  .art-veil { position:absolute; inset:0;
+    background:linear-gradient(100deg,#07090c 30%,rgba(7,9,12,.72) 62%,rgba(7,9,12,.42) 100%); }
   .glow {
     position: absolute; top: -280px; right: -220px;
     width: 780px; height: 780px; border-radius: 50%;
@@ -99,6 +119,7 @@ const html = ({ kicker, title, footer, date = "August 2026" }) => `
   .role { font-size: 16px; color: rgba(255,255,255,0.38); }
 </style></head>
 <body>
+  ${art ? `<div class="art" style="background-image:url(${art})"></div><div class="art-veil"></div>` : ""}
   <div class="glow"></div>
   <div class="top">
     <div class="kicker">${kicker}</div>
@@ -121,7 +142,8 @@ await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
 await mkdir(OUT_DIR, { recursive: true });
 
 for (const card of CARDS) {
-  await page.setContent(html(card), { waitUntil: "domcontentloaded" });
+  const art = card.slug ? await artFor(card.slug) : null;
+  await page.setContent(html({ ...card, art }), { waitUntil: "domcontentloaded" });
   await page.evaluate(() => document.fonts.ready);
   const out = card.out
     ? path.resolve(path.dirname(fileURLToPath(import.meta.url)), card.out)

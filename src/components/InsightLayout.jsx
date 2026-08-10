@@ -17,6 +17,8 @@ export default function InsightLayout({
   date,
   datePublished,
   closing,
+  hero,
+  heroAlt,
   children,
 }) {
   const url = `https://queloshieldx.in${path}`;
@@ -104,6 +106,15 @@ export default function InsightLayout({
             </div>
           </div>
         </motion.div>
+
+        {/* Editorial plate. The generated art sits on a warmer paper than the
+            page, so it gets a hairline border and rounded corners to read as a
+            printed insert rather than a bleed that failed to match. */}
+        {hero && (
+          <figure className="insight-hero">
+            <img src={hero} alt={heroAlt || ""} width="1280" height="720" loading="eager" />
+          </figure>
+        )}
 
         <div className="insight-body">{children}</div>
 
