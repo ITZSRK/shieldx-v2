@@ -28,7 +28,12 @@ const LOOP_CAPABILITIES = [
   { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Scores, rules, and cohort strategy — computes the treatment for every account.", stages: [1, 2] },
   { letter: "E", name: "Engage",       to: "/platform/engage",       color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes.", stages: [3] },
   { letter: "A", name: "Assist",       to: "/platform/assist",       color: "#4ade80", line: "The human channel's adapter, before and during the call.", stages: [3] },
-  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was actually said.",                     stages: [4] },
+  // Intelligence owns Signal as well as Learn. Post-call analysis emits
+  // hardship, dispute and escalation signals that are exported to the decision
+  // engine and read on the next pass — so VI is not only the end of one cycle,
+  // it is an input to the next. Lighting both is what makes the row a loop
+  // rather than a line, which is what the heading above it already claims.
+  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was actually said — and feeds it back as signal.", stages: [4, 0] },
 ];
 
 function SystemLoop() {
@@ -46,7 +51,7 @@ function SystemLoop() {
   return (
     <div>
       {/* stage pills — light up with whichever capability is active below */}
-      <div className="flex items-center justify-center gap-1.5 mb-16 flex-wrap">
+      <div className="flex items-center justify-center gap-1.5 mb-4 flex-wrap">
         {STAGES.map((stage, i) => {
           const isLit = cap.stages.includes(i);
           return (
@@ -65,6 +70,16 @@ function SystemLoop() {
             </div>
           );
         })}
+      </div>
+
+      {/* The loop-back. Without it the row reads as a pipeline with an end,
+          which contradicts the heading. Signal is the only stage fed from two
+          places: the institution's core system on the first pass, and
+          Intelligence on every one after. */}
+      <div className="flex items-center justify-center gap-2.5 mb-16 text-[11px]"
+        style={{ color: cap.stages.includes(0) && cap.stages.includes(4) ? `${cap.color}` : "rgba(255,255,255,0.28)" }}>
+        <span className="text-sm leading-none">&#8630;</span>
+        <span>Learn feeds Signal — the loop closes on every account</span>
       </div>
 
       {/* capability cards — hover/click drives which stages light up above */}
