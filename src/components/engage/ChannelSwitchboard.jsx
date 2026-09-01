@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const CHANNELS = [
   { id: "sms",   label: "SMS / WhatsApp" },
   { id: "agency", label: "Agency" },
-  { id: "voice", label: "Diya — Voice AI" },
+  { id: "voice", label: "Voice AI" },
 ];
 
 const LANGS = [

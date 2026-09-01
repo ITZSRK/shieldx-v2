@@ -43,7 +43,7 @@ const PATTERNS = [
     deliveryOwner: "shieldx",
     deliveryItems: [
       { label: "Engage", sub: "SMS · WhatsApp · Email" },
-      { label: "Diya", sub: "Voice AI" },
+      { label: "Voice", sub: "Voice execution adapter" },
       { label: "Agency Network", sub: "Work-list orchestration" },
     ],
     note: "Brain and hands — the complete stack, one vendor.",
@@ -58,12 +58,12 @@ const POOL_STATES = [
   [
     { name: "Partner Vendor A", owner: "partner", pct: 45 },
     { name: "Partner Vendor B", owner: "partner", pct: 35 },
-    { name: "Diya — ShieldX Voice", owner: "shieldx", pct: 20 },
+    { name: "ShieldX Voice", owner: "shieldx", pct: 20 },
   ],
   [
     { name: "Partner Vendor A", owner: "partner", pct: 32 },
     { name: "Partner Vendor B", owner: "partner", pct: 28 },
-    { name: "Diya — ShieldX Voice", owner: "shieldx", pct: 40 },
+    { name: "ShieldX Voice", owner: "shieldx", pct: 40 },
   ],
 ];
 

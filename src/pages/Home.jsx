@@ -103,6 +103,15 @@ function SystemLoop() {
             </div>
             <div className="text-sm font-medium mb-2" style={{ color: active === i ? c.color : "white" }}>{c.name}</div>
             <div className="text-white/55 text-xs leading-relaxed">{c.line}</div>
+
+            {/* Below md there is no hover, and a tap follows the link rather
+                than driving the stage pills above — so the capability→stage
+                mapping this whole section exists to show would be unreachable
+                on a phone. Name each card's stages inline instead. */}
+            <div className="[@media(min-width:768px)_and_(hover:hover)]:hidden mt-3 pt-3 border-t border-white/[0.08] text-[11px]"
+              style={{ color: `${c.color}cc` }}>
+              Drives {c.stages.map((s) => STAGES[s]).join(" · ")}
+            </div>
           </Link>
         ))}
       </div>
@@ -210,7 +219,7 @@ const STACK_LAYERS = [
   { n: "01", name: "System of record",   color: "#93c5fd", line: "Decision log, outcome log, and conversation-derived features — the permanent asset." },
   { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, and holdout studies. Mandatory in every deployment." },
   { n: "03", name: "Orchestrate",        color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. An internal module of Decision." },
-  { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, Diya — theirs or ours, one treatment-in / outcome-out contract." },
+  { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, voice execution adapter — theirs or ours, one treatment-in / outcome-out contract." },
   { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
 ];
 
@@ -493,8 +502,13 @@ export default function Home() {
           </div>
           <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">Four capabilities. Five stages. One loop.</h2>
           <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
-            Not four separate products — one decision engine. Hover a capability to
-            see which stage of the loop it drives.
+            Not four separate products — one decision engine.{" "}
+            <span className="hidden [@media(min-width:768px)_and_(hover:hover)]:inline">
+              Hover a capability to see which stage of the loop it drives.
+            </span>
+            <span className="[@media(min-width:768px)_and_(hover:hover)]:hidden">
+              Each capability drives the stages named on its card.
+            </span>
           </p>
         </div>
         <SystemLoop />
