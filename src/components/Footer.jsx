@@ -73,7 +73,7 @@ export default function Footer() {
 
       {/* BOTTOM STRIP */}
       <div className="flex flex-col md:flex-row justify-between items-center text-xs text-white/40">
-        <div>ShieldX · Real-Time Decisioning Infrastructure · © Quelo Technologies Private Limited</div>
+        <div>ShieldX · Customer Decisioning Infrastructure · © Quelo Technologies Private Limited</div>
         <div className="mt-2 md:mt-0 flex items-center gap-4">
           <span className="text-white/25">DPDP Act Aligned</span>
           <span className="text-white/15">·</span>

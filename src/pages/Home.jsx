@@ -307,12 +307,13 @@ function TheStack() {
 }
 
 /* ================= WHAT THIS MOVES =================
-   Deliberately mechanism, not measured outcomes. The deployment is early
-   and allocation hasn't started, so there are no results to publish — and
-   inventing a lift percentage is the fastest way to lose a bank's risk
-   committee. Naming the levers and how the system operates on them gives
-   an internal champion something real to take to a committee without
-   claiming anything we can't stand behind. */
+   Mechanism, not measured outcomes — and stated as a position rather than
+   an apology. There are no results to publish yet, and inventing a lift
+   percentage is the fastest way to lose a bank's risk committee. Naming the
+   levers and how the system operates on them gives an internal champion
+   something real to take to a committee without claiming anything we can't
+   stand behind. The first evidenced number belongs here, and nowhere
+   earlier — see Tier 3 of the site brief. */
 const LEVERS = [
   {
     metric: "Right-party contact rate",
@@ -348,10 +349,10 @@ function WhatThisMoves() {
           The levers, and how<br />the system pulls them.
         </h2>
         <p className="text-white/55 text-[15px] leading-relaxed max-w-xl">
-          We don't publish outcome numbers. The deployment is early, allocation
-          hasn't started, and a lift percentage we can't evidence is worth less
-          than nothing to your risk committee. What follows is the mechanism —
-          verifiable in a walkthrough against your own portfolio.
+          We instrument outcomes; we don't assert them. Every channel is scored
+          on one methodology — including ShieldX's own. What follows is the
+          mechanism, lever by lever. Bring your book to a walkthrough and check
+          it against your own portfolio.
         </p>
       </div>
 
@@ -401,8 +402,8 @@ export default function Home() {
   return (
     <div className="bg-[#050507] text-white overflow-hidden relative">
       <SEO
-        title="Real-Time Decisioning Infrastructure"
-        description="ShieldX is the real-time decisioning infrastructure for collections in Indian BFSI — deciding, dispatching, and learning from every credit conversation, governed end to end."
+        title="Customer Decisioning Infrastructure"
+        description="ShieldX is the customer decisioning infrastructure for collections in Indian BFSI — deciding, dispatching, and learning from every credit conversation, governed end to end."
         path="/"
       />
 
@@ -421,7 +422,7 @@ export default function Home() {
         <Motion>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
-            REAL-TIME DECISIONING INFRASTRUCTURE
+            CUSTOMER DECISIONING INFRASTRUCTURE
           </div>
           <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
             The layer between your systems<br />and your borrowers.
@@ -457,8 +458,8 @@ export default function Home() {
         </Motion>
       </section>
 
-      {/* ── THE GAP ── */}
-      <div className="bg-white/[0.05] border-y border-white/[0.09]">
+      {/* ── THE PROBLEM ── */}
+      <div id="problem" className="bg-white/[0.05] border-y border-white/[0.09]">
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
 
@@ -487,13 +488,56 @@ export default function Home() {
           ))}
         </div>
 
+        {/* The obvious objection to a layer that sits above every channel is
+            that it will favour its own. Answer it here, where the problem is
+            still fresh, rather than leaving it to a page most visitors never
+            reach. */}
+        <p className="mt-10 text-white/58 text-[14.5px] leading-relaxed max-w-2xl">
+          ShieldX never operates collections — every channel is scored on one
+          methodology, including our own: umpire, not player.{" "}
+          <Link to="/neutrality"
+            className="text-emerald-400/75 hover:text-emerald-400 underline underline-offset-2 transition-colors">
+            Read the Neutrality Charter
+          </Link>
+        </p>
+
       </section>
       </Motion>
-      </div>{/* ── close THE GAP band ── */}
+      </div>{/* ── close THE PROBLEM band ── */}
+
+      {/* ── WHAT THIS MOVES (the levers) ── */}
+      <Motion>
+      <section id="levers" className="px-8 py-24 max-w-4xl mx-auto">
+        <WhatThisMoves />
+      </section>
+      </Motion>
+
+      {/* ── LIVE SIMULATION ── */}
+      <div id="simulation" className="bg-white/[0.05] border-y border-white/[0.09]">
+      <Motion>
+      <section className="px-8 py-24 max-w-4xl mx-auto text-center">
+
+        <div className="flex items-center justify-center gap-3 mb-5">
+          <div className="h-px w-6 bg-white/20" />
+          <span className="text-[11px] text-white/55 tracking-[0.22em]">LIVE</span>
+          <div className="h-px w-6 bg-white/20" />
+        </div>
+        <h2 className="text-[24px] md:text-[36px] font-semibold mb-3">
+          Watch a governed decision run.
+        </h2>
+        <p className="text-white/62 mb-10">
+          Calling window. Day rules. Frequency caps. Every check re-run in sequence — at the moment the channel fires, not when the decision was made.
+        </p>
+
+        <GovernedDecisionView />
+
+      </section>
+      </Motion>
+      </div>{/* ── close LIVE SIMULATION band ── */}
 
       {/* ── ONE DECISION SPINE (capabilities + the stages they drive, merged) ── */}
       <Motion>
-      <section className="px-8 py-24 max-w-6xl mx-auto">
+      <section id="spine" className="px-8 py-24 max-w-6xl mx-auto">
         <div className="mb-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-6 bg-white/20" />
@@ -515,9 +559,9 @@ export default function Home() {
       </section>
       </Motion>
 
-      {/* ── THE STACK ── */}
+      {/* ── THE CONTROL PLANE ── */}
       <Motion>
-      <section className="px-8 py-24 max-w-6xl mx-auto">
+      <section id="control-plane" className="px-8 py-24 max-w-6xl mx-auto">
         <div className="mb-16 text-center">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-6 bg-white/20" />
@@ -534,39 +578,9 @@ export default function Home() {
       </section>
       </Motion>
 
-      {/* ── LIVE DEMO ── */}
-      <div className="bg-white/[0.05] border-y border-white/[0.09]">
+      {/* ── PROOF LINE + CTA ── */}
       <Motion>
-      <section className="px-8 py-24 max-w-4xl mx-auto text-center">
-
-        <div className="flex items-center justify-center gap-3 mb-5">
-          <div className="h-px w-6 bg-white/20" />
-          <span className="text-[11px] text-white/55 tracking-[0.22em]">LIVE</span>
-          <div className="h-px w-6 bg-white/20" />
-        </div>
-        <h2 className="text-[24px] md:text-[36px] font-semibold mb-3">
-          Watch a governed decision run.
-        </h2>
-        <p className="text-white/62 mb-10">
-          Calling window. Day rules. Frequency caps. Every check re-run in sequence — at the moment the channel fires, not when the decision was made.
-        </p>
-
-        <GovernedDecisionView />
-
-      </section>
-      </Motion>
-      </div>{/* ── close LIVE DEMO band ── */}
-
-      {/* ── WHAT THIS MOVES ── */}
-      <Motion>
-      <section className="px-8 py-24 max-w-4xl mx-auto">
-        <WhatThisMoves />
-      </section>
-      </Motion>
-
-      {/* ── CTA ── */}
-      <Motion>
-      <section className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
+      <section id="cta" className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
 
         <div className="flex items-center justify-center gap-3 mb-8 text-[12px] text-white/35 flex-wrap">
           <span>Live with a leading private-sector bank</span>
@@ -597,6 +611,17 @@ export default function Home() {
           <span className="text-white/12">·</span>
           <span>DPDP Act-ready</span>
         </div>
+
+        {/* The credential that costs nobody's approval to state. Full version
+            lives on /company; this is the one-line form, next to the ask. */}
+        <p className="mt-12 pt-8 border-t border-white/[0.07] text-[13px] text-white/40 leading-relaxed">
+          Built by{" "}
+          <Link to="/company" className="text-white/62 hover:text-white transition-colors">
+            Sudarson Radhakrishnan
+          </Link>
+          , sole founder — 18 years across the Indian BFSI credit lifecycle, at
+          Citibank, Standard Chartered and Yubi.
+        </p>
 
       </section>
       </Motion>
