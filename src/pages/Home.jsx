@@ -452,7 +452,18 @@ export default function Home() {
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 24px 80px rgba(59,130,246,0.22), 0 4px 20px rgba(0,0,0,0.6)",
                 background: "rgba(0,0,0,0.4)",
               }}>
-              <img src={dashboard} className="w-full opacity-95" loading="lazy" decoding="async" />
+              {/* Unsized, this image reflowed everything below it once the
+                  bytes arrived — the whole Problem band shifted. Intrinsic
+                  dimensions reserve the box up front and cost nothing.
+                  Deliberately still lazy: it is the LCP element, but at 239KB
+                  of PNG on a throttled link, loading it eagerly makes it
+                  compete with the bundle and pushes LCP out by ~1.3s. The real
+                  fix is a WebP encode (~210KB saved), which is its own piece
+                  of work — see the Lighthouse note in the PR. */}
+              <img src={dashboard} className="w-full opacity-95"
+                width={1492} height={800}
+                alt="The ShieldX console — portfolio overview with decision coverage and audit-log integrity"
+                loading="lazy" decoding="async" />
             </div>
           </div>
         </Motion>
