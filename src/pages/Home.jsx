@@ -333,7 +333,7 @@ const LEVERS = [
   },
   {
     metric: "Agency performance",
-    how: "Every channel and partner is scored on one methodology — including ShieldX's own. Allocation follows measured performance under the institution's stated policy.",
+    how: "Allocation follows measured performance under the institution's stated policy, not standing commercial arrangements.",
   },
 ];
 
