@@ -33,8 +33,22 @@ This repo is a public surface, so the constraints are not advisory:
 
 The governing sentence is locked and used verbatim:
 
-> "ShieldX decides how every credit conversation should happen, executes it
-> across every channel, and learns from what was actually said."
+> "ShieldX decides how every credit conversation should happen, dispatches it
+> across every channel, and learns from what was said."
+
+Two words in that sentence are deliberate and must not be "corrected" back:
+
+- **dispatches**, never *executes*. "Executes" positions ShieldX as an
+  execution player, which is exactly the thing the Neutrality Charter exists
+  to deny. We hand a governed decision to whichever channel runs it — the
+  institution's pipes, an agency, or one of ours. We dispatch; the channel
+  executes.
+- **what was said**, not *what was actually said*. "Actually" implies we are
+  correcting a record someone else got wrong, and picks a fight we have no
+  need to pick.
+
+Confirmed by SRK 2026-09-02, reconciling this file to the live hero copy —
+the website was right and this doc was stale.
 
 Positioning is **Customer Decisioning Infrastructure**. (The investor deck
 footer says "Real-Time Decisioning Infrastructure" — that is a recorded,
