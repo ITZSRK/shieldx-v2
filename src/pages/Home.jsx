@@ -428,10 +428,25 @@ export default function Home() {
             The layer between your systems<br />and your borrowers.
           </h1>
 
-          <p className="text-[18px] text-white/62 mb-8 max-w-lg mx-auto leading-relaxed">
+          <p className="text-[18px] text-white/62 mb-5 max-w-lg mx-auto leading-relaxed">
             ShieldX decides how every credit conversation should happen, dispatches it
             across every channel, and learns from what was said — governed
             and auditable throughout.
+          </p>
+
+          {/* Collections is the wedge, not the identity. Without this line the
+              hero claims the credit lifecycle and then every section below it
+              is collections-specific — DPD buckets, roll rates, agency
+              allocation. A reader notices that contradiction long before the
+              page gets a chance to explain it, and resolves it the wrong way:
+              as a collections company with an oversized hero.
+
+              Present tense on both halves, so this states what is true now
+              rather than promising a roadmap: what the layer is built for, and
+              where it runs today. */}
+          <p className="text-[14.5px] text-white/42 mb-9 max-w-md mx-auto leading-relaxed">
+            We enter where the pain is sharpest — collections. The layer is
+            built for the whole credit lifecycle.
           </p>
 
           <Link to="/demo"
