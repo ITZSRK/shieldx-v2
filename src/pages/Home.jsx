@@ -491,10 +491,19 @@ export default function Home() {
         {/* The obvious objection to a layer that sits above every channel is
             that it will favour its own. Answer it here, where the problem is
             still fresh, rather than leaving it to a page most visitors never
-            reach. */}
+            reach.
+
+            Two earlier drafts were wrong and are worth not repeating. "ShieldX
+            never operates collections" scoped the whole company to collections
+            one screen after the hero claimed the credit lifecycle. "Never
+            operates the channels it scores" is simply false — charter
+            commitment 2 says the opposite, that ShieldX does run its own
+            channels and scores them identically. Naming the voice channel here
+            is deliberate: it is the case a reader would otherwise catch us on. */}
         <p className="mt-10 text-white/58 text-[14.5px] leading-relaxed max-w-2xl">
-          ShieldX never operates collections — every channel is scored on one
-          methodology, including our own: umpire, not player.{" "}
+          ShieldX never becomes the agency it allocates to. Where we do run a
+          channel — our own voice included — it is scored on the same
+          methodology as everyone else's.{" "}
           <Link to="/neutrality"
             className="text-emerald-400/75 hover:text-emerald-400 underline underline-offset-2 transition-colors">
             Read the Neutrality Charter
