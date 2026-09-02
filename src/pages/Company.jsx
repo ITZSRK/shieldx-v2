@@ -747,7 +747,7 @@ export default function Company() {
       </div>
 
       {/* ═══ FOUNDER ═══ */}
-      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-16">
 
         <Motion>
           <div className="flex items-center gap-2.5 mb-10">
@@ -796,13 +796,12 @@ export default function Company() {
                       18 YEARS IN INDIAN BFSI
                     </div>
                     <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[14.5px] text-white/85">
-                      <span>Citibank</span>
-                      <span className="text-white/20">·</span>
-                      <span>Standard Chartered</span>
-                      <span className="text-white/20">·</span>
-                      <span>Armsoftech</span>
-                      <span className="text-white/20">·</span>
-                      <span>Yubi</span>
+                      {["Citibank", "Standard Chartered", "Armsoftech", "Yubi"].map((name, i) => (
+                        <span key={name} className="flex items-center gap-x-2.5 whitespace-nowrap">
+                          {i > 0 && <span className="text-white/20">·</span>}
+                          {name}
+                        </span>
+                      ))}
                     </div>
                     <p className="text-white/45 text-[12.5px] leading-relaxed mt-3">
                       Including inside businesses whose primary revenue is collections.
