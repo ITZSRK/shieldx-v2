@@ -608,7 +608,7 @@ export default function Company() {
     <Layout>
       <SEO
         title="Company"
-        description="ShieldX is the decisioning infrastructure that closes the gap between signal and action in Indian BFSI collections — built by Quelo Technologies, Mumbai."
+        description="ShieldX is the decisioning infrastructure that closes the gap between signal and action in Indian BFSI collections."
         path="/company"
       />
 
@@ -665,8 +665,7 @@ export default function Company() {
               Decide. Execute.<br />Learn. Repeat.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
-              Quelo Technologies is a Mumbai-based, DPIIT-recognized fintech infrastructure
-              company. ShieldX sits above a lender's communication stack and below its
+              ShieldX sits above a lender's communication stack and below its
               credit policy.
             </p>
             <p className="text-white/68 leading-relaxed mb-4">
@@ -722,7 +721,7 @@ export default function Company() {
                 </div>
                 <p className="text-white/70 text-sm leading-relaxed">
                   Live with <span className="text-white">a leading private-sector bank</span>, with
-                  active engagements across ARCs and collection agencies. Quelo is DPIIT-recognized.
+                  active engagements across ARCs and collection agencies.
                 </p>
               </div>
             </Motion>
@@ -753,7 +752,7 @@ export default function Company() {
         <Motion>
           <div className="flex items-center gap-2.5 mb-10">
             <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
-            <span className="text-[11px] text-white/55 tracking-[0.2em]">FOUNDING TEAM</span>
+            <span className="text-[11px] text-white/55 tracking-[0.2em]">FOUNDER</span>
           </div>
         </Motion>
 
@@ -787,7 +786,12 @@ export default function Company() {
                       For a company with no published customer reference yet, a
                       verifiable career is the strongest credential available —
                       and it costs nobody's approval to state. */}
-                  <div className="mt-6 rounded-xl border border-white/[0.09] bg-white/[0.02] px-5 py-4 max-w-md">
+                  {/* Typography, not a card. The right-hand column already
+                      carries bordered cards, so a second bordered box here
+                      competed with them — the credential read as something
+                      bolted on below the portrait rather than part of the
+                      identity. A rule ties it to the name above it instead. */}
+                  <div className="mt-6 pt-5 border-t border-white/[0.09] max-w-md">
                     <div className="text-[9px] text-white/32 tracking-[0.2em] mb-2.5">
                       18 YEARS IN INDIAN BFSI
                     </div>
@@ -809,10 +813,6 @@ export default function Company() {
                       is written as a constraint rather than an intention.
                     </p>
                   </div>
-
-                  <p className="text-white/35 text-[12px] leading-relaxed mt-4 max-w-md">
-                    Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
-                  </p>
                 </div>
               </div>
             </div>
