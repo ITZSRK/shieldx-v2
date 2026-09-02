@@ -12,7 +12,6 @@ const PLATFORM_ITEMS = [
 
 const NAV_ITEMS = [
   { to: "/deploy",      label: "How we deploy" },
-  { to: "/integration", label: "Integration" },
   { to: "/governance",  label: "Governance" },
   { to: "/neutrality",  label: "Neutrality" },
   { to: "/company",     label: "Company" },
@@ -36,7 +35,7 @@ export default function Navbar() {
         </Link>
 
         {/* DESKTOP NAV */}
-        <div className="hidden lg:flex gap-8 text-sm text-white/70 items-center">
+        <div className="hidden min-[860px]:flex gap-6 lg:gap-8 text-sm text-white/70 items-center">
 
           {/* PLATFORM DROPDOWN */}
           <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
@@ -74,14 +73,14 @@ export default function Navbar() {
         {/* DESKTOP CTA */}
         <button
           onClick={() => navigate("/demo")}
-          className="hidden lg:block bg-white text-black px-4 py-2 rounded-md text-sm hover:opacity-90 transition flex-shrink-0"
+          className="hidden min-[860px]:block bg-white text-black px-4 py-2 rounded-md text-sm hover:opacity-90 transition flex-shrink-0"
         >
           Request a walkthrough
         </button>
 
         {/* MOBILE HAMBURGER */}
         <button
-          className="lg:hidden flex flex-col justify-center items-end gap-[5px] w-9 h-9 flex-shrink-0"
+          className="min-[860px]:hidden flex flex-col justify-center items-end gap-[5px] w-9 h-9 flex-shrink-0"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -93,7 +92,7 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE MENU DRAWER */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? "max-h-[760px]" : "max-h-0"}`}>
+      <div className={`min-[860px]:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? "max-h-[720px]" : "max-h-0"}`}>
         <div className="bg-[#050507]/98 backdrop-blur-xl border-t border-white/[0.08] px-5 pt-5 pb-8 flex flex-col">
 
           <Link to="/" onClick={() => setMobileOpen(false)}
