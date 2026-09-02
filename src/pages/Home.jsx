@@ -218,7 +218,7 @@ function GovernedDecisionView() {
 const STACK_LAYERS = [
   { n: "01", name: "System of record",   color: "#93c5fd", line: "Decision log, outcome log, and conversation-derived features — the permanent asset." },
   { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, and holdout studies. Mandatory in every deployment." },
-  { n: "03", name: "Orchestrate",        color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. An internal module of Decision." },
+  { n: "03", name: "Sequencing",         color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. Part of Decision, not a separate product." },
   { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, voice execution adapter — theirs or ours, one treatment-in / outcome-out contract." },
   { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
 ];
