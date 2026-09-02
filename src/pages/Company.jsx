@@ -319,7 +319,7 @@ function CategoryDeclaration() {
           <div>
             <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A CATEGORY</div>
             <h2 className="text-[26px] md:text-[48px] font-semibold leading-[1.06] mb-6">
-              Real-Time Decisioning<br />Infrastructure
+              Customer Decisioning<br />Infrastructure
             </h2>
             <p className="text-white/66 leading-relaxed max-w-md text-[15px]">
               Not a replacement for any system you already run — the layer that was missing
