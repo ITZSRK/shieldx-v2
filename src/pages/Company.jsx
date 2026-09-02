@@ -780,10 +780,38 @@ export default function Company() {
                 </div>
                 <div className="pl-7">
                   <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
-                  <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
-                  <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-md">
-                    18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
-                    and Yubi. Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
+                  <div className="text-white/58 text-sm mt-0.5">Founder &amp; CEO · ShieldX</div>
+
+                  {/* These are the only named, externally checkable institutions
+                      on the site. They were previously a footnote in 13px grey.
+                      For a company with no published customer reference yet, a
+                      verifiable career is the strongest credential available —
+                      and it costs nobody's approval to state. */}
+                  <div className="mt-6 rounded-xl border border-white/[0.09] bg-white/[0.02] px-5 py-4 max-w-md">
+                    <div className="text-[9px] text-white/32 tracking-[0.2em] mb-2.5">
+                      18 YEARS IN INDIAN BFSI
+                    </div>
+                    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[14.5px] text-white/85">
+                      <span>Citibank</span>
+                      <span className="text-white/20">·</span>
+                      <span>Standard Chartered</span>
+                      <span className="text-white/20">·</span>
+                      <span>Armsoftech</span>
+                      <span className="text-white/20">·</span>
+                      <span>Yubi</span>
+                    </div>
+                    <p className="text-white/45 text-[12.5px] leading-relaxed mt-3">
+                      Including inside businesses whose primary revenue is collections.
+                      That is where the allocation gap became visible — and why the{" "}
+                      <Link to="/neutrality" className="text-blue-300/75 hover:text-blue-300 underline underline-offset-2 transition-colors">
+                        neutrality commitment
+                      </Link>{" "}
+                      is written as a constraint rather than an intention.
+                    </p>
+                  </div>
+
+                  <p className="text-white/35 text-[12px] leading-relaxed mt-4 max-w-md">
+                    Quelo Technologies Private Limited is Mumbai-based and DPIIT-recognized.
                   </p>
                 </div>
               </div>

@@ -103,7 +103,7 @@ function EngineArchitecture() {
     { num:"04", name:"Rule Evaluation",   group:"DECISION", color:"blue", desc:"Applies institution-specific business rules — DPD buckets, product policies, cohort overrides, frequency caps — layered on top of the base scoring output." },
     { num:"05", name:"Compliance Gate",   group:"GOVERN",   color:"green", desc:"Contact rules are re-evaluated at dispatch, not at decision time: calling window (8AM–7PM IST by default), Sunday and national-holiday rules in IST, daily frequency caps, and institution-set suppression entries. Automated channel sends are blocked if any rule fails. Rules resolve per product and portfolio, with effective dating.", highlight:true },
     { num:"06", name:"Orchestrate",       group:"DECISION", color:"blue", desc:"An internal module of Decision — sequences the governed decision into timed, constrained instructions: retry logic, contact-window compliance, and escalation when a channel is exhausted." },
-    { num:"07", name:"Execution Adapters", group:"EXECUTE", color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's handles and templates, the bank's dialer, agency work-lists (SFTP/API), Engage, or Diya voice — every adapter speaks the same treatment-in / outcome-out contract.", link:"/deploy" },
+    { num:"07", name:"Execution Adapters", group:"EXECUTE", color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's handles and templates, the bank's dialer, agency work-lists (SFTP/API), Engage, or the voice execution adapter — every adapter speaks the same treatment-in / outcome-out contract.", link:"/deploy" },
     { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes a tamper-evident, hash-chained record per decision: payload, the rule waterfall evaluated, the rule that fired, routing outcome and execution status — with an integrity-verification endpoint." },
     { num:"09", name:"Intelligence",      group:"SENSE",    color:"violet", desc:"Post-call analysis of recorded calls — batch, not in-call (Assist covers the live call) — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
   ];
@@ -361,7 +361,7 @@ function ObservabilitySection() {
                 { name:"SMS",        ok:true },
                 { name:"WhatsApp",   ok:true },
                 { name:"Email",      ok:true },
-                { name:"Diya (voice)", ok:true },
+                { name:"Voice",      ok:true },
               ].map((c, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
                   <div className="flex items-center gap-2">

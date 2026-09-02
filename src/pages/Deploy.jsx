@@ -56,8 +56,8 @@ export default function Deploy() {
           <Motion>
             <p className="text-[16px] font-semibold mb-2">"Do you execute?"</p>
             <p className="text-white/55 text-[13.5px] max-w-lg mx-auto leading-relaxed">
-              Not by default. Engage and Diya fill gaps —
-              they don't displace working relationships.
+              Not by default. Engage fills gaps —
+              it doesn't displace working relationships.
             </p>
             <Link to="/neutrality" className="inline-block mt-3 text-[12.5px] text-emerald-400/70 hover:text-emerald-400 transition-colors">
               Read the full Neutrality Charter →
