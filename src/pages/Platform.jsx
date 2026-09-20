@@ -105,7 +105,7 @@ function EngineArchitecture() {
     { num:"06", name:"Sequencing",        group:"DECISION", color:"blue", desc:"Part of Decision, not a separate product — sequences the governed decision into timed, constrained instructions: retry logic, contact-window compliance, and escalation when a channel is exhausted." },
     { num:"07", name:"Partner Adapters",   group:"DIRECT",  color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's headers and templates, the bank's dialler, agency work-lists (SFTP/API), or ShieldX Rails — every adapter speaks the same decision-in / outcome-out contract. Partners execute.", link:"/deploy" },
     { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes a signed, append-only record per decision: payload, the rule waterfall evaluated, the rule that fired, where it was directed and what came back — retrievable per account, with an audit row on every read." },
-    { num:"09", name:"Intelligence",      group:"SENSE",    color:"violet", desc:"Post-call analysis of recorded calls — batch, not in-call (Assist covers the live call) — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
+    { num:"09", name:"Intelligence",      group:"LEARN",    color:"violet", desc:"Post-call analysis of recorded calls — batch, not in-call (Assist covers the live call) — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
   ];
   const COLOR_HEX = { blue:"96,165,250", green:"74,222,128", amber:"251,191,36", violet:"167,139,250", emerald:"52,211,153" };
 
@@ -548,7 +548,7 @@ export default function Platform() {
     <Layout>
       <SEO
         title="Platform"
-        description="One decision engine, not four separate products. Signal in, governed decision out — computed, validated, directed to the partners you already run, and learned from."
+        description="One decision engine behind two products. Signal in, governed decision out — computed, validated, directed to the partners you already run, and learned from."
         path="/platform"
       />
       <section className="max-w-6xl mx-auto px-8 pt-[100px] pb-24 grid md:grid-cols-[3fr_2fr] gap-12 items-center">
@@ -561,7 +561,7 @@ export default function Platform() {
             Signal in.<br />Governed decision out.
           </h1>
           <p className="text-white/68 leading-relaxed mb-8 max-w-xl text-[15px]">
-            One decision engine, not four separate products. It sits between your
+            One decision engine behind two products. It sits between your
             core systems and the partners you already run — controlling how every
             decision is computed, validated, directed, and learned from.
           </p>

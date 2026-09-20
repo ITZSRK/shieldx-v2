@@ -222,7 +222,7 @@ const STACK_LAYERS = [
   { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, and holdout studies. Mandatory in every deployment." },
   { n: "03", name: "Sequencing",         color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. Part of Decision, not a separate product." },
   { n: "04", name: "Partner adapters",   color: "#fbbf24", line: "Your CPaaS, dialler and agency work-lists — or ShieldX Rails. Theirs or ours, one decision-in / outcome-out contract. Partners execute." },
-  { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
+  { n: "05", name: "Intelligence",       color: "#a78bfa", line: "Post-call review and outcome events flow back into the record — closing the loop, whoever carried the call." },
 ];
 
 function TheStack() {
@@ -302,7 +302,7 @@ function TheStack() {
         >
           ↻
         </motion.span>
-        <span>Sensing feeds back into System of record — the loop closes on every account.</span>
+        <span>Intelligence feeds back into the System of record — the loop closes on every account.</span>
       </div>
     </div>
   );
