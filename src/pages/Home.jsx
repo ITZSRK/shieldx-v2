@@ -411,8 +411,8 @@ export default function Home() {
   return (
     <div className="bg-[#050507] text-white overflow-hidden relative">
       <SEO
-        title="Collections Decisioning Infrastructure"
-        description="ShieldX is the collections decisioning infrastructure for Indian BFSI — deciding how every credit conversation should happen, directing it to the partners a bank already runs, and learning from what was said. Governed and recorded throughout."
+        title="Customer Decisioning Infrastructure"
+        description="ShieldX is the customer decisioning infrastructure for Indian BFSI — deciding how every credit conversation should happen, directing it to the partners a bank already runs, and learning from what was said. Governed and recorded throughout."
         path="/"
       />
 
@@ -431,7 +431,7 @@ export default function Home() {
         <Motion>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
-            COLLECTIONS DECISIONING INFRASTRUCTURE
+            CUSTOMER DECISIONING INFRASTRUCTURE
           </div>
           <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
             The decision layer<br />for the life of a loan.
