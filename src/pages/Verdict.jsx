@@ -209,7 +209,7 @@ export default function Verdict() {
             ["Leaves", "Account reference, customer name, the numbers you hold. No PAN, Aadhaar, address or balance. SFTP or REST over TLS, India-resident."],
             ["Comes back", "Per number: live · the borrower's · confidence · rank. Per account: hold or refer, with a date and a reason. Your format. Nothing added."],
             ["Is kept", "Nothing. Inputs purged on return; verdict and confidence retained per your policy. Every file and every read in the audit log."],
-            ["Lawful basis", "DPDP Act, 2023, s.7(a) — data the borrower gave for the loan, used for the loan. Lender is Data Fiduciary; ShieldX a Data Processor on written instruction, s.8(2)."],
+            ["Roles under DPDP", "The lender is Data Fiduciary and determines the lawful basis for the processing. ShieldX acts only as a Data Processor, on written instruction and under contract — DPDP Act, 2023, s.8(2). We process what you send, for the purpose you state, and nothing else."],
           ].map(([h, b], i) => (
             <Motion key={h} delay={i * 0.06}>
               <div className="text-[18px] font-semibold mb-2">{h}</div>
