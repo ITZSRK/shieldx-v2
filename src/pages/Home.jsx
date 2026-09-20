@@ -427,17 +427,17 @@ export default function Home() {
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.07),transparent_50%)]" />
 
       {/* ── HERO ── */}
-      <section className="px-8 pt-32 pb-20 text-center max-w-4xl mx-auto">
+      <section className="px-8 pt-28 pb-20 text-center max-w-4xl mx-auto">
         <Motion>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-6"
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
             CUSTOMER DECISIONING INFRASTRUCTURE
           </div>
-          <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
+          <h1 className="text-[34px] md:text-[46px] leading-[1.15] font-semibold tracking-tight mb-5">
             The decision layer<br />for the life of a loan.
           </h1>
 
-          <p className="text-[18px] text-white/62 mb-8 max-w-lg mx-auto leading-relaxed">
+          <p className="text-[17px] text-white/62 mb-5 max-w-xl mx-auto leading-relaxed">
             ShieldX decides how every credit conversation should happen, directs it to
             the partners you already run, and learns from what was said — governed and
             recorded throughout. Starting in collections.
@@ -446,7 +446,7 @@ export default function Home() {
           <Link to="/demo"
             className="inline-block bg-white text-black px-10 py-3.5 rounded-lg text-sm font-semibold
               hover:opacity-90 hover:scale-[1.02] transition-all duration-200
-              shadow-[0_0_30px_rgba(255,255,255,0.12)] mb-16">
+              shadow-[0_0_30px_rgba(255,255,255,0.12)] mb-10">
             Request a walkthrough
           </Link>
         </Motion>
