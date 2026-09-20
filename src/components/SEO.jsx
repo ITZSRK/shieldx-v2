@@ -5,7 +5,9 @@
 // index.html's generic defaults.
 export default function SEO({
   title,
-  description,
+  // Per §5 of the Sept-2026 collateral brief. Every page passes its own, so
+  // this only ever shows if one is added without.
+  description = "The decision layer for the life of a loan — starting in collections.",
   path = "/",
   type = "website",
   // Per-page card, e.g. "/og/rbi-model-risk-management.png". Insight pieces

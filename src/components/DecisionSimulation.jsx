@@ -147,7 +147,7 @@ export default function DecisionSimulationV2() {
         </div>
 
         <h2 className="text-4xl">
-          Multi-signal decisioning in real time
+          Multi-signal decisioning, every cycle
         </h2>
 
         <p className="text-white/50 mt-4 max-w-xl mx-auto">

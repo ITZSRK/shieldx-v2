@@ -14,7 +14,7 @@ const PATTERNS = [
     deliveryLabel: "Bank's Stack",
     deliveryOwner: "bank",
     groups: [
-      { name: "CPaaS Vendor", items: [{ label: "WhatsApp · SMS · Email", sub: "Bank's contract, sender ID & templates" }] },
+      { name: "CPaaS Vendor", items: [{ label: "SMS · Email", sub: "Bank's contract, sender ID & templates" }] },
       { name: "Agency & Contact Center Partners", items: [{ label: "Field & Tele-calling Network", sub: "Bank's existing partner relationships" }] },
     ],
     note: "ShieldX dispatches through it — nothing new to provision.",
@@ -42,7 +42,7 @@ const PATTERNS = [
     deliveryLabel: "ShieldX Stack",
     deliveryOwner: "shieldx",
     deliveryItems: [
-      { label: "Engage", sub: "SMS · WhatsApp · Email" },
+      { label: "Rails", sub: "SMS · Email" },
       { label: "Voice", sub: "Voice execution adapter" },
       { label: "Agency Network", sub: "Work-list orchestration" },
     ],

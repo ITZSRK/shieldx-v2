@@ -5,11 +5,11 @@ export default function Engage() {
   return (
     <CapabilityPage
       id="engage"
-      name="Engage"
+      name="Rails"
       tag="REFERENCE EXECUTION CHANNEL"
       color="#fbbf24"
       line="If you have pipes, we route through them. If you don't, we bring ours."
-      body="SMS, WhatsApp, email, agency work-lists, and ShieldX's own multi-language voice execution adapter — one channel among several, never the default. We never force a channel you already own."
+      body="SMS, email, agency work-lists, and ShieldX's own multi-language voice execution adapter — one channel among several, never the default. We never force a channel you already own."
       visualLabel="PICK A CHANNEL"
       visual={<ChannelSwitchboard />}
     />

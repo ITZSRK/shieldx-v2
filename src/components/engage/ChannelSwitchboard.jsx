@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CHANNELS = [
-  { id: "sms",   label: "SMS / WhatsApp" },
+  { id: "sms",   label: "SMS" },
   { id: "agency", label: "Agency" },
   { id: "voice", label: "Voice AI" },
 ];

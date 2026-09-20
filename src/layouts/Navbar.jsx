@@ -2,12 +2,17 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import logo from "../assets/shieldx-logo.png";
 
+// §5 of the Sept-2026 collateral brief lists exactly four: Decision · Verdict
+// · Intelligence · Rails. Overview is kept because the "Platform" label above
+// it links to /platform anyway and dropping it would leave the parent page
+// unreachable from the menu. Assist is NOT listed by the brief — the page and
+// its route still exist and are reachable from /platform.
 const PLATFORM_ITEMS = [
   { to: "/platform",              label: "Overview",     desc: "How the whole engine works" },
   { to: "/platform/decision",     label: "Decision",     desc: "The brain — footprint, scoring, orchestration" },
-  { to: "/platform/engage",       label: "Engage",       desc: "Execution channel for institutions without pipes" },
-  { to: "/platform/assist",       label: "Assist",       desc: "The human channel's adapter" },
+  { to: "/platform/verdict",      label: "Verdict",      desc: "The signed decision, and the file it lands in" },
   { to: "/platform/intelligence", label: "Intelligence", desc: "The sensory system, post-call" },
+  { to: "/platform/engage",       label: "Rails",        desc: "Execution channel for institutions without pipes" },
 ];
 
 const NAV_ITEMS = [

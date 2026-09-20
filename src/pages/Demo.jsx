@@ -128,6 +128,7 @@ export default function Demo() {
 
                 <select name="useCase" value={form.useCase} onChange={handleChange} required className="input">
                   <option value="">Primary use case</option>
+                  <option>Verdict Audit — replay my referrals or grade a pool</option>
                   <option>Live-book collections</option>
                   <option>Write-off / NPA recovery</option>
                   <option>Agency performance</option>

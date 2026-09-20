@@ -24,8 +24,8 @@ function LiveDecisionTrace() {
     { ms:"·",    label:"Decision computed",   sub:"risk tier assigned · eligibility evaluated",   highlight:false },
     { ms:"·",    label:"Compliance validated", sub:"contact rules re-checked at dispatch",        highlight:true  },
     { ms:"·",    label:"Orchestrated",        sub:"channel and time window confirmed",            highlight:false },
-    { ms:"·",    label:"Handed off",          sub:"dispatched via adapter · outcome captured",    highlight:false },
-    { ms:"~1s",  label:"Audit written",       sub:"hash-chained log written · AUD-20260614-48321",   highlight:false },
+    { ms:"·",    label:"Directed",            sub:"to the partner's own system · outcome captured", highlight:false },
+    { ms:"·",    label:"Record written",      sub:"signed, append-only · AUD-20260614-48321",     highlight:false },
   ];
   const [active, setActive] = useState(0);
 
@@ -97,14 +97,14 @@ function EngineArchitecture() {
   const [active, setActive] = useState(4);
   const [paused, setPaused] = useState(false);
   const stages = [
-    { num:"01", name:"Signal Ingestion",  group:"DECISION", color:"blue", desc:"Receives allocation files and out-of-band signal feeds over secure SFTP, plus direct scoring calls where an institution prefers them. Validates schema and surfaces duplicates for resolution before processing." },
+    { num:"01", name:"Signal Ingestion",  group:"DECISION", color:"blue", desc:"Receives allocation files and out-of-band signal feeds over secure SFTP, plus direct scoring calls where an institution prefers them. Validates schema and surfaces duplicates before processing. Verdict grades every number on the file — live or not, the borrower's or not — before anything else runs." },
     { num:"02", name:"Normalisation",     group:"DECISION", color:"blue", desc:"Parses raw payloads into a canonical decision context object — customer ID, product type, event classification, timestamps, and metadata unified into a single structure." },
     { num:"03", name:"Scoring",           group:"DECISION", color:"blue", desc:"Configurable model weights and rule sets evaluate customer risk tier, cohort, and channel eligibility. Holdout studies with deterministic, reproducible account assignment, so a lift claim can be reconstructed rather than asserted." },
     { num:"04", name:"Rule Evaluation",   group:"DECISION", color:"blue", desc:"Applies institution-specific business rules — DPD buckets, product policies, cohort overrides, frequency caps — layered on top of the base scoring output." },
     { num:"05", name:"Compliance Gate",   group:"GOVERN",   color:"green", desc:"Contact rules are re-evaluated at dispatch, not at decision time: calling window (8AM–7PM IST by default), Sunday and national-holiday rules in IST, daily frequency caps, and institution-set suppression entries. Automated channel sends are blocked if any rule fails. Rules resolve per product and portfolio, with effective dating.", highlight:true },
     { num:"06", name:"Sequencing",        group:"DECISION", color:"blue", desc:"Part of Decision, not a separate product — sequences the governed decision into timed, constrained instructions: retry logic, contact-window compliance, and escalation when a channel is exhausted." },
-    { num:"07", name:"Execution Adapters", group:"EXECUTE", color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's handles and templates, the bank's dialer, agency work-lists (SFTP/API), Engage, or the voice execution adapter — every adapter speaks the same treatment-in / outcome-out contract.", link:"/deploy" },
-    { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes a tamper-evident, hash-chained record per decision: payload, the rule waterfall evaluated, the rule that fired, routing outcome and execution status — with an integrity-verification endpoint." },
+    { num:"07", name:"Partner Adapters",   group:"DIRECT",  color:"amber", desc:"Pluggable and neutral. The bank's own CPaaS under the bank's headers and templates, the bank's dialler, agency work-lists (SFTP/API), or ShieldX Rails — every adapter speaks the same decision-in / outcome-out contract. Partners execute.", link:"/deploy" },
+    { num:"08", name:"System of Record",  group:"RECORD",   color:"emerald", desc:"Writes a signed, append-only record per decision: payload, the rule waterfall evaluated, the rule that fired, where it was directed and what came back — retrievable per account, with an audit row on every read." },
     { num:"09", name:"Intelligence",      group:"SENSE",    color:"violet", desc:"Post-call analysis of recorded calls — batch, not in-call (Assist covers the live call) — extracting objections, hardship, and promise language as decision features that flow into the next decision on that account." },
   ];
   const COLOR_HEX = { blue:"96,165,250", green:"74,222,128", amber:"251,191,36", violet:"167,139,250", emerald:"52,211,153" };
@@ -128,8 +128,8 @@ function EngineArchitecture() {
         </div>
         <h2 className="text-[24px] md:text-[36px] font-semibold mb-4">Nine stages.<br />One closed loop.</h2>
         <p className="text-white/68 max-w-lg mx-auto leading-relaxed">
-          Every interaction traverses the same path — from raw signal to compliant execution to the next decision.
-          No stage is skipped. Every stage is logged.
+          Every interaction traverses the same path — from raw signal to a governed decision, directed to the
+          partner, to the next decision. No stage is skipped. Every stage is logged.
         </p>
       </div>
 
@@ -193,7 +193,7 @@ function EngineArchitecture() {
             {s.highlight && (
               <div className="mt-4 pt-4 border-t border-white/[0.12] text-[11px] text-emerald-400/60 flex items-center gap-1.5">
                 <span style={{color:"#4ade80"}}>✓</span>
-                Hard gate — execution blocked if any check fails
+                Hard gate — dispatch blocked if any check fails
               </div>
             )}
             {s.link && (
@@ -227,9 +227,9 @@ const CONNECTS = [
   },
   {
     n:"03", label:"TIME TO VALUE", color:"#4ade80",
-    title:"3–6 weeks from data access",
-    detail:"From first data access to your first governed, compliant, auditable decision — depending on how ready your extract is. Phased rollout available.",
-    proof:"Live on one portfolio first — expand from there",
+    title:"Findings in weeks, not quarters",
+    detail:"Send the file, get the Verdict File back — findings on your own book in weeks. Platform deployment follows your information-security review, one portfolio first.",
+    proof:"The Audit is the first step",
   },
 ];
 
@@ -340,7 +340,7 @@ function ObservabilitySection() {
           <div className="grid grid-cols-2 gap-2 content-start">
             {[
               { label:"Compliance",      val:"Tracked",  sub:"Per campaign, per channel",  color:"#4ade80" },
-              { label:"Decision latency",val:"~1 second",sub:"Signal to governed decision",  color:"#60a5fa" },
+              { label:"Record",          val:"Per decision", sub:"One row per decision, exportable", color:"#60a5fa" },
               { label:"Audit coverage",  val:"100%",     sub:"Every interaction logged, by design", color:"#4ade80" },
               { label:"Traceability",    val:"Decision-level", sub:"Not just channel-level", color:"#a78bfa" },
             ].map((k, i) => (
@@ -359,9 +359,8 @@ function ObservabilitySection() {
               {[
                 { name:"Agent Call", ok:true },
                 { name:"SMS",        ok:true },
-                { name:"WhatsApp",   ok:true },
-                { name:"Email",      ok:true },
-                { name:"Voice",      ok:true },
+                                { name:"Email",      ok:true },
+                { name:"ShieldX voice (Rails)", ok:true },
               ].map((c, i) => (
                 <div key={i} className="flex items-center justify-between py-2.5">
                   <div className="flex items-center gap-2">
@@ -440,7 +439,7 @@ function ObservabilitySection() {
           },
           {
             role: "OPERATIONS HEAD",
-            action: "Portfolio performance — in real time.",
+            action: "Portfolio performance — every cycle.",
             desc: "Channel-level compliance score, contact rate, and exception count per portfolio. Spot what's drifting before it becomes a violation.",
             accent: "#93c5fd",
             accentDim: "rgba(96,165,250,0.55)",
@@ -485,10 +484,10 @@ function ObservabilitySection() {
 
 /* ─── FOUR CAPABILITIES — teasers linking to their own pages ─── */
 const CAPABILITY_TEASERS = [
-  { id: "decision",     name: "Decision",     tag: "THE BRAIN",                       color: "#60a5fa", line: "Scores, rules, and cohort strategy — computes the treatment for every account." },
-  { id: "engage",       name: "Engage",       tag: "REFERENCE EXECUTION CHANNEL",     color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes." },
-  { id: "assist",       name: "Assist",       tag: "THE HUMAN CHANNEL'S ADAPTER",     color: "#4ade80", line: "Briefs the agent before the call. Guides them live during it." },
-  { id: "intelligence", name: "Intelligence", tag: "THE SENSORY SYSTEM",              color: "#a78bfa", line: "Post-call, not in-call — Assist covers the call itself." },
+  { id: "decision",     name: "Decision",     tag: "PRODUCT · DECIDES",               color: "#60a5fa", line: "Who, when, which channel, what to say — or nothing. Govern enforced in code; Assist on the agent's screen." },
+  { id: "verdict",      name: "Verdict",      tag: "INSIDE DECISION · REACH",         color: "#4ade80", line: "Is the number live? Is it the borrower's? Hold or refer — decided before the first call." },
+  { id: "intelligence", name: "Intelligence", tag: "PRODUCT · REVIEWS",               color: "#a78bfa", line: "Every call reviewed — human or bot — post-call, never in-call. Sells on its own." },
+  { id: "engage",       name: "Rails",        tag: "A CHANNEL, NOT A PRODUCT",        color: "#fbbf24", line: "Run your decisions on ShieldX's rail when you have no pipes — or want a clean holdout. Measured like every other partner." },
 ];
 
 function CapabilityTeasers() {
@@ -522,8 +521,9 @@ function CTASection() {
     >
       <h2 className="text-[24px] md:text-[32px] font-semibold mb-4">Watch it run a live pipeline.</h2>
       <p className="text-white/68 mb-10 max-w-md mx-auto leading-relaxed">
-        Signal to compliant execution to learning — every stage, live, in 20 minutes.
-        Tailored to your portfolio and your questions.
+        Signal to governed decision to learning — every stage, live, in 20 minutes.
+        Tailored to your portfolio and your questions. Priced per decision, per customer —
+        never per attempt, never a share of collections.
       </p>
       <Link to="/demo"
         className="inline-block px-8 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
@@ -548,7 +548,7 @@ export default function Platform() {
     <Layout>
       <SEO
         title="Platform"
-        description="One decision engine, not four separate products. Signal in, governed decision out — computed, validated, executed, and learned from across every channel."
+        description="One decision engine, not four separate products. Signal in, governed decision out — computed, validated, directed to the partners you already run, and learned from."
         path="/platform"
       />
       <section className="max-w-6xl mx-auto px-8 pt-[100px] pb-24 grid md:grid-cols-[3fr_2fr] gap-12 items-center">
@@ -562,11 +562,11 @@ export default function Platform() {
           </h1>
           <p className="text-white/68 leading-relaxed mb-8 max-w-xl text-[15px]">
             One decision engine, not four separate products. It sits between your
-            core systems and every channel — controlling how every decision is
-            computed, validated, executed, and learned from.
+            core systems and the partners you already run — controlling how every
+            decision is computed, validated, directed, and learned from.
           </p>
           <div className="inline-flex items-center gap-1 p-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05]">
-            {["SIGNAL","DECIDE","GOVERN","EXECUTE","LEARN"].map((s, i, arr) => (
+            {["SIGNAL","DECIDE","GOVERN","DIRECT","LEARN"].map((s, i, arr) => (
               <span key={s} className="flex items-center gap-1">
                 <span className="text-[11px] px-3 py-1.5 rounded-md font-medium tracking-wide"
                   style={{
@@ -597,10 +597,10 @@ export default function Platform() {
               <span className="text-[11px] text-white/55 tracking-[0.22em]">ONE DECISION SPINE</span>
               <div className="h-px w-6 bg-white/20" />
             </div>
-            <h2 className="text-[36px] font-semibold mb-3">Four capabilities. One system.</h2>
+            <h2 className="text-[36px] font-semibold mb-3">Two products. One rail. One system.</h2>
             <p className="text-white/62 max-w-md mx-auto mt-3 leading-relaxed text-sm">
-              Not four separate products with their own brains — one decision engine,
-              reaching every point it needs to. Each has its own page.
+              Decision and Intelligence — with Verdict inside Decision, and Rails where you have
+              no pipes of your own. One engine behind all of it. Each has its own page.
             </p>
           </div>
         </Motion>

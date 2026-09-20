@@ -21,6 +21,7 @@ import PlatformDecision from "../pages/platform/Decision";
 import PlatformEngage from "../pages/platform/Engage";
 import PlatformAssist from "../pages/platform/Assist";
 import PlatformIntelligence from "../pages/platform/Intelligence";
+import Verdict from "../pages/Verdict";
 import Deploy from "../pages/Deploy";
 import Governance from "../pages/Governance";
 import Neutrality from "../pages/Neutrality";
@@ -52,6 +53,7 @@ export default function AppRouter() {
         <Route path="/platform/engage" element={<PlatformEngage />} />
         <Route path="/platform/assist" element={<PlatformAssist />} />
         <Route path="/platform/intelligence" element={<PlatformIntelligence />} />
+        <Route path="/platform/verdict" element={<Verdict />} />
         <Route path="/deploy" element={<Deploy />} />
         <Route path="/governance" element={<Governance />} />
         <Route path="/neutrality" element={<Neutrality />} />

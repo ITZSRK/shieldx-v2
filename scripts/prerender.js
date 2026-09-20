@@ -25,6 +25,7 @@ const ROUTES = [
   "/platform/engage",
   "/platform/assist",
   "/platform/intelligence",
+  "/platform/verdict",
   "/deploy",
   "/governance",
   "/neutrality",

@@ -68,7 +68,7 @@ export default function Governance() {
               <div className="w-0.5 h-4 rounded-full bg-blue-400/45" />
               <span className="text-[11px] text-white/55 tracking-[0.2em]">MODEL GOVERNANCE</span>
             </div>
-            <h2 className="text-[24px] md:text-[32px] font-semibold mb-3">Built for RBI's draft Model Risk Management framework.</h2>
+            <h2 className="text-[24px] md:text-[32px] font-semibold mb-3">Built for RBI's Model Risk Management principles (August 2024).</h2>
             <p className="text-white/62 mb-12 max-w-2xl leading-relaxed">
               Inventory, drift monitoring, and audit-ready evidence — for every model touching
               collections, not just the ones ShieldX scores.

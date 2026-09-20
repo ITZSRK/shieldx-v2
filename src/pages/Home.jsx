@@ -22,18 +22,18 @@ function Motion({ children, delay = 0 }) {
 }
 
 /* ================= SYSTEM LOOP — capabilities + the stages they drive, merged ================= */
-const STAGES = ["Signal", "Decide", "Govern", "Execute", "Learn"];
+const STAGES = ["Signal", "Decide", "Govern", "Direct", "Learn"];
 
 const LOOP_CAPABILITIES = [
-  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Scores, rules, and cohort strategy — computes the treatment for every account.", stages: [1, 2] },
-  { letter: "E", name: "Engage",       to: "/platform/engage",       color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes.", stages: [3] },
-  { letter: "A", name: "Assist",       to: "/platform/assist",       color: "#4ade80", line: "The human channel's adapter, before and during the call.", stages: [3] },
+  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Who, when, which channel, what to say — or nothing. Govern enforced in code; Assist on the agent's screen.", stages: [1, 2] },
+  { letter: "V", name: "Verdict",      to: "/platform/verdict",      color: "#4ade80", line: "Is the number live? Is it the borrower's? Hold or refer — decided before the first call.", stages: [1] },
+  { letter: "R", name: "Rails",        to: "/platform/engage",       color: "#fbbf24", line: "A channel to run your decisions on when you have no pipes — or want a clean holdout. Measured like every other partner.", stages: [3] },
   // Intelligence owns Signal as well as Learn. Post-call analysis emits
   // hardship, dispute and escalation signals that are exported to the decision
   // engine and read on the next pass — so VI is not only the end of one cycle,
   // it is an input to the next. Lighting both is what makes the row a loop
   // rather than a line, which is what the heading above it already claims.
-  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was actually said — and feeds it back as signal.", stages: [4, 0] },
+  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was said — and feeds it back as signal.", stages: [4, 0] },
 ];
 
 function SystemLoop() {
@@ -104,10 +104,12 @@ function SystemLoop() {
             <div className="text-sm font-medium mb-2" style={{ color: active === i ? c.color : "white" }}>{c.name}</div>
             <div className="text-white/55 text-xs leading-relaxed">{c.line}</div>
 
-            {/* Below md there is no hover, and a tap follows the link rather
-                than driving the stage pills above — so the capability→stage
-                mapping this whole section exists to show would be unreachable
-                on a phone. Name each card's stages inline instead. */}
+            {/* Without hover these cards are <Link>s: a tap navigates away and
+                the stage pills above never light, so the capability-to-stage
+                mapping this section exists to show is unreachable. Guard is
+                width OR hover — width alone strands a touch tablet at 820px in
+                the four-column grid; hover alone hides them from a narrowed
+                desktop window. */}
             <div className="[@media(min-width:768px)_and_(hover:hover)]:hidden mt-3 pt-3 border-t border-white/[0.08] text-[11px]"
               style={{ color: `${c.color}cc` }}>
               Drives {c.stages.map((s) => STAGES[s]).join(" · ")}
@@ -130,13 +132,13 @@ const SCENARIO = {
     // demonstrating — the compliance checks run before the handoff, not after.
     { seq:"01", text:"Signal received",                 note:"CBS payment_missed event ingested",             color:"white" },
     { seq:"02", text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
-    { seq:"03", text:"Eligible channels: agent call, WhatsApp, SMS", note:"Voice AI eligible, not selected",   color:"white" },
+    { seq:"03", text:"Eligible channels: agent call, SMS", note:"Voice AI eligible, not selected",   color:"white" },
     { seq:"04", text:"TRAI window — COMPLIANT",          note:"2:00 PM IST — within 8 AM–7 PM window",         color:"green" },
     { seq:"05", text:"Suppression list — CLEAR",         note:"No do-not-contact entry for this account",      color:"green" },
     { seq:"06", text:"Frequency cap — WITHIN LIMIT",      note:"Under the daily contact limit for this product", color:"green" },
     { seq:"07", text:"Day rule — COMPLIANT",              note:"Not a Sunday or national holiday (IST)",        color:"green" },
-    { seq:"08", text:"Handoff: agent call · Assist context", note:"Governed decision handed off through adapter", color:"blue" },
-    { seq:"09", text:"Audit record written",              note:"AUD-20260614-48321 · Hash-chained",                color:"dim"   },
+    { seq:"08", text:"Directed: agent call · Assist context", note:"Governed decision directed to the partner's own system", color:"blue" },
+    { seq:"09", text:"Audit record written",              note:"AUD-20260614-48321 · Signed · append-only",                color:"dim"   },
     { seq:"↻",  text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
   ],
 };
@@ -219,7 +221,7 @@ const STACK_LAYERS = [
   { n: "01", name: "System of record",   color: "#93c5fd", line: "Decision log, outcome log, and conversation-derived features — the permanent asset." },
   { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, and holdout studies. Mandatory in every deployment." },
   { n: "03", name: "Sequencing",         color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. Part of Decision, not a separate product." },
-  { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, voice execution adapter — theirs or ours, one treatment-in / outcome-out contract." },
+  { n: "04", name: "Partner adapters",   color: "#fbbf24", line: "Your CPaaS, dialler and agency work-lists — or ShieldX Rails. Theirs or ours, one decision-in / outcome-out contract. Partners execute." },
   { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
 ];
 
@@ -307,21 +309,20 @@ function TheStack() {
 }
 
 /* ================= WHAT THIS MOVES =================
-   Mechanism, not measured outcomes — and stated as a position rather than
-   an apology. There are no results to publish yet, and inventing a lift
-   percentage is the fastest way to lose a bank's risk committee. Naming the
-   levers and how the system operates on them gives an internal champion
-   something real to take to a committee without claiming anything we can't
-   stand behind. The first evidenced number belongs here, and nowhere
-   earlier — see Tier 3 of the site brief. */
+   Deliberately mechanism, not measured outcomes. The deployment is early
+   and allocation hasn't started, so there are no results to publish — and
+   inventing a lift percentage is the fastest way to lose a bank's risk
+   committee. Naming the levers and how the system operates on them gives
+   an internal champion something real to take to a committee without
+   claiming anything we can't stand behind. */
 const LEVERS = [
   {
     metric: "Right-party contact rate",
-    how: "Channel and time-of-day are decided per account from contactability signals, rather than a fixed campaign schedule applied to a whole bucket.",
+    how: "Every number is graded before the first dial — live or not, the borrower's or not — so the campaign starts from the right numbers, not a schedule applied to a whole bucket.",
   },
   {
     metric: "Cost to collect",
-    how: "Outreach that shouldn't fire — self-curing accounts, wrong contact window, no consent — is suppressed before it costs anything. Expensive channels are reserved for accounts where the cohort justifies them.",
+    how: "Outreach that shouldn't fire — self-curing accounts, the wrong window, an open complaint or cease-request — is held before it costs anything. Field goes only where a phone cannot.",
   },
   {
     metric: "Roll rates",
@@ -333,7 +334,7 @@ const LEVERS = [
   },
   {
     metric: "Agency performance",
-    how: "Allocation follows measured performance under the institution's stated policy, not standing commercial arrangements.",
+    how: "Every channel and partner is scored on one methodology — including ShieldX's own. Allocation follows measured performance under the institution's stated policy.",
   },
 ];
 
@@ -349,12 +350,16 @@ function WhatThisMoves() {
           The levers, and how<br />the system pulls them.
         </h2>
         <p className="text-white/55 text-[15px] leading-relaxed max-w-xl">
-          We instrument outcomes; we don't assert them. Every channel is scored
-          on one methodology — including ShieldX's own. What follows is the
-          mechanism, lever by lever. Bring your book to a walkthrough and check
-          it against your own portfolio.
+          We don't publish outcome numbers. The deployment is early, the first
+          decisions are ahead of us, and a lift percentage we can't evidence is
+          worth less than nothing to your risk committee. What follows is the
+          mechanism — verifiable on your own portfolio, in an Audit, in weeks.
         </p>
       </div>
+
+      <p className="text-white/70 text-[15px] leading-relaxed max-w-xl mb-10">
+        Priced per decision, per customer. Never per attempt, never a share of collections, never per seat.
+      </p>
 
       <div className="border-t border-white/[0.08]">
         {LEVERS.map((l) => (
@@ -402,8 +407,8 @@ export default function Home() {
   return (
     <div className="bg-[#050507] text-white overflow-hidden relative">
       <SEO
-        title="Customer Decisioning Infrastructure"
-        description="ShieldX is the customer decisioning infrastructure for collections in Indian BFSI — deciding, dispatching, and learning from every credit conversation, governed end to end."
+        title="Collections Decisioning Infrastructure"
+        description="ShieldX is the collections decisioning infrastructure for Indian BFSI — deciding how every credit conversation should happen, directing it to the partners a bank already runs, and learning from what was said. Governed and recorded throughout."
         path="/"
       />
 
@@ -418,41 +423,26 @@ export default function Home() {
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.07),transparent_50%)]" />
 
       {/* ── HERO ── */}
-      <section className="px-8 pt-28 pb-20 text-center max-w-4xl mx-auto">
+      <section className="px-8 pt-32 pb-20 text-center max-w-4xl mx-auto">
         <Motion>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-6"
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
-            CUSTOMER DECISIONING INFRASTRUCTURE
+            COLLECTIONS DECISIONING INFRASTRUCTURE
           </div>
-          <h1 className="text-[34px] md:text-[46px] leading-[1.15] font-semibold tracking-tight mb-5">
-            The layer between your systems<br />and your borrowers.
+          <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
+            The decision layer<br />for the life of a loan.
           </h1>
 
-          <p className="text-[17px] text-white/62 mb-4 max-w-lg mx-auto leading-relaxed">
-            ShieldX decides how every credit conversation should happen, dispatches it
-            across every channel, and learns from what was said — governed
-            and auditable throughout.
-          </p>
-
-          {/* Collections is the wedge, not the identity. Without this line the
-              hero claims the credit lifecycle and then every section below it
-              is collections-specific — DPD buckets, roll rates, agency
-              allocation. A reader notices that contradiction long before the
-              page gets a chance to explain it, and resolves it the wrong way:
-              as a collections company with an oversized hero.
-
-              Present tense on both halves, so this states what is true now
-              rather than promising a roadmap: what the layer is built for, and
-              where it runs today. */}
-          <p className="text-[14px] text-white/42 mb-7 max-w-md mx-auto leading-relaxed">
-            We enter where the pain is sharpest — collections. The layer is
-            built for the whole credit lifecycle.
+          <p className="text-[18px] text-white/62 mb-8 max-w-lg mx-auto leading-relaxed">
+            ShieldX decides how every credit conversation should happen, directs it to
+            the partners you already run, and learns from what was said — governed and
+            recorded throughout. Starting in collections.
           </p>
 
           <Link to="/demo"
             className="inline-block bg-white text-black px-10 py-3.5 rounded-lg text-sm font-semibold
               hover:opacity-90 hover:scale-[1.02] transition-all duration-200
-              shadow-[0_0_30px_rgba(255,255,255,0.12)] mb-10">
+              shadow-[0_0_30px_rgba(255,255,255,0.12)] mb-16">
             Request a walkthrough
           </Link>
         </Motion>
@@ -467,14 +457,11 @@ export default function Home() {
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 24px 80px rgba(59,130,246,0.22), 0 4px 20px rgba(0,0,0,0.6)",
                 background: "rgba(0,0,0,0.4)",
               }}>
-              {/* Unsized, this image reflowed everything below it once the
-                  bytes arrived — the whole Problem band shifted. Intrinsic
-                  dimensions reserve the box up front and cost nothing.
-                  Deliberately still lazy: it is the LCP element, but at 239KB
-                  of PNG on a throttled link, loading it eagerly makes it
-                  compete with the bundle and pushes LCP out by ~1.3s. The real
-                  fix is a WebP encode (~210KB saved), which is its own piece
-                  of work — see the Lighthouse note in the PR. */}
+              {/* Unsized, this reflowed everything below it once the bytes arrived.
+                  Intrinsic dimensions reserve the box (CLS -> 0); the alt takes
+                  a11y 90->96 and SEO 92->100. Deliberately still lazy: eager +
+                  high priority measured WORSE here (LCP 4.9s -> 6.2s) because
+                  239KB of PNG competes with the bundle on a throttled link. */}
               <img src={dashboard} className="w-full opacity-95"
                 width={1492} height={800}
                 alt="The ShieldX console — portfolio overview with decision coverage and audit-log integrity"
@@ -484,8 +471,8 @@ export default function Home() {
         </Motion>
       </section>
 
-      {/* ── THE PROBLEM ── */}
-      <div id="problem" className="bg-white/[0.05] border-y border-white/[0.09]">
+      {/* ── THE GAP ── */}
+      <div className="bg-white/[0.05] border-y border-white/[0.09]">
       <Motion>
       <section className="px-8 py-24 max-w-6xl mx-auto">
 
@@ -514,41 +501,50 @@ export default function Home() {
           ))}
         </div>
 
-        {/* The obvious objection to a layer that sits above every channel is
-            that it will favour its own. Answer it here, where the problem is
-            still fresh, rather than leaving it to a page most visitors never
-            reach.
-
-            Two earlier drafts were wrong and are worth not repeating. "ShieldX
-            never operates collections" scoped the whole company to collections
-            one screen after the hero claimed the credit lifecycle. "Never
-            operates the channels it scores" is simply false — charter
-            commitment 2 says the opposite, that ShieldX does run its own
-            channels and scores them identically. Naming the voice channel here
-            is deliberate: it is the case a reader would otherwise catch us on. */}
-        <p className="mt-10 text-white/58 text-[14.5px] leading-relaxed max-w-2xl">
-          ShieldX never becomes the agency it allocates to. Where we do run a
-          channel — our own voice included — it is scored on the same
-          methodology as everyone else's.{" "}
-          <Link to="/neutrality"
-            className="text-emerald-400/75 hover:text-emerald-400 underline underline-offset-2 transition-colors">
-            Read the Neutrality Charter
-          </Link>
-        </p>
-
       </section>
       </Motion>
-      </div>{/* ── close THE PROBLEM band ── */}
+      </div>{/* ── close THE GAP band ── */}
 
-      {/* ── WHAT THIS MOVES (the levers) ── */}
+      {/* ── ONE DECISION SPINE (capabilities + the stages they drive, merged) ── */}
       <Motion>
-      <section id="levers" className="px-8 py-24 max-w-4xl mx-auto">
-        <WhatThisMoves />
+      <section className="px-8 py-24 max-w-6xl mx-auto">
+        <div className="mb-4 text-center">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">ONE DECISION SPINE</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">One decision spine. One loop.</h2>
+          <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
+            Two products — Decision and Intelligence — with Verdict inside Decision, and Rails
+            where you have no pipes of your own. Hover a capability to see which stage it drives.
+          </p>
+        </div>
+        <SystemLoop />
       </section>
       </Motion>
 
-      {/* ── LIVE SIMULATION ── */}
-      <div id="simulation" className="bg-white/[0.05] border-y border-white/[0.09]">
+      {/* ── THE STACK ── */}
+      <Motion>
+      <section className="px-8 py-24 max-w-6xl mx-auto">
+        <div className="mb-16 text-center">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-6 bg-white/20" />
+            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE CONTROL PLANE</span>
+            <div className="h-px w-6 bg-white/20" />
+          </div>
+          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">One stack, five layers.</h2>
+          <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
+            Same taxonomy, same record — every layer speaks one contract, regardless
+            of whose pipes carry it.
+          </p>
+        </div>
+        <TheStack />
+      </section>
+      </Motion>
+
+      {/* ── LIVE DEMO ── */}
+      <div className="bg-white/[0.05] border-y border-white/[0.09]">
       <Motion>
       <section className="px-8 py-24 max-w-4xl mx-auto text-center">
 
@@ -568,57 +564,21 @@ export default function Home() {
 
       </section>
       </Motion>
-      </div>{/* ── close LIVE SIMULATION band ── */}
+      </div>{/* ── close LIVE DEMO band ── */}
 
-      {/* ── ONE DECISION SPINE (capabilities + the stages they drive, merged) ── */}
+      {/* ── WHAT THIS MOVES ── */}
       <Motion>
-      <section id="spine" className="px-8 py-24 max-w-6xl mx-auto">
-        <div className="mb-4 text-center">
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">ONE DECISION SPINE</span>
-            <div className="h-px w-6 bg-white/20" />
-          </div>
-          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">Four capabilities. Five stages. One loop.</h2>
-          <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
-            Not four separate products — one decision engine.{" "}
-            <span className="hidden [@media(min-width:768px)_and_(hover:hover)]:inline">
-              Hover a capability to see which stage of the loop it drives.
-            </span>
-            <span className="[@media(min-width:768px)_and_(hover:hover)]:hidden">
-              Each capability drives the stages named on its card.
-            </span>
-          </p>
-        </div>
-        <SystemLoop />
+      <section className="px-8 py-24 max-w-4xl mx-auto">
+        <WhatThisMoves />
       </section>
       </Motion>
 
-      {/* ── THE CONTROL PLANE ── */}
+      {/* ── CTA ── */}
       <Motion>
-      <section id="control-plane" className="px-8 py-24 max-w-6xl mx-auto">
-        <div className="mb-16 text-center">
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="h-px w-6 bg-white/20" />
-            <span className="text-[11px] text-white/55 tracking-[0.22em]">THE CONTROL PLANE</span>
-            <div className="h-px w-6 bg-white/20" />
-          </div>
-          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">One stack, five layers.</h2>
-          <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
-            Same taxonomy, same record — every layer speaks one contract, regardless
-            of whose pipes execute it.
-          </p>
-        </div>
-        <TheStack />
-      </section>
-      </Motion>
-
-      {/* ── PROOF LINE + CTA ── */}
-      <Motion>
-      <section id="cta" className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
+      <section className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
 
         <div className="flex items-center justify-center gap-3 mb-8 text-[12px] text-white/35 flex-wrap">
-          <span>Live with a leading private-sector bank</span>
+          <span>In deployment with a leading private-sector bank</span>
           <span className="text-white/15">·</span>
           <span>DPIIT-recognized</span>
           <span className="text-white/15">·</span>
@@ -646,17 +606,6 @@ export default function Home() {
           <span className="text-white/12">·</span>
           <span>DPDP Act-ready</span>
         </div>
-
-        {/* The credential that costs nobody's approval to state. Full version
-            lives on /company; this is the one-line form, next to the ask. */}
-        <p className="mt-12 pt-8 border-t border-white/[0.07] text-[13px] text-white/40 leading-relaxed">
-          Built by{" "}
-          <Link to="/company" className="text-white/62 hover:text-white transition-colors">
-            Sudarson Radhakrishnan
-          </Link>
-          , sole founder — 18 years across the Indian BFSI credit lifecycle, at
-          Citibank, Standard Chartered and Yubi.
-        </p>
 
       </section>
       </Motion>

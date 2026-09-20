@@ -47,7 +47,7 @@ const DECISIONS = [
       { rule:"Day rule",    result:"PASS", note:"Not Sun/holiday" },
       { rule:"Frequency",   result:"PASS", note:"Within limit"    },
     ],
-    verdict:      "EXECUTE",
+    verdict:      "PROCEED",
     action:       "Agent call · 2:00 PM IST · Assist context",
     verdictColor: "#34d399",
   },
@@ -64,8 +64,8 @@ const DECISIONS = [
       { rule:"Frequency",   result:"PASS", note:"Within limit"    },
       { rule:"Frequency Cap", result:"PASS", note:"Within limit"  },
     ],
-    verdict:      "EXECUTE",
-    action:       "WhatsApp reminder · bank handle",
+    verdict:      "PROCEED",
+    action:       "SMS reminder · bank header",
     verdictColor: "#34d399",
   },
   {
@@ -186,8 +186,8 @@ const TRACE = [
   { seq: "03", text: "TRAI Window Violation",              kind: "blocked", note: "Outreach at 7:30 AM — before TRAI window (8 AM IST)" },
   { seq: "04", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
   { seq: "05", text: "Compliance Cleared",                 kind: "passed",  note: "Window ✓  Day rule ✓  Frequency ✓  Suppression ✓"               },
-  { seq: "06", text: "Agent call triggered",                kind: "step",    note: "Governed · Hardship-aware · Optimal window"       },
-  { seq: "07", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Hash-chained"                   },
+  { seq: "06", text: "Agent call directed",                 kind: "step",    note: "Governed · Hardship-aware · Inside the window"    },
+  { seq: "07", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Signed · append-only"          },
 ];
 
 const TRACE_DELAYS = [400, 650, 700, 1700, 700, 1400, 700, 3500];
@@ -301,7 +301,7 @@ const PILLARS = [
   },
   {
     label:  "Compliance as a gate, not a report",
-    detail: "Violations blocked before execution, not flagged after."
+    detail: "Violations blocked before dispatch, not flagged after."
   },
 ];
 
@@ -319,15 +319,15 @@ function CategoryDeclaration() {
           <div>
             <div className="text-[10px] text-blue-300/55 tracking-[0.25em] mb-5">DEFINING A CATEGORY</div>
             <h2 className="text-[26px] md:text-[48px] font-semibold leading-[1.06] mb-6">
-              Customer Decisioning<br />Infrastructure
+              Collections Decisioning<br />Infrastructure
             </h2>
             <p className="text-white/66 leading-relaxed max-w-md text-[15px]">
-              Not a replacement for any system you already run — the layer that was missing
-              between them.
+              The layer above every collections partner a bank already runs — not a replacement
+              for any of them. Banks keep their vendors; ShieldX makes the decision and keeps the record.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-2">
-              {["Not a CRM", "Not a CPaaS", "Not a business rule engine"].map((t, i) => (
+              {["Not a CRM", "Not a CPaaS", "Not an agency", "Not a rule engine"].map((t, i) => (
                 <span key={i} className="text-[11px] px-3 py-1.5 rounded-full border border-white/[0.10] text-white/58">
                   {t}
                 </span>
@@ -352,7 +352,7 @@ function CategoryDeclaration() {
                 { cap:"Contact management",    v:[1,0,0,1] },
                 { cap:"Channel delivery",       v:[0,1,0,1] },
                 { cap:"Rule evaluation",        v:[0,0,1,1] },
-                { cap:"Pre-exec compliance",    v:[0,0,0,1] },
+                { cap:"Compliance before dispatch", v:[0,0,0,1] },
                 { cap:"Decision audit trail",   v:[0,0,0,1] },
                 { cap:"Regulatory enforcement", v:[0,0,0,1] },
               ].map((row, ri) => (
@@ -419,16 +419,16 @@ const BELIEFS = [
     sub:  "Triggers produce inconsistent outcomes. Computed decisions are explainable and governed.",
   },
   {
-    text: "Compliance belongs inside execution, not beside it.",
-    sub:  "Post-execution checks report what went wrong. Pre-execution gates prevent it.",
+    text: "Compliance belongs before dispatch, not after it.",
+    sub:  "Post-call checks report what went wrong. A gate before dispatch prevents it.",
   },
   {
     text: "Every credit conversation should be intentional.",
-    sub:  "Wrong channel, wrong time, no consent — in a regulated environment, that's a liability event.",
+    sub:  "Wrong number, wrong time, an open complaint — in a regulated environment, that's a liability event.",
   },
   {
-    text: "Execution without governance is liability.",
-    sub:  "Fire without a decision layer in between, and every ungoverned outcome is exposure waiting to surface.",
+    text: "Action without a decision is liability.",
+    sub:  "Dial without a decision layer in between, and every ungoverned outcome is exposure waiting to surface.",
   },
 ];
 
@@ -487,7 +487,7 @@ function Beliefs() {
 /* ━━━ MOAT LOOP — decide / converse / learn, closing the loop ━━━ */
 const LOOP_NODES = [
   { label: "Decide", color: "#60a5fa", x: 75, y: 16 },
-  { label: "Converse", color: "#34d399", x: 129, y: 112 },
+  { label: "Reach", color: "#34d399", x: 129, y: 112 },
   { label: "Learn", color: "#a78bfa", x: 21, y: 112 },
 ];
 
@@ -662,16 +662,16 @@ export default function Company() {
               <span className="text-[11px] text-white/55 tracking-[0.2em]">HOW IT WORKS</span>
             </div>
             <h2 className="text-[26px] md:text-[36px] font-semibold leading-tight mb-5">
-              Decide. Execute.<br />Learn. Repeat.
+              Decide. Direct.<br />Learn. Repeat.
             </h2>
             <p className="text-white/68 leading-relaxed mb-4">
               ShieldX sits above a lender's communication stack and below its
               credit policy.
             </p>
             <p className="text-white/68 leading-relaxed mb-4">
-              Decides who to contact, when, and how — dispatches through calls,
-              messages, and agency networks — and logs every decision for RBI's
-              model risk management discipline.
+              Decides who to contact, when, and how — directs it to the partners the
+              lender already runs: dialler, field, agencies, digital — and logs every
+              decision for RBI's model risk management discipline. Partners execute.
             </p>
           </Motion>
         </div>
@@ -707,10 +707,9 @@ export default function Company() {
                 Models are commoditized; the moat is the loop.
               </h2>
               <p className="text-white/62 max-w-2xl leading-relaxed mb-10">
-                ShieldX is the only architecture that owns both the decision layer and the
-                conversation layer of collections — so it is the only one where what a
-                borrower says in a call systematically changes the next decision on that
-                account. Every decision is logged, explainable, and auditable by design,
+                ShieldX is the only architecture that holds both the decision and the record
+                of the conversation — so it is the only one where what a borrower says in a
+                call systematically changes the next decision on that account. Every decision is logged, explainable, and auditable by design,
                 aligned with RBI's emerging model risk management framework.
               </p>
             </Motion>
@@ -720,8 +719,8 @@ export default function Company() {
                   <span className="text-emerald-400 text-xs">✓</span>
                 </div>
                 <p className="text-white/70 text-sm leading-relaxed">
-                  Live with <span className="text-white">a leading private-sector bank</span>, with
-                  active engagements across ARCs and collection agencies.
+                  In deployment with <span className="text-white">a leading private-sector bank</span>, with
+                  proof-of-concepts under way at an NBFC and an ARC.
                 </p>
               </div>
             </Motion>
@@ -747,7 +746,7 @@ export default function Company() {
       </div>
 
       {/* ═══ FOUNDER ═══ */}
-      <section className="max-w-6xl mx-auto px-8 pt-20 pb-16">
+      <section className="max-w-6xl mx-auto px-8 pt-20 pb-28">
 
         <Motion>
           <div className="flex items-center gap-2.5 mb-10">
@@ -779,39 +778,11 @@ export default function Company() {
                 </div>
                 <div className="pl-7">
                   <div className="text-white text-sm font-medium">Sudarson Radhakrishnan</div>
-                  <div className="text-white/58 text-sm mt-0.5">Founder &amp; CEO · ShieldX</div>
-
-                  {/* These are the only named, externally checkable institutions
-                      on the site. They were previously a footnote in 13px grey.
-                      For a company with no published customer reference yet, a
-                      verifiable career is the strongest credential available —
-                      and it costs nobody's approval to state. */}
-                  {/* Typography, not a card. The right-hand column already
-                      carries bordered cards, so a second bordered box here
-                      competed with them — the credential read as something
-                      bolted on below the portrait rather than part of the
-                      identity. A rule ties it to the name above it instead. */}
-                  <div className="mt-6 pt-5 border-t border-white/[0.09] max-w-md">
-                    <div className="text-[9px] text-white/32 tracking-[0.2em] mb-2.5">
-                      18 YEARS IN INDIAN BFSI
-                    </div>
-                    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[14.5px] text-white/85">
-                      {["Citibank", "Standard Chartered", "Armsoftech", "Yubi"].map((name, i) => (
-                        <span key={name} className="flex items-center gap-x-2.5 whitespace-nowrap">
-                          {i > 0 && <span className="text-white/20">·</span>}
-                          {name}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="text-white/45 text-[12.5px] leading-relaxed mt-3">
-                      Including inside businesses whose primary revenue is collections.
-                      That is where the allocation gap became visible — and why the{" "}
-                      <Link to="/neutrality" className="text-blue-300/75 hover:text-blue-300 underline underline-offset-2 transition-colors">
-                        neutrality commitment
-                      </Link>{" "}
-                      is written as a constraint rather than an intention.
-                    </p>
-                  </div>
+                  <div className="text-white/58 text-sm mt-0.5">Founder & CEO · ShieldX</div>
+                  <p className="text-white/42 text-[13px] leading-relaxed mt-3 max-w-md">
+                    18 years of BFSI experience across Citibank, Standard Chartered, Armsoftech,
+                    and Yubi.
+                  </p>
                 </div>
               </div>
             </div>
@@ -830,7 +801,7 @@ export default function Company() {
             <div>
               <div className="text-xl font-semibold mb-1">See what ShieldX closes.</div>
               <div className="text-white/58 text-sm">
-                Decide, execute, and learn — one decision layer, 20 minutes.
+                Decide, direct, and learn — one decision layer, 20 minutes.
               </div>
             </div>
             <Link
