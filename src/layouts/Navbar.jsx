@@ -10,7 +10,7 @@ import logo from "../assets/shieldx-logo.png";
 const PLATFORM_ITEMS = [
   { to: "/platform",              label: "Overview",     desc: "How the whole engine works" },
   { to: "/platform/decision",     label: "Decision",     desc: "The brain — footprint, scoring, orchestration" },
-  { to: "/platform/verdict",      label: "Verdict",      desc: "The signed decision, and the file it lands in" },
+  { to: "/platform/verdict",      label: "Verdict",      desc: "Is the number live, and is it the borrower's — before the first call" },
   { to: "/platform/intelligence", label: "Intelligence", desc: "The sensory system, post-call" },
   { to: "/platform/engage",       label: "Rails",        desc: "Execution channel for institutions without pipes" },
 ];
