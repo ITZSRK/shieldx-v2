@@ -127,9 +127,13 @@ const SCENARIO = {
   customer: "CUST-48321 · DPD 30–60 · ₹24,000",
   steps: [
     // Sequence, not timing. Millisecond figures used to sit here; no benchmark
-    // exists to defend them, and /platform states the real end-to-end figure
-    // (~1 second) in the one place it belongs. The order is what this trace is
-    // demonstrating — the compliance checks run before the handoff, not after.
+    // exists to defend them. The Sept-2026 page replacement also dropped the
+    // "~1 second" figure /platform used to assert, which is the right outcome:
+    // HQ confirmed no decision-latency p95 exists anywhere — every latency
+    // number it holds is third-party provider latency, LLM time-to-first-token,
+    // or an Assist target. Do not reintroduce one without a measurement. The
+    // order is what this trace demonstrates — the compliance checks run before
+    // the handoff, not after.
     { seq:"01", text:"Signal received",                 note:"CBS payment_missed event ingested",             color:"white" },
     { seq:"02", text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
     { seq:"03", text:"Eligible channels: agent call, SMS", note:"Voice AI eligible, not selected",   color:"white" },
@@ -138,7 +142,7 @@ const SCENARIO = {
     { seq:"06", text:"Frequency cap — WITHIN LIMIT",      note:"Under the daily contact limit for this product", color:"green" },
     { seq:"07", text:"Day rule — COMPLIANT",              note:"Not a Sunday or national holiday (IST)",        color:"green" },
     { seq:"08", text:"Directed: agent call · Assist context", note:"Governed decision directed to the partner's own system", color:"blue" },
-    { seq:"09", text:"Audit record written",              note:"AUD-20260614-48321 · Signed · append-only",                color:"dim"   },
+    { seq:"09", text:"Audit record written",              note:"AUD-20260614-48321 · Hash-chained",                color:"dim"   },
     { seq:"↻",  text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
   ],
 };

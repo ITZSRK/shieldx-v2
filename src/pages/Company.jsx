@@ -187,7 +187,7 @@ const TRACE = [
   { seq: "04", text: "Decision revised: Call at 2:00 PM",  kind: "step",    note: null                                               },
   { seq: "05", text: "Compliance Cleared",                 kind: "passed",  note: "Window ✓  Day rule ✓  Frequency ✓  Suppression ✓"               },
   { seq: "06", text: "Agent call directed",                 kind: "step",    note: "Governed · Hardship-aware · Inside the window"    },
-  { seq: "07", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Signed · append-only"          },
+  { seq: "07", text: "Audit record written",               kind: "step",    note: "AUD-20260614-48321 · Hash-chained"          },
 ];
 
 const TRACE_DELAYS = [400, 650, 700, 1700, 700, 1400, 700, 3500];
