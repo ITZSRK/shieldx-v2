@@ -426,53 +426,74 @@ export default function Home() {
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.12),transparent_40%)]" />
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.07),transparent_50%)]" />
 
-      {/* ── HERO ── */}
-      <section className="px-8 pt-28 pb-20 text-center max-w-4xl mx-auto">
-        <Motion>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-6"
-            style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
-            CUSTOMER DECISIONING INFRASTRUCTURE
-          </div>
-          <h1 className="text-[34px] md:text-[46px] leading-[1.15] font-semibold tracking-tight mb-5">
-            The decision layer<br />for the life of a loan.
-          </h1>
+      {/* ── HERO ──
+          Two-column from lg up: copy left, console right. The centred
+          single-column version stacked the product shot BELOW the copy, so it
+          sat under the fold by construction at any viewport height — tightening
+          margins bought pixels but could not fix the geometry. Beside the copy,
+          it is visible immediately. Stacks back to centred single-column below
+          lg, where there is no horizontal room to place it. */}
+      <section className="px-8 pt-28 pb-20 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-12 lg:gap-14 items-center">
 
-          <p className="text-[17px] text-white/62 mb-5 max-w-xl mx-auto leading-relaxed">
-            ShieldX decides how every credit conversation should happen, directs it to
-            the partners you already run, and learns from what was said — governed and
-            recorded throughout. Starting in collections.
-          </p>
+          <Motion>
+            <div className="text-center lg:text-left max-w-xl mx-auto lg:mx-0">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-6"
+                style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
+                CUSTOMER DECISIONING INFRASTRUCTURE
+              </div>
+              {/* No <br /> — the forced break was sized for a full-width centred
+                  column and breaks badly in a narrower one. Let it wrap. */}
+              <h1 className="text-[34px] md:text-[44px] leading-[1.14] font-semibold tracking-tight mb-5">
+                The decision layer for the life of a loan.
+              </h1>
 
-          <Link to="/demo"
-            className="inline-block bg-white text-black px-10 py-3.5 rounded-lg text-sm font-semibold
-              hover:opacity-90 hover:scale-[1.02] transition-all duration-200
-              shadow-[0_0_30px_rgba(255,255,255,0.12)] mb-10">
-            Request a walkthrough
-          </Link>
-        </Motion>
+              <p className="text-[17px] text-white/62 mb-7 leading-relaxed">
+                ShieldX decides how every credit conversation should happen, directs it to
+                the partners you already run, and learns from what was said — governed and
+                recorded throughout. Starting in collections.
+              </p>
 
-        <Motion delay={0.15}>
-          <div className="relative">
-            <div className="absolute -inset-4 bg-blue-500/20 blur-3xl rounded-3xl" />
-            <div className="absolute inset-x-8 -bottom-4 h-16 bg-blue-500/15 blur-2xl" />
-            <div className="relative rounded-2xl overflow-hidden"
-              style={{
-                border: "1px solid rgba(96,165,250,0.18)",
-                boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 24px 80px rgba(59,130,246,0.22), 0 4px 20px rgba(0,0,0,0.6)",
-                background: "rgba(0,0,0,0.4)",
-              }}>
-              {/* Unsized, this reflowed everything below it once the bytes arrived.
-                  Intrinsic dimensions reserve the box (CLS -> 0); the alt takes
-                  a11y 90->96 and SEO 92->100. Deliberately still lazy: eager +
-                  high priority measured WORSE here (LCP 4.9s -> 6.2s) because
-                  239KB of PNG competes with the bundle on a throttled link. */}
-              <img src={dashboard} className="w-full opacity-95"
-                width={1492} height={800}
-                alt="The ShieldX console — portfolio overview with decision coverage and audit-log integrity"
-                loading="lazy" decoding="async" />
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                <Link to="/demo"
+                  className="block w-full sm:inline-block sm:w-auto bg-white text-black px-8 py-3.5 rounded-lg text-sm font-semibold
+                    hover:opacity-90 hover:scale-[1.02] transition-all duration-200
+                    shadow-[0_0_30px_rgba(255,255,255,0.12)]">
+                  Request a walkthrough
+                </Link>
+                <Link to="/platform"
+                  className="block w-full sm:inline-block sm:w-auto px-8 py-3.5 rounded-lg text-sm font-semibold border border-white/15
+                    text-white/75 hover:text-white hover:border-white/30 transition-all duration-200">
+                  See how it works
+                </Link>
+              </div>
             </div>
-          </div>
-        </Motion>
+          </Motion>
+
+          <Motion delay={0.15}>
+            <div className="relative">
+              <div className="absolute -inset-4 bg-blue-500/20 blur-3xl rounded-3xl" />
+              <div className="absolute inset-x-8 -bottom-4 h-16 bg-blue-500/15 blur-2xl" />
+              <div className="relative rounded-2xl overflow-hidden"
+                style={{
+                  border: "1px solid rgba(96,165,250,0.18)",
+                  boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 24px 80px rgba(59,130,246,0.22), 0 4px 20px rgba(0,0,0,0.6)",
+                  background: "rgba(0,0,0,0.4)",
+                }}>
+                {/* Unsized, this reflowed everything below it once the bytes arrived.
+                    Intrinsic dimensions reserve the box (CLS -> 0); the alt takes
+                    a11y 90->96 and SEO 92->100. Deliberately still lazy: eager +
+                    high priority measured WORSE here (LCP 4.9s -> 6.2s) because
+                    239KB of PNG competes with the bundle on a throttled link. */}
+                <img src={dashboard} className="w-full opacity-95"
+                  width={1492} height={800}
+                  alt="The ShieldX console — portfolio overview with decision coverage and audit-log integrity"
+                  loading="lazy" decoding="async" />
+              </div>
+            </div>
+          </Motion>
+
+        </div>
       </section>
 
       {/* ── THE GAP ── */}
