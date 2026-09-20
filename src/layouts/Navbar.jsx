@@ -2,12 +2,17 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import logo from "../assets/shieldx-logo.png";
 
+// §5 of the Sept-2026 collateral brief lists exactly four: Decision · Verdict
+// · Intelligence · Rails. Overview is kept because the "Platform" label above
+// it links to /platform anyway and dropping it would leave the parent page
+// unreachable from the menu. Assist is NOT listed by the brief — the page and
+// its route still exist and are reachable from /platform.
 const PLATFORM_ITEMS = [
   { to: "/platform",              label: "Overview",     desc: "How the whole engine works" },
   { to: "/platform/decision",     label: "Decision",     desc: "The brain — footprint, scoring, orchestration" },
-  { to: "/platform/engage",       label: "Engage",       desc: "Execution channel for institutions without pipes" },
-  { to: "/platform/assist",       label: "Assist",       desc: "The human channel's adapter" },
+  { to: "/platform/verdict",      label: "Verdict",      desc: "Is the number live, and is it the borrower's — before the first call" },
   { to: "/platform/intelligence", label: "Intelligence", desc: "The sensory system, post-call" },
+  { to: "/platform/engage",       label: "Rails",        desc: "Execution channel for institutions without pipes" },
 ];
 
 const NAV_ITEMS = [
@@ -35,7 +40,7 @@ export default function Navbar() {
         </Link>
 
         {/* DESKTOP NAV */}
-        <div className="hidden md:flex gap-8 text-sm text-white/70 items-center">
+        <div className="hidden min-[860px]:flex gap-6 lg:gap-8 text-sm text-white/70 items-center">
 
           {/* PLATFORM DROPDOWN */}
           <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
@@ -73,14 +78,14 @@ export default function Navbar() {
         {/* DESKTOP CTA */}
         <button
           onClick={() => navigate("/demo")}
-          className="hidden md:block bg-white text-black px-4 py-2 rounded-md text-sm hover:opacity-90 transition flex-shrink-0"
+          className="hidden min-[860px]:block bg-white text-black px-4 py-2 rounded-md text-sm hover:opacity-90 transition flex-shrink-0"
         >
           Request a walkthrough
         </button>
 
         {/* MOBILE HAMBURGER */}
         <button
-          className="md:hidden flex flex-col justify-center items-end gap-[5px] w-9 h-9 flex-shrink-0"
+          className="min-[860px]:hidden flex flex-col justify-center items-end gap-[5px] w-9 h-9 flex-shrink-0"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -92,7 +97,7 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE MENU DRAWER */}
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? "max-h-[720px]" : "max-h-0"}`}>
+      <div className={`min-[860px]:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? "max-h-[720px]" : "max-h-0"}`}>
         <div className="bg-[#050507]/98 backdrop-blur-xl border-t border-white/[0.08] px-5 pt-5 pb-8 flex flex-col">
 
           <Link to="/" onClick={() => setMobileOpen(false)}

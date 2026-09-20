@@ -14,7 +14,7 @@ const PATTERNS = [
     deliveryLabel: "Bank's Stack",
     deliveryOwner: "bank",
     groups: [
-      { name: "CPaaS Vendor", items: [{ label: "WhatsApp · SMS · Email", sub: "Bank's contract, sender ID & templates" }] },
+      { name: "CPaaS Vendor", items: [{ label: "SMS · Email", sub: "Bank's contract, sender ID & templates" }] },
       { name: "Agency & Contact Center Partners", items: [{ label: "Field & Tele-calling Network", sub: "Bank's existing partner relationships" }] },
     ],
     note: "ShieldX dispatches through it — nothing new to provision.",
@@ -42,8 +42,8 @@ const PATTERNS = [
     deliveryLabel: "ShieldX Stack",
     deliveryOwner: "shieldx",
     deliveryItems: [
-      { label: "Engage", sub: "SMS · WhatsApp · Email" },
-      { label: "Diya", sub: "Voice AI" },
+      { label: "Rails", sub: "SMS · Email" },
+      { label: "Voice", sub: "Voice execution adapter" },
       { label: "Agency Network", sub: "Work-list orchestration" },
     ],
     note: "Brain and hands — the complete stack, one vendor.",
@@ -58,12 +58,12 @@ const POOL_STATES = [
   [
     { name: "Partner Vendor A", owner: "partner", pct: 45 },
     { name: "Partner Vendor B", owner: "partner", pct: 35 },
-    { name: "Diya — ShieldX Voice", owner: "shieldx", pct: 20 },
+    { name: "ShieldX Voice", owner: "shieldx", pct: 20 },
   ],
   [
     { name: "Partner Vendor A", owner: "partner", pct: 32 },
     { name: "Partner Vendor B", owner: "partner", pct: 28 },
-    { name: "Diya — ShieldX Voice", owner: "shieldx", pct: 40 },
+    { name: "ShieldX Voice", owner: "shieldx", pct: 40 },
   ],
 ];
 

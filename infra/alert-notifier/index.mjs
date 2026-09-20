@@ -48,7 +48,12 @@ export const handler = async (event) => {
     const name = a?.AlarmName ?? record.Sns?.Subject ?? "AWS notification";
     const reason = a?.NewStateReason ?? raw;
     const when = a?.StateChangeTime ?? new Date().toISOString();
+    // CloudWatch's alarm payload carries Region as a DISPLAY name — "Asia
+    // Pacific (Mumbai)" — which is right for the header and useless in a CLI
+    // command. The region CODE is in the alarm ARN:
+    // arn:aws:cloudwatch:ap-south-1:<acct>:alarm:<name>
     const region = a?.Region ?? REGION;
+    const regionCode = a?.AlarmArn?.split(":")[3] ?? REGION;
     const accent = COLOR[state] ?? "#555";
 
     const subject = `[${state}] ${name}`;
@@ -66,14 +71,16 @@ export const handler = async (event) => {
       (state === "ALARM"
         ? `<p style="margin-top:18px">Check the handler logs:<br>` +
           `<code style="font-size:13px">aws logs tail /aws/lambda/shieldx-demo-form --since 30m --region ${esc(
-            region
+            regionCode
           )}</code></p>`
         : "") +
       `<p style="color:#999;font-size:12px;margin-top:22px">` +
       `Sent by shieldx-alert-notifier via SES. No unsubscribe link by design — ` +
       `see infra/alert-notifier/index.mjs.</p></div>`;
 
-    const text = `[${state}] ${name}\n${when} · ${region}\n\n${reason}\n`;
+    const text =
+      `[${state}] ${name}\n${when} · ${region}\n\n${reason}\n\n` +
+      `aws logs tail /aws/lambda/shieldx-demo-form --since 30m --region ${regionCode}\n`;
 
     try {
       await ses.send(

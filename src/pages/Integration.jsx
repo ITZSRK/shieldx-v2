@@ -148,8 +148,8 @@ export default function Integration() {
             <h2 className="text-[21px] font-semibold mb-3">Voice channel: programmatic</h2>
             <p className="text-white/50 text-[14.5px] leading-relaxed max-w-2xl mb-6">
               Where ShieldX voice is in use, integration is API-based rather than
-              batch — for CRM and dialer systems that need to push and receive in
-              near real time.
+              batch — for CRM and dialer systems that need to push and receive
+              synchronously.
             </p>
             <div className="rounded-xl border border-white/[0.08] overflow-hidden">
               {[
@@ -170,9 +170,9 @@ export default function Integration() {
         {/* ROADMAP — labelled as such */}
         <Motion>
           <div className="border-t border-white/[0.08] mt-14 pt-12">
-            <div className="text-[10px] text-white/35 tracking-[0.2em] mb-4">REAL-TIME SCORING</div>
+            <div className="text-[10px] text-white/35 tracking-[0.2em] mb-4">SYNCHRONOUS SCORING</div>
             <p className="text-white/50 text-[14.5px] leading-relaxed max-w-2xl">
-              Where an institution can integrate in real time, the decision engine
+              Where an institution can integrate synchronously, the decision engine
               exposes synchronous scoring over an authenticated API — a decision
               returned in the request, rather than waiting for the next batch. Most
               institutions still prefer file exchange for the volume, and run the API

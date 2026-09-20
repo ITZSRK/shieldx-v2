@@ -16,7 +16,7 @@ const ACCOUNTS = [
       { label: "Contactability", level: 4 },
       { label: "Collectability", level: 3 },
     ],
-    orchestrated: "SMS + WhatsApp scheduled · 2:00 PM IST",
+    orchestrated: "SMS scheduled · 2:00 PM IST",
   },
   {
     id: "CUST-51907",

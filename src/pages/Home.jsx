@@ -22,18 +22,18 @@ function Motion({ children, delay = 0 }) {
 }
 
 /* ================= SYSTEM LOOP — capabilities + the stages they drive, merged ================= */
-const STAGES = ["Signal", "Decide", "Govern", "Execute", "Learn"];
+const STAGES = ["Signal", "Decide", "Govern", "Direct", "Learn"];
 
 const LOOP_CAPABILITIES = [
-  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Scores, rules, and cohort strategy — computes the treatment for every account.", stages: [1, 2] },
-  { letter: "E", name: "Engage",       to: "/platform/engage",       color: "#fbbf24", line: "SMS, WhatsApp, agencies, and voice AI — for institutions without pipes.", stages: [3] },
-  { letter: "A", name: "Assist",       to: "/platform/assist",       color: "#4ade80", line: "The human channel's adapter, before and during the call.", stages: [3] },
+  { letter: "D", name: "Decision",     to: "/platform/decision",     color: "#60a5fa", line: "Who, when, which channel, what to say — or nothing. Govern enforced in code; Assist on the agent's screen.", stages: [1, 2] },
+  { letter: "V", name: "Verdict",      to: "/platform/verdict",      color: "#4ade80", line: "Is the number live? Is it the borrower's? Hold or refer — decided before the first call.", stages: [1] },
+  { letter: "R", name: "Rails",        to: "/platform/engage",       color: "#fbbf24", line: "A channel to run your decisions on when you have no pipes — or want a clean holdout. Measured like every other partner.", stages: [3] },
   // Intelligence owns Signal as well as Learn. Post-call analysis emits
   // hardship, dispute and escalation signals that are exported to the decision
   // engine and read on the next pass — so VI is not only the end of one cycle,
   // it is an input to the next. Lighting both is what makes the row a loop
   // rather than a line, which is what the heading above it already claims.
-  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was actually said — and feeds it back as signal.", stages: [4, 0] },
+  { letter: "I", name: "Intelligence", to: "/platform/intelligence", color: "#a78bfa", line: "Learns from what was said — and feeds it back as signal.", stages: [4, 0] },
 ];
 
 function SystemLoop() {
@@ -103,6 +103,17 @@ function SystemLoop() {
             </div>
             <div className="text-sm font-medium mb-2" style={{ color: active === i ? c.color : "white" }}>{c.name}</div>
             <div className="text-white/55 text-xs leading-relaxed">{c.line}</div>
+
+            {/* Without hover these cards are <Link>s: a tap navigates away and
+                the stage pills above never light, so the capability-to-stage
+                mapping this section exists to show is unreachable. Guard is
+                width OR hover — width alone strands a touch tablet at 820px in
+                the four-column grid; hover alone hides them from a narrowed
+                desktop window. */}
+            <div className="[@media(min-width:768px)_and_(hover:hover)]:hidden mt-3 pt-3 border-t border-white/[0.08] text-[11px]"
+              style={{ color: `${c.color}cc` }}>
+              Drives {c.stages.map((s) => STAGES[s]).join(" · ")}
+            </div>
           </Link>
         ))}
       </div>
@@ -116,17 +127,21 @@ const SCENARIO = {
   customer: "CUST-48321 · DPD 30–60 · ₹24,000",
   steps: [
     // Sequence, not timing. Millisecond figures used to sit here; no benchmark
-    // exists to defend them, and /platform states the real end-to-end figure
-    // (~1 second) in the one place it belongs. The order is what this trace is
-    // demonstrating — the compliance checks run before the handoff, not after.
+    // exists to defend them. The Sept-2026 page replacement also dropped the
+    // "~1 second" figure /platform used to assert, which is the right outcome:
+    // HQ confirmed no decision-latency p95 exists anywhere — every latency
+    // number it holds is third-party provider latency, LLM time-to-first-token,
+    // or an Assist target. Do not reintroduce one without a measurement. The
+    // order is what this trace demonstrates — the compliance checks run before
+    // the handoff, not after.
     { seq:"01", text:"Signal received",                 note:"CBS payment_missed event ingested",             color:"white" },
     { seq:"02", text:"Risk tier — HIGH",                 note:"DPD bucket evaluated, cohort assigned",         color:"white" },
-    { seq:"03", text:"Eligible channels: agent call, WhatsApp, SMS", note:"Voice AI eligible, not selected",   color:"white" },
+    { seq:"03", text:"Eligible channels: agent call, SMS", note:"Voice AI eligible, not selected",   color:"white" },
     { seq:"04", text:"TRAI window — COMPLIANT",          note:"2:00 PM IST — within 8 AM–7 PM window",         color:"green" },
     { seq:"05", text:"Suppression list — CLEAR",         note:"No do-not-contact entry for this account",      color:"green" },
     { seq:"06", text:"Frequency cap — WITHIN LIMIT",      note:"Under the daily contact limit for this product", color:"green" },
     { seq:"07", text:"Day rule — COMPLIANT",              note:"Not a Sunday or national holiday (IST)",        color:"green" },
-    { seq:"08", text:"Handoff: agent call · Assist context", note:"Governed decision handed off through adapter", color:"blue" },
+    { seq:"08", text:"Directed: agent call · Assist context", note:"Governed decision directed to the partner's own system", color:"blue" },
     { seq:"09", text:"Audit record written",              note:"AUD-20260614-48321 · Hash-chained",                color:"dim"   },
     { seq:"↻",  text:"Call analysed post-call — hardship mentioned", note:"Next treatment updated · the loop closes", color:"blue" },
   ],
@@ -209,9 +224,9 @@ function GovernedDecisionView() {
 const STACK_LAYERS = [
   { n: "01", name: "System of record",   color: "#93c5fd", line: "Decision log, outcome log, and conversation-derived features — the permanent asset." },
   { n: "02", name: "Decision",           color: "#60a5fa", line: "Scores, rules, cohorts, and holdout studies. Mandatory in every deployment." },
-  { n: "03", name: "Orchestrate",        color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. An internal module of Decision." },
-  { n: "04", name: "Execution adapters", color: "#fbbf24", line: "Client's CPaaS, dialer, agency work-lists, Engage, Diya — theirs or ours, one treatment-in / outcome-out contract." },
-  { n: "05", name: "Sensing (VI)",       color: "#a78bfa", line: "Post-call analysis and outcome events flow back into the record — closing the loop, even brain-only." },
+  { n: "03", name: "Sequencing",         color: "#60a5fa", line: "Sequenced, timed instructions — retry logic, channel fallback, contact-window compliance. Part of Decision, not a separate product." },
+  { n: "04", name: "Partner adapters",   color: "#fbbf24", line: "Your CPaaS, dialler and agency work-lists — or ShieldX Rails. Theirs or ours, one decision-in / outcome-out contract. Partners execute." },
+  { n: "05", name: "Intelligence",       color: "#a78bfa", line: "Post-call review and outcome events flow back into the record — closing the loop, whoever carried the call." },
 ];
 
 function TheStack() {
@@ -291,7 +306,7 @@ function TheStack() {
         >
           ↻
         </motion.span>
-        <span>Sensing feeds back into System of record — the loop closes on every account.</span>
+        <span>Intelligence feeds back into the System of record — the loop closes on every account.</span>
       </div>
     </div>
   );
@@ -307,11 +322,11 @@ function TheStack() {
 const LEVERS = [
   {
     metric: "Right-party contact rate",
-    how: "Channel and time-of-day are decided per account from contactability signals, rather than a fixed campaign schedule applied to a whole bucket.",
+    how: "Every number is graded before the first dial — live or not, the borrower's or not — so the campaign starts from the right numbers, not a schedule applied to a whole bucket.",
   },
   {
     metric: "Cost to collect",
-    how: "Outreach that shouldn't fire — self-curing accounts, wrong contact window, no consent — is suppressed before it costs anything. Expensive channels are reserved for accounts where the cohort justifies them.",
+    how: "Outreach that shouldn't fire — self-curing accounts, the wrong window, an open complaint or cease-request — is held before it costs anything. Field goes only where a phone cannot.",
   },
   {
     metric: "Roll rates",
@@ -339,12 +354,16 @@ function WhatThisMoves() {
           The levers, and how<br />the system pulls them.
         </h2>
         <p className="text-white/55 text-[15px] leading-relaxed max-w-xl">
-          We don't publish outcome numbers. The deployment is early, allocation
-          hasn't started, and a lift percentage we can't evidence is worth less
-          than nothing to your risk committee. What follows is the mechanism —
-          verifiable in a walkthrough against your own portfolio.
+          We don't publish outcome numbers. The deployment is early, the first
+          decisions are ahead of us, and a lift percentage we can't evidence is
+          worth less than nothing to your risk committee. What follows is the
+          mechanism — verifiable on your own portfolio, in an Audit, in weeks.
         </p>
       </div>
+
+      <p className="text-white/70 text-[15px] leading-relaxed max-w-xl mb-10">
+        Priced per decision, per customer. Never per attempt, never a share of collections, never per seat.
+      </p>
 
       <div className="border-t border-white/[0.08]">
         {LEVERS.map((l) => (
@@ -392,8 +411,8 @@ export default function Home() {
   return (
     <div className="bg-[#050507] text-white overflow-hidden relative">
       <SEO
-        title="Real-Time Decisioning Infrastructure"
-        description="ShieldX is the real-time decisioning infrastructure for collections in Indian BFSI — deciding, dispatching, and learning from every credit conversation, governed end to end."
+        title="Customer Decisioning Infrastructure"
+        description="ShieldX is the customer decisioning infrastructure for Indian BFSI — deciding how every credit conversation should happen, directing it to the partners a bank already runs, and learning from what was said. Governed and recorded throughout."
         path="/"
       />
 
@@ -412,16 +431,16 @@ export default function Home() {
         <Motion>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-400/20 bg-blue-500/10 text-blue-300 text-xs tracking-[0.18em] mb-8"
             style={{boxShadow:"0 0 18px rgba(59,130,246,0.22)"}}>
-            REAL-TIME DECISIONING INFRASTRUCTURE
+            CUSTOMER DECISIONING INFRASTRUCTURE
           </div>
           <h1 className="text-[34px] md:text-[54px] leading-[1.15] font-semibold tracking-tight mb-6">
-            The layer between your systems<br />and your borrowers.
+            The decision layer<br />for the life of a loan.
           </h1>
 
           <p className="text-[18px] text-white/62 mb-8 max-w-lg mx-auto leading-relaxed">
-            ShieldX decides how every credit conversation should happen, dispatches it
-            across every channel, and learns from what was said — governed
-            and auditable throughout.
+            ShieldX decides how every credit conversation should happen, directs it to
+            the partners you already run, and learns from what was said — governed and
+            recorded throughout. Starting in collections.
           </p>
 
           <Link to="/demo"
@@ -442,7 +461,15 @@ export default function Home() {
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.05), 0 24px 80px rgba(59,130,246,0.22), 0 4px 20px rgba(0,0,0,0.6)",
                 background: "rgba(0,0,0,0.4)",
               }}>
-              <img src={dashboard} className="w-full opacity-95" loading="lazy" decoding="async" />
+              {/* Unsized, this reflowed everything below it once the bytes arrived.
+                  Intrinsic dimensions reserve the box (CLS -> 0); the alt takes
+                  a11y 90->96 and SEO 92->100. Deliberately still lazy: eager +
+                  high priority measured WORSE here (LCP 4.9s -> 6.2s) because
+                  239KB of PNG competes with the bundle on a throttled link. */}
+              <img src={dashboard} className="w-full opacity-95"
+                width={1492} height={800}
+                alt="The ShieldX console — portfolio overview with decision coverage and audit-log integrity"
+                loading="lazy" decoding="async" />
             </div>
           </div>
         </Motion>
@@ -491,10 +518,10 @@ export default function Home() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">ONE DECISION SPINE</span>
             <div className="h-px w-6 bg-white/20" />
           </div>
-          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">Four capabilities. Five stages. One loop.</h2>
+          <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">One decision spine. One loop.</h2>
           <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
-            Not four separate products — one decision engine. Hover a capability to
-            see which stage of the loop it drives.
+            Two products — Decision and Intelligence — with Verdict inside Decision, and Rails
+            where you have no pipes of your own. Hover a capability to see which stage it drives.
           </p>
         </div>
         <SystemLoop />
@@ -513,7 +540,7 @@ export default function Home() {
           <h2 className="text-[26px] md:text-[36px] font-semibold mb-3">One stack, five layers.</h2>
           <p className="text-white/58 text-[15px] max-w-md mx-auto leading-relaxed">
             Same taxonomy, same record — every layer speaks one contract, regardless
-            of whose pipes execute it.
+            of whose pipes carry it.
           </p>
         </div>
         <TheStack />
@@ -555,7 +582,7 @@ export default function Home() {
       <section className="px-8 pt-24 pb-32 text-center max-w-2xl mx-auto">
 
         <div className="flex items-center justify-center gap-3 mb-8 text-[12px] text-white/35 flex-wrap">
-          <span>Live with a leading private-sector bank</span>
+          <span>In deployment with a leading private-sector bank</span>
           <span className="text-white/15">·</span>
           <span>DPIIT-recognized</span>
           <span className="text-white/15">·</span>
