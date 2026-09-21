@@ -32,6 +32,7 @@ export default function Footer() {
               <Link to="/platform/verdict" className="hover:text-white transition">Verdict</Link>
               <Link to="/deploy"     className="hover:text-white transition">How we deploy</Link>
               <Link to="/integration" className="hover:text-white transition">Integration</Link>
+              <Link to="/pricing"    className="hover:text-white transition">Pricing</Link>
             </div>
           </div>
 

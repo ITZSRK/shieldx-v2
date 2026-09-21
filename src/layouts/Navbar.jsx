@@ -17,6 +17,7 @@ const PLATFORM_ITEMS = [
 
 const NAV_ITEMS = [
   { to: "/deploy",      label: "How we deploy" },
+  { to: "/pricing",     label: "Pricing" },
   { to: "/governance",  label: "Governance" },
   { to: "/neutrality",  label: "Neutrality" },
   { to: "/company",     label: "Company" },
