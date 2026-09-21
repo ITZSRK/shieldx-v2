@@ -34,39 +34,56 @@ const REFUSALS = [
   },
 ];
 
-const UNITS = [
+/* Verdict, Govern, Assist and the field governance surface are deliberately
+   NOT rows here. They sit inside Decision and are not metered separately —
+   listing them would imply five things to buy instead of two products and a
+   rail. */
+const LINES = [
   {
-    line: "Decisioning",
-    unit: "Per governed account",
-    note:
-      "Flat across the portfolio. Not per bucket, not per product, not per lookup — bucket and product variation shows up in channel usage, not in the price of the decision.",
+    name: "ShieldX Decision",
+    unit: "Per decision, per customer",
+    body:
+      "Priced by book, because the work differs by book. Early: per hold-or-refer verdict on the referral pool. Mid: per customer-month on the field-eligible pool. Late: per customer-month on the whole pool. Verdict, Govern, Assist and the field governance surface are inside it — none is metered separately.",
   },
   {
-    line: "Voice",
-    unit: "Per connected minute",
-    note: "Metered as used. One channel among several, and never the default.",
+    name: "ShieldX Intelligence",
+    unit: "Per call reviewed",
+    body:
+      "Post-call review of calls already recorded — human agent or voice bot, on the same rules. Sells on its own.",
   },
   {
-    line: "Intelligence",
-    unit: "Per analysed minute",
-    note: "Post-call review of calls already recorded. Metered on what is analysed.",
+    name: "ShieldX Rails",
+    unit: "A channel, not a product",
+    body:
+      "For institutions without pipes of their own, or that want a clean holdout the incumbent cannot touch. Metered as used and scored like every other partner. Never the default.",
   },
   {
-    line: "Assist",
-    unit: "Per minute of assistance",
-    note:
-      "Not per seat. You already pay for the dialler, the CRM and the telco; Assist is a layer over them, so it is billed on assistance actually given.",
-  },
-  {
-    line: "Field conduct",
-    unit: "Per resolved account",
-    note: "Not per visit. Field work is paid on resolution in this market, and we follow that.",
-  },
-  {
-    line: "Implementation",
+    name: "Integration",
     unit: "One-time, per institution",
-    note:
-      "Integration and workflow build, stated separately from the recurring line rather than amortised into it.",
+    body:
+      "Adapters, file mapping, environment. Stated separately, not amortised into the recurring line.",
+  },
+  {
+    name: "Platform",
+    unit: "Per month, per institution",
+    body:
+      "The record, the console, the governance evidence. One line whether you run one portfolio or five.",
+  },
+];
+
+const INPUTS = [
+  {
+    label: "BOOK SHAPE",
+    body: "Accounts by bucket and product; referral share on the early book.",
+  },
+  {
+    label: "CHANNELS",
+    body: "Contact centre, agencies, digital, field, bots — theirs, ours, or both.",
+  },
+  {
+    label: "START",
+    body:
+      "A Verdict Audit on your own history returns a number in weeks, before any integration.",
   },
 ];
 
@@ -75,7 +92,7 @@ export default function Pricing() {
     <Layout>
       <SEO
         title="Pricing"
-        description="ShieldX is priced per governed account for decisioning, with channels metered separately as used — never per attempt, and never as a share of what you recover."
+        description="Priced per decision, per customer. Never per attempt, never a share of what you recover."
         path="/pricing"
       />
 
@@ -90,14 +107,15 @@ export default function Pricing() {
             You pay for the decision.<br />Not for the attempt.
           </h1>
           <p className="text-white/62 text-[17px] max-w-2xl mx-auto leading-relaxed">
-            Decisioning is priced per governed account. Channels are metered separately,
-            as used. What we refuse to charge for matters more than the unit — it is what
-            keeps the commercial model from arguing with the decision.
+            ShieldX Decision is priced per decision, per customer, by book. ShieldX
+            Intelligence per call reviewed. What we refuse to charge for matters more
+            than the unit — it is what keeps the commercial model from arguing with
+            the decision.
           </p>
         </Motion>
       </section>
 
-      {/* ═══ THE TWO REFUSALS ═══ */}
+      {/* ═══ 1 · THE TWO REFUSALS ═══ */}
       <div className="bg-white/[0.05] border-y border-white/[0.09]">
         <section className="max-w-5xl mx-auto px-8 py-24">
           <Motion>
@@ -134,7 +152,7 @@ export default function Pricing() {
         </section>
       </div>
 
-      {/* ═══ THE LINES ═══ */}
+      {/* ═══ 2 · WHAT IS BILLED ═══ */}
       <section className="max-w-5xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-3 mb-5">
@@ -142,29 +160,39 @@ export default function Pricing() {
             <span className="text-[11px] text-white/55 tracking-[0.22em]">WHAT IS BILLED</span>
           </div>
           <h2 className="text-[26px] md:text-[38px] font-semibold leading-tight mb-5">
-            Separate lines, separate units.
+            Two products. One rail. Separate lines.
           </h2>
           <p className="text-white/55 text-[15px] leading-relaxed max-w-2xl mb-12">
             Nothing is blended into a single per-account fee. Each line is billed on the
-            unit that matches the work it does, so a portfolio that uses no voice is not
-            quietly paying for voice.
+            unit that matches the work it does, so a portfolio that never uses our rail
+            is not quietly paying for it.
           </p>
         </Motion>
 
         <div className="border-t border-white/[0.08]">
-          {UNITS.map((u, i) => (
-            <Motion key={u.line} delay={Math.min(i * 0.05, 0.2)}>
-              <div className="border-b border-white/[0.08] py-6 grid md:grid-cols-[200px_210px_1fr] gap-2 md:gap-8 items-baseline">
-                <div className="text-white text-[15px] font-medium">{u.line}</div>
-                <div className="text-blue-300/75 text-[13.5px] font-mono">{u.unit}</div>
-                <div className="text-white/52 text-[14px] leading-relaxed">{u.note}</div>
+          {LINES.map((l, i) => (
+            <Motion key={l.name} delay={Math.min(i * 0.05, 0.2)}>
+              <div className="border-b border-white/[0.08] py-6 grid md:grid-cols-[240px_1fr] gap-2 md:gap-10">
+                <div>
+                  <div className="text-white text-[15px] font-medium">{l.name}</div>
+                  <div className="text-blue-300/70 text-[12.5px] font-mono mt-1">{l.unit}</div>
+                </div>
+                <div className="text-white/52 text-[14.5px] leading-relaxed">{l.body}</div>
               </div>
             </Motion>
           ))}
         </div>
+
+        <Motion delay={0.15}>
+          <p className="mt-8 text-white/38 text-[12.5px] font-mono leading-relaxed">
+            Planning ranges, not a rate card — early ₹10–15 per verdict · mid ₹15–25 per
+            customer-month · late ₹45–65 per customer-month · integration ₹20 L ·
+            platform ₹4–8 L a month.
+          </p>
+        </Motion>
       </section>
 
-      {/* ═══ THE BREAKUP ═══ */}
+      {/* ═══ 3 · THE BREAKUP ═══ */}
       <div className="bg-white/[0.05] border-y border-white/[0.09]">
         <section className="max-w-3xl mx-auto px-8 py-24">
           <Motion>
@@ -176,19 +204,19 @@ export default function Pricing() {
               You can see it. We don't price on it.
             </h2>
             <p className="text-white/58 text-[15px] leading-relaxed">
-              Every enrichment call, every signal fetched, every check run against an
-              account is recorded and retrievable — per account, per decision, on demand.
-              That record exists as proof, not as an invoice. We do not itemise lookups
-              and bill them back, because you already own your data and a per-lookup price
+              Every signal checked, every rule evaluated, every decision written is
+              recorded and retrievable — per account, per decision, on demand. That
+              record exists as proof, not as an invoice. We do not itemise lookups and
+              bill them back, because you already own your data and a per-lookup price
               would make us a reseller of it. You pay for what ShieldX does over the top:
-              integration, decisioning, the governance record, and the analytics that come
-              out of it.
+              the decision, the governance record, and what the record teaches the next
+              decision.
             </p>
           </Motion>
         </section>
       </div>
 
-      {/* ═══ WHAT A QUOTE NEEDS ═══ */}
+      {/* ═══ 4 · GETTING A NUMBER ═══ */}
       <section className="max-w-5xl mx-auto px-8 py-24">
         <Motion>
           <div className="flex items-center gap-3 mb-5">
@@ -198,14 +226,28 @@ export default function Pricing() {
           <h2 className="text-[26px] md:text-[38px] font-semibold leading-tight mb-5">
             We quote against your book, not a rate card.
           </h2>
-          <p className="text-white/55 text-[15px] leading-relaxed max-w-2xl mb-8">
+          <p className="text-white/55 text-[15px] leading-relaxed max-w-2xl mb-12">
             Coverage is modelled on the whole portfolio rather than a convenient slice —
-            a late-stage or written-off book needs enrichment on most of it, and a quote
-            that assumes otherwise is one you would have to renegotiate. To price a
-            deployment we need the shape of the book, the channels you already run, and
-            which of them you want ShieldX to touch.
+            a late-stage or written-off book needs every number graded, on most of it,
+            and a quote that assumes otherwise is one you would have to renegotiate. To
+            price a deployment we need the shape of the book by bucket, the channels you
+            already run, and which of them you want ShieldX to decide for.
           </p>
-          <div className="flex flex-wrap gap-3">
+        </Motion>
+
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
+          {INPUTS.map((t, i) => (
+            <Motion key={t.label} delay={i * 0.07}>
+              <div className="h-full rounded-xl px-6 py-5 border border-white/[0.12] bg-white/[0.04]">
+                <div className="text-[9px] tracking-widest text-white/35 mb-3">{t.label}</div>
+                <div className="text-white/62 text-[13.5px] leading-relaxed">{t.body}</div>
+              </div>
+            </Motion>
+          ))}
+        </div>
+
+        <Motion delay={0.2}>
+          <div className="flex flex-wrap items-center gap-5">
             <Link to="/demo"
               className="inline-block bg-white text-black px-8 py-3.5 rounded-lg text-sm font-semibold
                 hover:opacity-90 hover:scale-[1.02] transition-all duration-200
@@ -213,9 +255,8 @@ export default function Pricing() {
               Request a walkthrough
             </Link>
             <Link to="/platform/verdict"
-              className="inline-block px-8 py-3.5 rounded-lg text-sm font-semibold border border-white/15
-                text-white/75 hover:text-white hover:border-white/30 transition-all duration-200">
-              Start with a Verdict audit
+              className="text-[14px] text-white/70 hover:text-white transition-colors">
+              Start with a Verdict Audit →
             </Link>
           </div>
         </Motion>
